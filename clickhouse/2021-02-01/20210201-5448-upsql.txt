@@ -1,0 +1,52 @@
+ALTER TABLE sys_packet_capture_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE sys_packet_capture_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE sys_packet_capture_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE sys_packet_capture_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE sys_packet_capture_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE sys_packet_capture_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+------------------------------------------------
+
+ALTER TABLE proxy_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE proxy_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE proxy_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE proxy_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE proxy_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE proxy_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+------------------------------------------------
+
+ALTER TABLE security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+------------------------------------------------
+
+ALTER TABLE connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+------------------------------------------------
+
+ALTER TABLE radius_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE radius_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE radius_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE radius_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
+
+ALTER TABLE radius_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_client_isn Int64 after common_s2c_tcp_unorder_num;
+ALTER TABLE radius_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tcp_server_isn Int64 after common_tcp_client_isn;
