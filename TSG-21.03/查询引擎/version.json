@@ -1,0 +1,95 @@
+{
+  "product": "XXG Test environment",
+  "version": "21.03",
+  "registered": "Geedge",
+  "updated":"2021-03-02 11:00:03",
+  "components": {
+    "oss": [
+      {
+        "name": "zookeeper",
+        "version": "3.4.9",
+        "licenseType": "Apache License 2.0",
+        "description": "分布式应用程序协调服务"
+      },
+      {
+        "name": "kafka",
+        "version": "2.11_1.0.0",
+        "licenseType": "Apache License 2.0",
+        "description": "消息队列"
+      },
+      {
+        "name": "habse",
+        "version": "2.2.3",
+        "licenseType": "Apache License 2.0",
+        "description": "用于文件系统和存储Radius数据"
+      },
+      {
+        "name": "flume",
+        "version": "1.9.0",
+        "licenseType": "Apache License 2.0",
+        "description": "日志补全传输"
+      },
+      {
+        "name": "clickhouse",
+        "version": "20.3.12.112",
+        "licenseType": "Apache License 2.0",
+        "description": "原始日志数据库"
+      },
+      {
+        "name": "druid",
+        "version": "0.18.1",
+        "licenseType": "Apache License 2.0",
+        "description": "分析实时数据并提供低延迟查询的OLAP应用程序"
+      },
+      {
+        "name": "gohangout",
+        "version": "1.15.2.20200921",
+        "description": "动态获取原始日志表schema入库程序"
+      }
+    ],
+    "apps": [
+      {
+        "name": "galaxy-qgw-service",
+        "version": "341",
+        "description": "数据平台对外统一查询网关"
+      },
+      {
+        "name": "galaxy-report-service",
+        "version": "21.02.25",
+        "description": "自定义报表查询服务"
+      },
+      {
+        "name": "galaxy-hos-service",
+        "version": "21.03.01",
+        "description": "对象存储服务"
+      },
+      {
+        "name": "xxl-job-admin",
+        "version": "v1.3.20210302",
+        "description": "分布式任务调度平台"
+      },
+      {
+        "name": "xxl-job-executor",
+        "version": "v1.3.20210302",
+        "description": "分布式任务调度平台-执行器"
+      }
+    ],
+    "tasks": [
+      {
+        "name": "flume",
+        "version": "flume-config-21.03",
+        "description": "原始日志补全、subscriber更新、Radius上下线功能"
+      },
+      {
+        "name": "druid",
+        "version": "druid-config-21.02",
+        "description": "所有分析日志任务"
+      },
+      {
+        "name": "gohangout",
+        "version": "gohangout-config-21.02",
+        "description": "原始日志入库、上下线日志入库"
+      }
+    ]
+  }
+}
