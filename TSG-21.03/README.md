@@ -6,14 +6,14 @@
 镜像版本:341
 
 更新内容:
-  1:  扩展Schema，支持VOIP 协议 SIP/RTP 所有字段(TSG-5598)。
-  2:  扩展Schema，描述SQL 支持的聚合和操作函数(TSG-5377)。
-  3:  新增故障诊断-元数据与schema验证接口，可以校验schema与数据库字段的一致性。
-  4:  新增故障诊断-SQL测试集接口，可动态评估查询引擎执行性能和留存统计结果。
-  5:  改善原有test自检功能，包含runSchema 与 runSql。
-  6:  改善系统接口调用方式，抽取为公共方法，包含:kill query，process 和query ID。
-  7:  新增集成jar进行加密功能，docker部署可进行加密。
-  8:  新增集成jar未变化情况下，MD5保持固定。
+  1:  扩展Schema，支持VOIP 协议 SIP/RTP 所有字段(TSG-5598)。  
+  2:  扩展Schema，描述SQL 支持的聚合和操作函数(TSG-5377)。  
+  3:  新增故障诊断-元数据与schema验证接口，可以校验schema与数据库字段的一致性。  
+  4:  新增故障诊断-SQL测试集接口，可动态评估查询引擎执行性能和留存统计结果。  
+  5:  改善原有test自检功能，包含runSchema 与 runSql。  
+  6:  改善系统接口调用方式，抽取为公共方法，包含:kill query，process 和query ID。  
+  7:  新增集成jar进行加密功能，docker部署可进行加密。  
+  8:  新增集成jar未变化情况下，MD5保持固定。  
   9:  修复聚合查询分布式子查询与预期结果不一致(TSG-5634)  
 
 
@@ -31,7 +31,7 @@
 
 
 更新内容:  
-  1:  新增集成jar未变化情况下，MD5保持固定。 
+  1:  新增集成jar未变化情况下，MD5保持固定。  
   2:  新增集成jar进行加密功能，docker部署可进行加密。
 
 ## 报表服务
@@ -40,11 +40,11 @@
 
 
 更新内容:
-  1:  新增集成jar未变化情况下，MD5保持固定。
-  2:  新增集成jar进行加密功能，docker部署可进行加密。
-  3:  新增从网关服务获取queryid功能。
-  4:  改善调用kill query，process接口功能
-  5:  改善生成hbase中reportid方式
+  1:  新增集成jar未变化情况下，MD5保持固定。  
+  2:  新增集成jar进行加密功能，docker部署可进行加密。  
+  3:  新增从网关服务获取queryid功能。  
+  4:  改善调用kill query，process接口功能  
+  5:  改善生成hbase中reportid方式  
   6:  修复EAL4漏洞  
   
 
@@ -54,13 +54,13 @@
 
 
 更新内容:  
-  1:  修复eal4漏洞。
-  2:  新增集成jar未变化情况下，MD5保持固定。
-  3:  新增集成jar进行加密功能，docker部署可进行加密。
+  1:  修复eal4漏洞。  
+  2:  新增集成jar未变化情况下，MD5保持固定。  
+  3:  新增集成jar进行加密功能，docker部署可进行加密。  
   
 ## 数据初始化
 
 更新内容:
-  1:  新增日志VOIP协议字段。（TSG-5598）
-  2:  Clickhouse初始化sql 支持VOIP协议字段
-  3:  数据补全(storm) 日志入库(gohangout)支持 VOIP协议字段。
+  1:  新增日志VOIP协议字段。（TSG-5598）  
+  2:  Clickhouse初始化sql 支持VOIP协议字段  
+  3:  数据补全(storm) 日志入库(gohangout)支持 VOIP协议字段。  
