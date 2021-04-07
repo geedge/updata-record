@@ -219,3 +219,29 @@ ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN I
 
 ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
 
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+
+ALTER TABLE tsg_galaxy_v3.proxy_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+ALTER TABLE tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+
+ALTER TABLE tsg_galaxy_v3.proxy_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+ALTER TABLE tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+ALTER TABLE tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_request_content String after http_response_header;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+ALTER TABLE tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS http_response_content String after http_request_content;
+
