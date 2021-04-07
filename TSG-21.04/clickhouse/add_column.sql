@@ -29,4 +29,193 @@ ALTER TABLE tsg_galaxy_v3.voip_record_log ON CLUSTER ck_query ADD COLUMN IF NOT 
 
 ALTER TABLE tsg_galaxy_v3.sys_packet_capture_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS common_tunnels String after common_encapsulation;
 
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+
+ALTER TABLE tsg_galaxy_v3.security_event_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_call_id String after app_extra_info;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_description String after sip_call_id;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_description String after sip_originator_description;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_user_agent String after sip_responder_description;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_server String after sip_user_agent;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_connect_ip String after sip_server;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_port Int64 after sip_originator_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_media_type String after sip_originator_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_originator_sdp_content String after sip_originator_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_connect_ip String after sip_originator_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_port Int64 after sip_responder_sdp_connect_ip;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_media_type String after sip_responder_sdp_media_port;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_responder_sdp_content String after sip_responder_sdp_media_type;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_duration Int64 after sip_responder_sdp_content;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS sip_bye String after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_payload_type_c2s Nullable(Int64) after sip_duration;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_payload_type_s2c Nullable(Int64) after rtp_payload_type_c2s;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_pcap_path String after rtp_payload_type_s2c;
+
+ALTER TABLE tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query ADD COLUMN IF NOT EXISTS rtp_originator_dir Int64 after rtp_pcap_path;
 
