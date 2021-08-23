@@ -1,0 +1,55 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "traffic_top_destination_ip_metrics_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "sketch_start_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	  "common_sled_ip",
+	  "destination_ip",
+	  "common_data_center",
+	  "attack_type",
+	  { "type": "long", "name": "partition_num" }
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+	{ "type" : "longSum", "name" : "session_rate","fieldName" : "session_rate"},
+        { "type" : "longSum", "name" : "packet_rate", "fieldName" : "packet_rate" },
+        { "type" : "longSum", "name" : "bit_rate", "fieldName" : "bit_rate" },
+	{ "type" : "HLLSketchBuild", "name" : "ip_object", "fieldName" : "common_client_ip" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT10M", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{
+      "transforms":[]
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "resetOffsetAutomatically": true,
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "TRAFFIC-TOP-DESTINATION-IP-METRICS-LOG",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "192.168.44.12:9092"
+    }
+  }
+}

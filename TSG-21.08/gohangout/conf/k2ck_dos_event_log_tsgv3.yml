@@ -1,0 +1,29 @@
+inputs:
+    - Kafka:
+        topic:
+            DOS-EVENT-LOG: 1
+        #assign:
+        #  weblog: [0,9]
+        codec: json
+        consumer_settings:
+            bootstrap.servers: "ip:9092"
+            group.id: gohangout_dos_event_log_tsgv3_1
+            max.partition.fetch.bytes: '10485760'
+            auto.commit.interval.ms: '5000'
+            # from.beginning: 'true'
+            # sasl.mechanism: PLAIN
+            # sasl.user: admin
+            # sasl.password: admin-secret
+
+outputs:
+    - Clickhouse:
+        table: 'tsg_galaxy_v3.dos_event_log_local'
+        username: 'default'
+        password: 'ceiec2019'
+        conn_max_life_time: 60
+        hosts:
+        - 'tcp://ip:9001'
+        bulk_actions: 100000
+        flush_interval: 10
+        concurrent: 2
+        conn_max_life_time: 60
