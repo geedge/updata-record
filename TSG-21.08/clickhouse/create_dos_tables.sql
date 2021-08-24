@@ -1,5 +1,4 @@
 
-
 CREATE TABLE tsg_galaxy_v3.dos_event_log_local on cluster ck_cluster(
 log_id UInt64,
  start_time Int64,
