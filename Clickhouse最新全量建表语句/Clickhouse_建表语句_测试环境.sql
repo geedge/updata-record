@@ -1,6 +1,55 @@
 create database IF NOT EXISTS tsg_galaxy_v3 on cluster ck_cluster;
 create database IF NOT EXISTS tsg_galaxy_v3 on cluster ck_query;
 
+CREATE TABLE tsg_galaxy_v3.dos_event_log_local on cluster ck_cluster(
+log_id UInt64,
+ start_time Int64,
+ end_time Int64,
+ attack_type String,
+ severity String,
+ conditions String,
+ destination_ip String,
+ destination_country String,
+ source_ip_list String,
+ source_country_list String,
+ session_rate Int64,
+ packet_rate Int64,
+ bit_rate Int64
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) ORDER BY (log_id, start_time, destination_ip) SETTINGS index_granularity = 8192;
+
+
+CREATE TABLE tsg_galaxy_v3.dos_event_log on cluster ck_cluster(
+ log_id UInt64,
+ start_time Int64,
+ end_time Int64,
+ attack_type String,
+ severity String,
+ conditions String,
+ destination_ip String,
+ destination_country String,
+ source_ip_list String,
+ source_country_list String,
+ session_rate Int64,
+ packet_rate Int64,
+ bit_rate Int64
+) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_log_local', rand());
+
+CREATE TABLE tsg_galaxy_v3.dos_event_log on cluster ck_query(
+ log_id UInt64,
+ start_time Int64,
+ end_time Int64,
+ attack_type String,
+ severity String,
+ conditions String,
+ destination_ip String,
+ destination_country String,
+ source_ip_list String,
+ source_country_list String,
+ session_rate Int64,
+ packet_rate Int64,
+ bit_rate Int64
+) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_log_local', rand());
+
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log_local on cluster ck_cluster(
 	common_recv_time Int64,
@@ -70,6 +119,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log_local on cluster ck_clu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -164,6 +215,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log on cluster ck_cluster(
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -254,6 +307,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log on cluster ck_query(
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -278,7 +333,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log on cluster ck_query(
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log_local on cluster ck_cluster(
-		common_recv_time Int64,
+	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
 	common_direction Nullable(Int64),
@@ -303,7 +358,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log_local on cluste
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -312,17 +367,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log_local on cluste
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -345,8 +400,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log_local on cluste
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -475,7 +532,7 @@ ORDER BY (common_log_id,common_data_center,common_recv_time);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local on cluster ck_cluster(
-		common_recv_time Int64,
+	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
 	common_direction Nullable(Int64),
@@ -500,7 +557,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local on cluster
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -509,17 +566,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local on cluster
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -542,8 +599,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local on cluster
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -611,6 +670,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local on cluster
 	sip_responder_sdp_content String,
 	sip_duration Int64,
 	sip_bye String
+
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_stream_trace_id,common_data_center,common_recv_time);
@@ -643,7 +703,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_q
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -652,17 +712,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_q
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -685,8 +745,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_q
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -812,7 +874,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_q
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,live_session_record_log_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_cluster(
-		common_recv_time Int64,
+	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
 	common_direction Nullable(Int64),
@@ -837,7 +899,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_c
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -846,17 +908,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_c
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -879,8 +941,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log on cluster ck_c
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1032,7 +1096,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_qu
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -1041,17 +1105,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_qu
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -1074,8 +1138,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_qu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1171,7 +1237,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_cl
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -1180,17 +1246,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_cl
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -1213,8 +1279,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log on cluster ck_cl
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1355,6 +1423,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log_local on cluster ck_clu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -1454,6 +1524,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log on cluster ck_query(
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -1553,6 +1625,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log on cluster ck_cluster(
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -1652,6 +1726,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log_local on cluster
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -1740,6 +1816,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_log_local on cluster ck_
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -1936,6 +2014,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_log_local on cluster ck_clu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -2006,7 +2086,7 @@ ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (c
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local on cluster ck_cluster(
-		common_recv_time Int64,
+	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
 	common_direction Nullable(Int64),
@@ -2031,7 +2111,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local on cluster 
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -2040,17 +2120,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local on cluster 
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -2073,8 +2153,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local on cluster 
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2269,6 +2351,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_log_local on cluster ck_c
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -2313,8 +2397,6 @@ ORDER BY (common_log_id,common_data_center,common_recv_time);
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip_local on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -2322,7 +2404,12 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip_
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_client_ip,common_server_ip,common_recv_time);
@@ -2331,8 +2418,6 @@ ORDER BY (common_client_ip,common_server_ip,common_recv_time);
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip_local on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -2340,36 +2425,20 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip_
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_server_ip,common_client_ip,common_recv_time);
 
 
-
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_subscriber_id_local on cluster ck_cluster (
-	common_log_id UInt64,
-	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
-	common_server_ip String,
-	common_client_ip String,
-	common_sled_ip String,
-	common_entrance_id Int64,
-	common_subscriber_id String,
-	common_stream_trace_id UInt64,
-	http_domain String,
-	ssl_sni  String
-)
-ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_subscriber_id,common_recv_time);
-
-
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain_local on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -2377,19 +2446,20 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain_local
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (http_domain,common_recv_time);
 
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip  on cluster ck_cluster TO tsg_galaxy_v3.connection_record_log_common_client_ip_local  AS SELECT common_log_id, common_recv_time, common_policy_id, common_action, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni FROM tsg_galaxy_v3.connection_record_log_local;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip  on cluster ck_cluster TO tsg_galaxy_v3.connection_record_log_common_server_ip_local  AS SELECT common_log_id, common_recv_time, common_policy_id, common_action, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni FROM tsg_galaxy_v3.connection_record_log_local;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_subscriber_id  on cluster ck_cluster TO tsg_galaxy_v3.connection_record_log_common_subscriber_id_local  AS SELECT common_log_id, common_recv_time, common_policy_id, common_action, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni FROM tsg_galaxy_v3.connection_record_log_local;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain  on cluster ck_cluster TO tsg_galaxy_v3.connection_record_log_http_domain_local  AS SELECT common_log_id, common_recv_time, common_policy_id, common_action, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni FROM tsg_galaxy_v3.connection_record_log_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
 
 
 
@@ -2473,6 +2543,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log on cluster ck_query (
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -2538,7 +2610,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_que
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -2547,17 +2619,17 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_que
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -2580,8 +2652,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_que
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2774,6 +2848,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log on cluster ck_query (
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -2909,6 +2985,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event_log on cluster ck_query 
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3103,6 +3181,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log on cluster ck_qu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3201,6 +3281,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log on cluster ck_cluster
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3266,7 +3348,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_clu
 	common_client_ip String,
 	common_internal_ip String,
 	common_client_port Int64,
-	common_client_location String,
+	common_client_location LowCardinality(String),
 	common_client_asn String,
 	common_subscriber_id String,
 	common_imei String,
@@ -3275,17 +3357,17 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_clu
 	common_server_ip String,
 	common_external_ip String,
 	common_server_port Int64,
-	common_server_location String,
+	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
 	common_userdefine_app_name String,
-	common_app_label String,
+	common_app_label LowCardinality(String),
 	common_app_surrogate_id String,
-	common_l7_protocol String,
+	common_l7_protocol LowCardinality(String),
 	common_protocol_label String,
 	common_service_category Array(Int64),
 	common_service Int64,
-	common_l4_protocol String,
+	common_l4_protocol LowCardinality(String),
 	common_sessions Int64,
 	common_c2s_pkt_num Int64,
 	common_s2c_pkt_num Int64,
@@ -3308,8 +3390,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log on cluster ck_clu
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
-	common_schema_type String,
+	common_schema_type LowCardinality(String),
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3502,6 +3586,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log on cluster ck_cluster (
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3637,6 +3723,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event_log on cluster ck_cluste
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3831,6 +3919,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log on cluster ck_cl
 	common_first_ttl Int64,
 	common_tcp_client_isn Int64,
 	common_tcp_server_isn Int64,
+	common_mirrored_pkts Int64,
+	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
 	common_device_tag String,
@@ -3872,8 +3962,6 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3881,14 +3969,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip 
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_client_ip_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3896,32 +3987,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip 
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_server_ip_local,rand());
-
-
-
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_subscriber_id on cluster ck_cluster (
-	common_log_id UInt64,
-	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
-	common_server_ip String,
-	common_client_ip String,
-	common_sled_ip String,
-	common_entrance_id Int64,
-	common_subscriber_id String,
-	common_stream_trace_id UInt64,
-	http_domain String,
-	ssl_sni  String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_subscriber_id_local,rand());
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3929,14 +4006,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain on cl
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_http_domain_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip on cluster ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3944,14 +4024,17 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip 
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_client_ip_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip on cluster ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3959,32 +4042,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip 
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_server_ip_local,rand());
-
-
-
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_subscriber_id on cluster ck_query (
-	common_log_id UInt64,
-	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
-	common_server_ip String,
-	common_client_ip String,
-	common_sled_ip String,
-	common_entrance_id Int64,
-	common_subscriber_id String,
-	common_stream_trace_id UInt64,
-	http_domain String,
-	ssl_sni  String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_subscriber_id_local,rand());
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain on cluster ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
-	common_policy_id Int64,
-	common_action Int64,
 	common_server_ip String,
 	common_client_ip String,
 	common_sled_ip String,
@@ -3992,7 +4061,12 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain on cl
 	common_subscriber_id String,
 	common_stream_trace_id UInt64,
 	http_domain String,
-	ssl_sni  String
+	ssl_sni  String,
+	common_schema_type LowCardinality(String),
+	common_client_port Int64,
+	common_server_port Int64,
+	common_app_label LowCardinality(String),
+	common_direction Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_http_domain_local,rand());
 
 
