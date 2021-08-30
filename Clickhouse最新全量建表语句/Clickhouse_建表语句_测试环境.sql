@@ -1,7 +1,7 @@
 create database IF NOT EXISTS tsg_galaxy_v3 on cluster ck_cluster;
 create database IF NOT EXISTS tsg_galaxy_v3 on cluster ck_query;
 
-CREATE TABLE tsg_galaxy_v3.dos_event_log_local on cluster ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log_local on cluster ck_cluster(
 log_id UInt64,
  start_time Int64,
  end_time Int64,
@@ -18,7 +18,7 @@ log_id UInt64,
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) ORDER BY (log_id, start_time, destination_ip) SETTINGS index_granularity = 8192;
 
 
-CREATE TABLE tsg_galaxy_v3.dos_event_log on cluster ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log on cluster ck_cluster(
  log_id UInt64,
  start_time Int64,
  end_time Int64,
@@ -34,7 +34,7 @@ CREATE TABLE tsg_galaxy_v3.dos_event_log on cluster ck_cluster(
  bit_rate Int64
 ) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_log_local', rand());
 
-CREATE TABLE tsg_galaxy_v3.dos_event_log on cluster ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log on cluster ck_query(
  log_id UInt64,
  start_time Int64,
  end_time Int64,
