@@ -1871,15 +1871,6 @@ create table IF NOT EXISTS tsg_galaxy_dll.radius_onff_log on cluster ck_cluster(
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_dll,radius_onff_log_local,rand());
 
-
-
- create table IF NOT EXISTS `system`.tables_cluster on cluster ck_query as `system`.tables  ENGINE =Distributed(ck_all,`system`,tables,rand());
- create table IF NOT EXISTS `system`.disks_cluster on cluster ck_query as `system`.disks  ENGINE =Distributed(ck_all,`system`,disks,rand());
- create table IF NOT EXISTS `system`.parts_cluster on cluster ck_query as `system`.parts  ENGINE =Distributed(ck_all,`system`,parts,rand());
- create table IF NOT EXISTS `system`.query_log_cluster on cluster ck_query as `system`.query_log  ENGINE =Distributed(ck_all,`system`,query_log,rand());
- CREATE TABLE IF NOT EXISTS `system`.columns_cluster ON cluster ck_query AS `system`.columns ENGINE=Distributed(ck_all,`system`,columns,rand());
- 
-  
 CREATE TABLE IF NOT EXISTS tsg_galaxy_dll.connection_record_log_common_client_ip on cluster ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
