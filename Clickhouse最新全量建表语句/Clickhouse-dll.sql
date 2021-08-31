@@ -5,7 +5,7 @@ create database IF NOT EXISTS tsg_galaxy_dll ON CLUSTER ck_query;
 CREATE DICTIONARY IF NOT EXISTS tsg_galaxy_dll.cdn on cluster ck_cluster (
 cdn_id UInt64,
  domain String,
- cname String) PRIMARY KEY cdn_id SOURCE(MYSQL(PORT 3306 USER 'root' PASSWORD 'bifang!@#' REPLICA (HOST '192.168.44.71' PRIORITY 1) DB 'tsg-bifang' TABLE 'tsg_cdn_domain_info')) LIFETIME(MIN 300 MAX 400) LAYOUT(FLAT());
+ cname String) PRIMARY KEY cdn_id SOURCE(MYSQL(PORT 3306 USER 'root' PASSWORD 'bifang!@#' REPLICA (HOST '{{ bifang_host }}' PRIORITY 1) DB 'tsg-bifang' TABLE 'tsg_cdn_domain_info')) LIFETIME(MIN 300 MAX 400) LAYOUT(FLAT());
 
  create table IF NOT EXISTS tsg_galaxy_dll.cdn_dic on cluster ck_cluster (`cdn_id` UInt64,
  `domain` String,
