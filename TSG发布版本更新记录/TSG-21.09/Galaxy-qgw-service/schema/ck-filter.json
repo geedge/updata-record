@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "name": "ClickHouse-Raw",
+  "namespace": "ClickHouse",
+  "filters": [
+    {
+      "name":"@start",
+      "value": "'2021-06-06 11:00:00'"
+    },
+    {
+      "name":"@end",
+      "value": "'2021-06-06 12:00:00'"
+    },
+    {
+      "name":"@common_filter",
+      "value": [
+        "common_log_id=296041175962310656",
+        "common_client_ip='39.144.200.172'",
+        "common_internal_ip='39.144.200.172'",
+        "common_server_ip='119.29.29.29'",
+        "common_external_ip='119.29.29.29'",
+        "common_client_port=27579",
+        "common_server_port=80",
+        "common_c2s_pkt_num>5",
+        "common_s2c_pkt_num>5",
+        "common_c2s_byte_num>100",
+        "common_s2c_byte_num<200",
+        "common_schema_type='DNS'",
+        "common_establish_latency_ms>200",
+        "common_con_duration_ms>10000",
+        "common_stream_trace_id=29320301981854648",
+        "common_tcp_client_isn=0",
+        "common_tcp_server_isn=2558591239",
+        "http_domain='qq.com'",
+        "mail_account='beitun'",
+        "mail_subject='乌鲁木齐IC卡系统提醒:站点状态有变动测试  (自动邮件)'",
+        "dns_qname='sdfp.snssdk.com'",
+        "ssl_sni='nlp.map.qq.com'",
+        "ssl_con_latency_ms>100",
+        "ssl_ja3_hash='9b02ebd3a43b62d825e1ac605b621dc8'",
+        "common_client_ip='39.144.200.172' and common_server_ip='119.29.29.29'",
+        "common_server_ip='119.29.29.29' and common_server_port=80",
+        "mail_account like 'abc@%'",
+        "http_domain like '%baidu.com%'",
+        "ssl_sni like '%qq.com'",
+        "common_client_ip in ('39.144.200.172','117.146.25.170')",
+        "common_server_port not in (80,443)",
+        "notEmpty(http_domain)",
+        "http_domain not like '%qq.com'"
+      ]
+    },
+    {
+        "name":"@index_filter",
+        "value": [
+          "common_log_id=1153021139190754263",
+          "common_client_ip='223.116.144.70'",
+          "common_server_ip='8.8.8.8'",
+          "common_sled_ip='%192.168%'",
+          "common_stream_trace_id=274722500909265827",
+          "http_domain='qq.com'",
+          "ssl_sni='httpdns.push.heytapmobi.com'",
+          "common_subscriber_id='%test%'",
+          "http_domain like '%baidu.com%'",
+          "ssl_sni like '%qq.com'",
+          "common_client_ip in ('221.181.49.180','223.115.225.203')",
+          "notEmpty(http_domain)",
+          "http_domain not like '%apmobi.com'"
+        ]
+    }
+  ]
+}
