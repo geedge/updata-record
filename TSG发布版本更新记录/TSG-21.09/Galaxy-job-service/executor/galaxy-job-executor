@@ -1,0 +1,67 @@
+################################静态参数配置(修改后需要重启项目)################################
+### web port
+server.port = 8182
+spring.application.name=galaxy-job-executor
+### actuator
+management.server.servlet.context-path=/actuator
+management.health.mail.enabled=false
+management.endpoints.web.exposure.include=*
+#详细的应用健康信息
+management.endpoint.health.show-details=always
+management.endpoint.metrics.enabled=true
+management.endpoint.prometheus.enabled=true
+management.metrics.export.prometheus.enabled=true
+management.metrics.tags.application=${spring.application.name}
+zookeeper.server=192.168.44.12:2181
+
+################################动态参数配置(修改后不需要重启项目)################################
+##存储配额文件服务器
+#storge.files.hos-server=Nur-sultan|192.168.44.12:9098,Aktau|,Aktubinsk|,Almaty|,Atyrau|,Karaganda|,Kokshetau|,Kostanay|,Kyzylorda|,Pavlodar|,Semey|,Shymkent|,Taldykurgan|,Taraz|,Uralsk|,Ust-Kamenogorsk|,Zhezkazgan|
+storge.files.hos-server=XXG|192.168.44.12:9098
+storge.files.token=c21f969b5f03d33d43e04f8f136e7682
+##存储配额查询druid
+storge.analytic.server=XXG|192.168.44.12:8089
+##存储配额查询clickhouse
+storge.traffic.server=XXG|192.168.44.12:8124
+storge.traffic.datasource=tsg_galaxy_v3
+storge.traffic.username=default
+storge.traffic.password=ceiec2019
+#删除ttl
+storge.traffic.system.parts=system.parts
+#存储配额查询
+storge.traffic.system.partsclusters=system.parts_cluster
+storge.traffic.system.disks=system.disks_cluster
+storge.traffic.system.tables=system.tables
+storge.traffic.system.clusters=system.clusters
+#删除ttl白名单,多个逗号分隔
+storge.files.delete.exclusion=
+storge.analytic.delete.exclusion=traffic_metrics_log
+storge.taffic.delete.exclusion=
+### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl.job.admin.addresses=http://192.168.44.12:8181/xxl-job-admin
+
+### xxl-job, access token
+xxl.job.accessToken=
+### xxl-job executor registry-address: default use address to registry , otherwise use ip:po
+xxl.job.executor.appname=galaxy-executor
+### xxl-job executor registry-address: default use address to registry , otherwise use ip:port if address is null
+xxl.job.executor.address=
+### xxl-job executor server-info
+xxl.job.executor.ip=
+xxl.job.executor.port=8886
+### xxl-job executor log-path
+xxl.job.executor.logpath=/data/logs/jobhandler
+### xxl-job executor log-retention-days
+xxl.job.executor.logretentiondays=30
+## http pool config
+### max connection number
+http.pool.max.connection=500
+http.pool.request.timeout=120000
+http.pool.response.timeout=120000
+http.pool.max.per.route=300
+http.pool.connect.timeout=10000
+##指定kafka server的地址，集群配多个，中间，逗号隔开
+spring.kafka.bootstrap-servers=192.168.44.12:9092
+spring.kafka.ssl.enable=true
+spring.kafka.ssl.username=admin
+spring.kafka.ssl.pin=galaxy2019
