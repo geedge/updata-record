@@ -1,0 +1,3 @@
+alter table tsg_galaxy_v3.session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
+alter table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
+alter table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;

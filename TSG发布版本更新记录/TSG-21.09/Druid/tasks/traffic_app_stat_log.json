@@ -1,0 +1,63 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "traffic_app_stat_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "common_recv_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	  "app_name",
+	  "sub_app_name"
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+	{ "type" : "longSum", "name" : "session_num","fieldName" : "common_sessions"},
+        { "type" : "longSum", "name" : "c2s_pkt_num", "fieldName" : "common_c2s_pkt_num" },
+        { "type" : "longSum", "name" : "s2c_pkt_num", "fieldName" : "common_s2c_pkt_num" },
+        { "type" : "longSum", "name" : "c2s_byte_num", "fieldName" : "common_c2s_byte_num" },
+        { "type" : "longSum", "name" : "s2c_byte_num", "fieldName" : "common_s2c_byte_num" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT5M", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{
+      "transforms":[
+        {"type": "expression", "name": "app_name", "expression": "array_ordinal(string_to_array(replace(common_app_label, '.', '/'),'/'),1)"},
+        {"type": "expression", "name": "sub_app_name", "expression": "array_ordinal(string_to_array(replace(common_app_label, '.', '/'),'/'),2)"}
+      ],
+      "filter": {
+        "type": "not",
+        "field":{ "type": "selector", "dimension": "app_name", "value": "" }
+      }
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "SESSION-RECORD-COMPLETED",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "earlyMessageRejectionPeriod": "PT6H",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}

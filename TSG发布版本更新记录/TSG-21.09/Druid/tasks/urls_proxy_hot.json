@@ -1,0 +1,61 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "proxy_event_urls_hot_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "common_recv_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	   "url"
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+        { "type" : "count", "name" : "session_num" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT5M", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{
+      "transforms":[
+        {
+         "type": "expression",
+         "name": "url",
+         "expression": "http_url"
+        }
+      ],
+      "filter": {
+        "type": "not",
+        "field":{ "type": "selector", "dimension": "url", "value": "" }
+      }
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "PROXY-EVENT-COMPLETED",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}

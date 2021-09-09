@@ -1,0 +1,17 @@
+proxy_event_hits_log.json
+security_event_hits_log.json
+sys_storage_log.json
+top_client_ip_log.json
+top_external_host_log.json
+top_internal_host_log.json
+top_server_ip_log.json
+top_urls_log.json
+top_user_log.json
+top_website_domain_log.json
+traffic_metrics_log.json
+traffic_protocol_stat_log.json
+traffic_summary_log.json
+traffic_top_destination_ip_metrics_log.json
+urls_proxy_hot.json
+urls_security_hot.json
+traffic_app_stat_log.json

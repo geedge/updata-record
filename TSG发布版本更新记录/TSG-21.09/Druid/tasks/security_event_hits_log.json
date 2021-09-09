@@ -1,0 +1,76 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "security_event_hits_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "common_recv_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	   { "name": "policy_id", "type": "long" },
+	   "isp",
+	   { "name": "entrance_id", "type": "long" },
+	   { "name": "action", "type": "long" }
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+        { "type" : "count", "name" : "hits" },
+	{ "type" : "longSum", "name" : "c2s_byte_num", "fieldName" : "common_c2s_byte_num" },
+        { "type" : "longSum", "name" : "s2c_byte_num", "fieldName" : "common_s2c_byte_num" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT1M", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{
+      "transforms":[
+        {
+         "type": "expression",
+         "name": "policy_id",
+         "expression": "common_policy_id"
+        },
+        {
+         "type": "expression",
+         "name": "isp",
+         "expression": "common_isp"
+        },
+        {
+         "type": "expression",
+         "name": "entrance_id",
+         "expression": "common_entrance_id"
+        },
+        {
+         "type": "expression",
+         "name": "action",
+         "expression": "common_action"
+        }
+      ]
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "SECURITY-EVENT-COMPLETED",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}
