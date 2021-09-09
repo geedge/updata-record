@@ -1,0 +1,1 @@
+create 'dos:ddos_traffic_baselines', 'TCP SYN Flood','UDP Flood','ICMP Flood', 'DNS Amplification'
