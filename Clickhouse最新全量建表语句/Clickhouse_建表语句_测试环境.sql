@@ -1,7 +1,7 @@
 create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_cluster;
 create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_query;
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local ON CLUSTER ck_cluster(
 log_id UInt64,
  start_time Int64,
  end_time Int64,
@@ -18,7 +18,7 @@ log_id UInt64,
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) ORDER BY (log_id, start_time, destination_ip) SETTINGS index_granularity = 8192;
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_cluster(
  log_id UInt64,
  start_time Int64,
  end_time Int64,
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log ON CLUSTER ck_cluster(
  session_rate Int64,
  packet_rate Int64,
  bit_rate Int64
-) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_log_local', rand());
+) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_local', rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_query(
  log_id UInt64,
  start_time Int64,
  end_time Int64,
@@ -48,10 +48,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_log ON CLUSTER ck_query(
  session_rate Int64,
  packet_rate Int64,
  bit_rate Int64
-) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_log_local', rand());
+) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_local', rand());
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -147,7 +147,7 @@ ORDER BY (common_log_id,common_data_center,common_recv_time);
 
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
 		common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -237,9 +237,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log ON CLUSTER ck_cluster(
 	gtp_msg_type String,
 	gtp_end_user_ipv4 String,
 	gtp_end_user_ipv6 String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,gtpc_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,gtpc_record_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_query(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -329,10 +329,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_log ON CLUSTER ck_query(
 	gtp_msg_type String,
 	gtp_end_user_ipv4 String,
 	gtp_end_user_ipv6 String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,gtpc_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,gtpc_record_local,rand());
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -531,7 +531,7 @@ ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -677,7 +677,7 @@ ORDER BY (common_stream_trace_id,common_data_center,common_recv_time);
 
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_query(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -871,9 +871,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log ON CLUSTER ck_q
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,live_session_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1067,10 +1067,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.live_session_record_log ON CLUSTER ck_c
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,live_session_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1209,9 +1209,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log ON CLUSTER ck_qu
 	sip_responder_sdp_content String,
 	sip_duration Int64,
 	sip_bye String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1350,12 +1350,12 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_log ON CLUSTER ck_cl
 	sip_responder_sdp_content String,
 	sip_duration Int64,
 	sip_bye String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_local,rand());
 
 
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1456,7 +1456,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log_local ON CLUSTER ck_clu
 	rtp_originator_dir Int64
 )ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_data_center,common_recv_time);
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1555,9 +1555,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log ON CLUSTER ck_query(
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,voip_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,voip_record_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1656,9 +1656,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_log ON CLUSTER ck_cluster(
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,voip_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,voip_record_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1748,7 +1748,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log_local ON CLUSTER
 ENGINE =MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -1946,7 +1946,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_log_local ON CLUSTER ck_
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2085,7 +2085,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_log_local ON CLUSTER ck_clu
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2283,7 +2283,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_local ON CLUSTER 
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_log_local ON CLUSTER ck_cluster (
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_cluster (
 		common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2394,7 +2394,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_log_local ON CLUSTER ck_c
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip_local ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -2415,7 +2415,7 @@ ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_client_ip,common_server_ip,common_recv_time);
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip_local ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -2436,7 +2436,7 @@ ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_server_ip,common_client_ip,common_recv_time);
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain_local ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -2457,9 +2457,9 @@ ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (http_domain,common_recv_time);
 
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.connection_record_log_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.connection_record_log_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
 
 
 
@@ -2475,7 +2475,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_onff_log_local ON CLUSTER ck_clu
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(event_timestamp))
 ORDER BY (account,event_timestamp);
 
-create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log ON CLUSTER ck_query (
+create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2582,9 +2582,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log ON CLUSTER ck_query (
 	radius_acct_session_time Int64,
 	radius_acct_link_count Int64,
 	radius_acct_interim_interval Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log ON CLUSTER ck_query (
+create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2778,9 +2778,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log ON CLUSTER ck_que
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_query (
+create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -2915,9 +2915,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_query (
 	doh_cname String,
 	doh_sub Int64,
 	doh_rr String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.security_event_log ON CLUSTER ck_query (
+create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3111,9 +3111,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event_log ON CLUSTER ck_query 
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log ON CLUSTER ck_query (
+create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_query (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3199,7 +3199,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log ON CLUSTER ck_qu
 	packet_url String,
 	pcap_storage_task_id Int64,
 	pcap_storage_duration Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,sys_packet_capture_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,sys_packet_capture_event_local,rand());
 	
 
 create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_query(
@@ -3213,7 +3213,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_query(
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
 
 
-create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log ON CLUSTER ck_cluster (
+create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3320,9 +3320,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record_log ON CLUSTER ck_cluster
 	radius_acct_session_time Int64,
 	radius_acct_link_count Int64,
 	radius_acct_interim_interval Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log ON CLUSTER ck_cluster (
+create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3516,9 +3516,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.connection_record_log ON CLUSTER ck_clu
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_cluster (
+create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3653,9 +3653,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event_log ON CLUSTER ck_cluster (
 	doh_cname String,
 	doh_sub Int64,
 	doh_rr String
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluster (
+create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3849,9 +3849,9 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event_log ON CLUSTER ck_cluste
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log ON CLUSTER ck_cluster (
+create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_cluster (
 	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
@@ -3937,7 +3937,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_log ON CLUSTER ck_cl
 	packet_url String,
 	pcap_storage_task_id Int64,
 	pcap_storage_duration Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,sys_packet_capture_log_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,sys_packet_capture_event_local,rand());
 
 
 create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_cluster(
@@ -3959,7 +3959,7 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
  CREATE TABLE IF NOT EXISTS `system`.columns_cluster ON CLUSTER ck_query AS `system`.columns ENGINE=Distributed(ck_all,`system`,columns,rand());
  
   
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -3975,9 +3975,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip 
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_client_ip_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -3993,10 +3993,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip 
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_server_ip_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER ck_cluster(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -4012,9 +4012,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain ON CL
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_http_domain_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUSTER ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -4030,9 +4030,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_client_ip 
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_client_ip_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUSTER ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -4048,10 +4048,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_common_server_ip 
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_common_server_ip_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain ON CLUSTER ck_query(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER ck_query(
 	common_log_id UInt64,
 	common_recv_time Int64,
 	common_server_ip String,
@@ -4067,11 +4067,11 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.connection_record_log_http_domain ON CL
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
 	common_direction Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,connection_record_log_http_domain_local,rand());
+) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
 
 
-CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.active_defence_event_log_local ON CLUSTER ck_cluster(
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.active_defence_event_local ON CLUSTER ck_cluster(
 common_log_id UInt64,
 common_recv_time Int64,
 common_entrance_id Int64,
@@ -4099,7 +4099,7 @@ ad_generate_time Int64
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
-create table IF NOT EXISTS tsg_galaxy_v3.active_defence_event_log ON CLUSTER ck_query(
+create table IF NOT EXISTS tsg_galaxy_v3.active_defence_event ON CLUSTER ck_query(
 common_log_id UInt64,
 common_recv_time Int64,
 common_entrance_id Int64,
@@ -4125,9 +4125,9 @@ ad_cc_established_connection_num Int64,
 ad_cc_rejected_connection_num Int64,
 ad_generate_time Int64
 )
-ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,active_defence_event_log_local,rand());
+ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,active_defence_event_local,rand());
 
-create table IF NOT EXISTS tsg_galaxy_v3.active_defence_event_log ON CLUSTER ck_cluster(
+create table IF NOT EXISTS tsg_galaxy_v3.active_defence_event ON CLUSTER ck_cluster(
 common_log_id UInt64,
 common_recv_time Int64,
 common_entrance_id Int64,
@@ -4153,7 +4153,7 @@ ad_cc_established_connection_num Int64,
 ad_cc_rejected_connection_num Int64,
 ad_generate_time Int64
 )
-ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,active_defence_event_log_local,rand());
+ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,active_defence_event_local,rand());
 
 alter table tsg_galaxy_v3.session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
 alter table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
