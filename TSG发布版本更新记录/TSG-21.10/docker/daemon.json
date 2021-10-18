@@ -1,0 +1,13 @@
+{
+    "insecure-registries": [
+        "10.16.43.130:5080",
+        "192.168.40.153:9080"
+    ],
+    "registry-mirrors":[
+        "https://d8b3zdiw.mirror.aliyuncs.com"
+    ],
+    "data-root": "/data/docker",
+    "log-driver":"json-file",
+    "log-opts":{ "max-size":"50m","max-file":"2"}
+}
+
