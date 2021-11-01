@@ -533,7 +533,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -888,8 +899,19 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
+	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cluster(
 	common_recv_time Int64,
@@ -1089,8 +1111,19 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
+	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
@@ -1983,8 +2016,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
-	
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String	
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
@@ -2330,7 +2373,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -2836,7 +2890,18 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
@@ -3179,8 +3244,19 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
+	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_query (
 	common_recv_time Int64,
@@ -3591,7 +3667,18 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
@@ -3934,8 +4021,19 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
-	rtp_originator_dir Int64
-) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
+	rtp_originator_dir Int64,
+	ssh_version String,
+	ssh_auth_success String,
+	ssh_client_version String,
+	ssh_server_version String,
+	ssh_cipher_alg String,
+	ssh_mac_alg String,
+	ssh_compression_alg String,
+	ssh_kex_alg String,
+	ssh_host_key_alg String,
+	ssh_host_key String,
+	ssh_hassh String
+	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_cluster (
 	common_recv_time Int64,
