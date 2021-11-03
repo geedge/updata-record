@@ -1,0 +1,4 @@
+create_namespace 'tsg_galaxy'
+
+
+create 'tsg_galaxy:relation_account_framedip', {NAME => 'radius', VERSIONS => 1}
