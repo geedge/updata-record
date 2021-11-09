@@ -1,0 +1,76 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "traffic_summary_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "common_recv_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	   "isp",
+	   "data_center",
+           "schema_type",
+	   "device_group",
+           { "name": "entrance_id", "type": "long" }
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+	{ "type" : "HLLSketchBuild", "name" : "ip_object", "fieldName" : "common_client_ip" },
+        { "type" : "longSum", "name" : "sessions", "fieldName" : "common_sessions" },
+        { "type" : "longSum", "name" : "c2s_pkt_num", "fieldName" : "common_c2s_pkt_num" },
+        { "type" : "longSum", "name" : "s2c_pkt_num", "fieldName" : "common_s2c_pkt_num" },
+        { "type" : "longSum", "name" : "c2s_byte_num", "fieldName" : "common_c2s_byte_num" },
+        { "type" : "longSum", "name" : "s2c_byte_num", "fieldName" : "common_s2c_byte_num" },
+        { "type" : "longSum", "name" : "one_sided_connections", "fieldName" : "one_sided_connections" },
+        { "type" : "longSum", "name" : "uncategorized_bytes", "fieldName" : "uncategorized_bytes" },
+        { "type" : "longSum", "name" : "fragmentation_packets", "fieldName" : "fragmentation_packets" },
+        { "type" : "longSum", "name" : "sequence_gap_loss", "fieldName" : "sequence_gap_loss" },
+        { "type" : "longSum", "name" : "unorder_packets", "fieldName" : "unorder_packets" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT15S", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{
+      "transforms":[
+        {"type": "expression","name": "isp","expression": "common_isp"},
+        {"type": "expression","name": "device_group","expression": "common_device_group"},
+        {"type": "expression","name": "data_center","expression": "common_data_center"},
+        {"type": "expression","name": "entrance_id","expression": "common_entrance_id"},
+        {"type": "expression","name": "schema_type","expression": "common_schema_type"},
+	{"type": "expression", "name": "one_sided_connections", "expression": "if(common_stream_dir!=3,common_sessions,0)"},
+        {"type": "expression", "name": "uncategorized_bytes", "expression": "if(\"common_l7_protocol\"=='UNCATEGORIZED',\"common_c2s_byte_num\"+\"common_s2c_byte_num\",0)"},
+        {"type": "expression","name": "fragmentation_packets","expression": "\"common_c2s_ipfrag_num\"+\"common_s2c_ipfrag_num\""},
+        {"type": "expression","name": "sequence_gap_loss","expression": "\"common_c2s_tcp_lostlen\"+\"common_s2c_tcp_lostlen\""},
+        {"type": "expression","name": "unorder_packets","expression": "\"common_c2s_tcp_unorder_num\"+\"common_s2c_tcp_unorder_num\""}
+      ]
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 20000000,
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "SESSION-RECORD-COMPLETED",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}

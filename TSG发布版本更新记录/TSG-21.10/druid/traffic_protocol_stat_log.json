@@ -1,0 +1,66 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "traffic_protocol_stat_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "stat_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+            "protocol_id",
+            "isp",
+	    "data_center",
+	    "device_group",
+            {
+              "name": "entrance_id",
+              "type": "long"
+            }
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+      { "type" : "longSum", "name" : "sessions", "fieldName" : "sessions" },
+      { "type" : "longSum", "name" : "c2s_pkt_num", "fieldName" : "c2s_pkt_num" },
+      { "type" : "longSum", "name" : "s2c_pkt_num", "fieldName" : "s2c_pkt_num" },
+      { "type" : "longSum", "name" : "c2s_byte_num", "fieldName" : "c2s_byte_num" },
+      { "type" : "longSum", "name" : "s2c_byte_num", "fieldName" : "s2c_byte_num" },
+      { "type" : "longSum", "name" : "c2s_ipfrag_num", "fieldName" : "c2s_ipfrag_num" },
+      { "type" : "longSum", "name" : "s2c_ipfrag_num", "fieldName" : "s2c_ipfrag_num" },
+      { "type" : "longSum", "name" : "c2s_tcp_lostlen", "fieldName" : "c2s_tcp_lostlen" },
+      { "type" : "longSum", "name" : "s2c_tcp_lostlen", "fieldName" : "s2c_tcp_lostlen" },
+      { "type" : "longSum", "name" : "c2s_tcp_unorder_num", "fieldName" : "c2s_tcp_unorder_num" },
+      { "type" : "longSum", "name" : "s2c_tcp_unorder_num", "fieldName" : "s2c_tcp_unorder_num" }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT15S", "timeZone": "Asia/Hong_Kong"},
+      "rollup": true
+    },
+    "transformSpec" :{}
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000,
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "TRAFFIC-PROTOCOL-STAT",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}
