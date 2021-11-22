@@ -1,0 +1,29 @@
+21.11更新记录
+
+hbase
+1.Phoenix集成，hbase新增表tsg_galaxy:relation_account_framedip，tsg_galaxy:relation_framedip_account
+2.Phoenix创建视图tsg"."report_result，tsg_galaxy"."relation_account_framedip
+
+ck
+1.新增字段
+
+exporter
+1. zk ,ck ,kafka,node-exporter
+
+预处理
+
+1.更新jar包及配置
+2.新增了subid任务
+
+网关
+更新镜像，schema
+
+调度任务
+1.更新了任务，sql执行器url添加/，更新了压缩任务
+
+flink
+1. 更新了checkpoint配置
+
+
+nginx
+1. 更新了hos配置

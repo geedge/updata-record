@@ -1,0 +1,18 @@
+# qgw 修改以下配置
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://{{ machine_host }}:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=GMT
+    username: {{ galaxy_mariadb_username }}
+    pin: {{ galaxy_mariadb_key }}
+
+hbase:
+  zookeeperQuorum: {{ machine_host }}:2181
+  zookeeperZnodeParent: /hbase
+  rpcTimeout: 60000
+  report:
+    dbname: tsg
+    tableName: report_result
+    columnFamily: response
+    columnName: result

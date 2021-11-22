@@ -1,0 +1,39 @@
+# flink集群版 配置文件增加checkpoint history
+
+#==============================================================================
+#checkpoint
+#==============================================================================
+#checkpoint路径
+state.checkpoints.dir: hdfs:///flink/checkpoints
+#检查点间隔
+#execution.checkpointing.interval: 300000
+execution.checkpointing.interval: 300000
+#检查点的模式
+execution.checkpointing.mode: EXACTLY_ONCE
+
+#检查点的超时设置
+execution.checkpointing.timeout: 10min
+
+#检查点的个数
+state.checkpoints.num-retained: 20
+
+state.backend: filesystem
+
+#==============================================================================
+#historyserver
+#==============================================================================
+#完成的作业到期并从作业存储区中清除的秒数
+jobstore.expiration-time: 7200
+
+#flink历史任务
+# 上传已完成作业信息的目录
+jobmanager.archive.fs.dir: hdfs:///history-jobs
+
+# 监视以下目录中已完成的作业
+historyserver.archive.fs.dir: hdfs:///history-jobs
+#
+# # 每 10 秒刷新一次
+historyserver.archive.fs.refresh-interval: 10000
+
+#避免由于task不能正常取消而使taskmanager服务挂掉
+task.cancellation.timeout: 0
