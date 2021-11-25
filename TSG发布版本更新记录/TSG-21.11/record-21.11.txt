@@ -1,29 +1,34 @@
 21.11更新记录
 
 hbase
-1.Phoenix集成，hbase新增表tsg_galaxy:relation_account_framedip，tsg_galaxy:relation_framedip_account
-2.Phoenix创建视图tsg"."report_result，tsg_galaxy"."relation_account_framedip
+1.新增hbase表
+2.Phoenix集成到hbase
+2.新增Phoenix视图
 
-ck
-1.新增字段
+clickhouse
+1.新增字段，进入ck客户端执行SQL文件里的SQL
 
-exporter
-1. zk ,ck ,kafka,node-exporter
+监控
+1.新增 zookeeper-exporter ,clickhouse-exporter ,kafka-exporter,node-exporter
 
 预处理
-
-1.更新jar包及配置
-2.新增了subid任务
+1.更新补全jar包及配置
+2.新增frameip任务
+3.更新dos任务
 
 网关
-更新镜像，schema
+1.更新镜像349
+2.更新schema
+3.更新配置文件
 
 调度任务
-1.更新了任务，sql执行器url添加/，更新了压缩任务
+1.更新druid压缩任务，执行sql，表xxl_job_group中 address_list字段url最后添加/（如有则忽略）
+2.更新镜像galaxy-job-executor:v1.3.211102
 
 flink
-1. 更新了checkpoint配置
-
+1.更新flink-conf.yml配置
 
 nginx
-1. 更新了hos配置
+1. 更新hos配置
+
+执行完成后重启所有gohangout

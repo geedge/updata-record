@@ -1,4 +1,4 @@
-<!-- hbase hbase-site.xml 新增以下配置,集成Phoenix -->
+<!-- hbase hbase-site.xml 新增以下配置,集成Phoenix ，修改后复制一份到phoenix /bin目录下-->
 
 <configuration>
   <property>

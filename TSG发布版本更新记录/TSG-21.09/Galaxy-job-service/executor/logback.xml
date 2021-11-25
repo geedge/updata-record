@@ -39,7 +39,7 @@
 
         <root level="${LOG_LEVEL}">
             <appender-ref ref="ALL"/>
-            <appender-ref ref="STDOUT"/>
+<!--            <appender-ref ref="STDOUT"/>-->
         </root>
 
     </configuration>

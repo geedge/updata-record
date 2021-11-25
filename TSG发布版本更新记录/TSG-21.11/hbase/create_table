@@ -1,9 +1,12 @@
+
+-- 1 hbase 创建表 进入 hbase shell 执行以下
+
 create_namespace 'tsg_galaxy'
 
 create 'tsg_galaxy:relation_account_framedip', {NAME => 'radius', VERSIONS => 1}
 create 'tsg_galaxy:relation_framedip_account', {NAME => 'radius', VERSIONS => 1}
 
--- Phoenix创建视图
+-- 2  Phoenix创建视图 进入 phoenix-hbase-2.2-5.1.2-bin/bin，执行 ./sqlline.py zookeeper1,zookeeper2,zookeeper3 ，然后执行以下命令
 CREATE view "tsg"."report_result"( ROWKEY VARCHAR PRIMARY KEY, "detail"."excute_sql" VARCHAR, "detail"."read_rows" UNSIGNED_LONG, "detail"."result_id" UNSIGNED_INT, "response"."result" VARCHAR);
 
 CREATE view "tsg_galaxy"."relation_account_framedip" ( ROWKEY VARCHAR PRIMARY KEY, "radius"."framed_ip" VARCHAR, "radius"."account" VARCHAR, "radius"."first_found_time" UNSIGNED_LONG, "radius"."last_update_time" UNSIGNED_LONG);

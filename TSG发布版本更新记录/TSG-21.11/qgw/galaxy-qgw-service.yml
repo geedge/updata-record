@@ -1,4 +1,4 @@
-# qgw 修改以下配置
+# qgw 在之前的配置基础上修改以下配置
 
 spring:
   datasource:

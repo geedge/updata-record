@@ -49,7 +49,7 @@
     </appenders>
     <loggers>
         <root level="${LOG_LEVEL}">
-            <appender-ref ref="consoleSystemOutAppender"/>
+<!--            <appender-ref ref="consoleSystemOutAppender"/>-->
             <appender-ref ref="rollingFileAllAppender"/>
         </root>
     </loggers>
