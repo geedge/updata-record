@@ -1,4 +1,4 @@
- CREATE TABLE IF NOT EXISTS `system`.processes_cluster ON CLUSTER ck_query AS `system`.processes ENGINE=Distributed(ck_all,`system`,processes,rand());
+CREATE TABLE IF NOT EXISTS `system`.processes_cluster ON CLUSTER ck_query AS `system`.processes ENGINE=Distributed(ck_all,`system`,processes,rand());
 ALTER TABLE tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS ssh_hassh String after rtp_originator_dir;
 ALTER TABLE tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS ssh_host_key String after rtp_originator_dir;
 ALTER TABLE tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster ADD COLUMN IF NOT EXISTS ssh_host_key_alg String after rtp_originator_dir;
