@@ -11,15 +11,15 @@ clickhouse
 监控
 1.新增 zookeeper-exporter ,clickhouse-exporter ,kafka-exporter,node-exporter
 
-预处理
-1.更新补全jar包及配置
-2.新增frameip任务
-3.更新dos任务
-
 网关
 1.更新镜像349
 2.更新schema
 3.更新配置文件
+
+预处理
+1.更新补全jar包及配置
+2.新增frameip任务
+3.更新dos任务
 
 调度任务
 1.更新druid压缩任务，执行sql，表xxl_job_group中 address_list字段url最后添加/（如有则忽略）
