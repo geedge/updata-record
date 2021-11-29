@@ -1,0 +1,40 @@
+
+version: '2'
+
+services:
+  jobmanager:
+    image: flink:1.13.1
+    restart: always
+    container_name: jobmanager
+    environment:
+      START_TYPE: "jobmanager"
+      JOBMANAGER_IP: "192.168.40.203"
+    volumes:
+      - "/home/galaxy/volumes/flink/jobmanager/conf/flink-conf.yaml:/opt/flink-1.13.1/conf/flink-conf.yaml"
+      - "/home/galaxy/volumes/flink/jobmanager/log:/opt/flink-1.13.1/log"
+      - "/home/galaxy/volumes/flink/completed-jobs:/opt/flink-1.13.1/completed-jobs"
+      - "/home/galaxy/volumes/flink/checkpoint:/opt/flink-1.13.1/checkpoint"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    network_mode: "host"
+
+
+
+version: '2'
+services:
+  taskmanager:
+    image: flink:1.13.1
+    restart: always
+    container_name: taskmanager
+    environment:
+      START_TYPE: "taskmanager"
+      JOBMANAGER_IP: "192.168.40.203"
+    volumes:
+      - "/home/galaxy/volumes/flink/taskmanager/conf/flink-conf.yaml:/opt/flink-1.13.1/conf/flink-conf.yaml"
+      - "/home/galaxy/volumes/flink/taskmanager/log:/opt/flink-1.13.1/log"
+      - "/home/galaxy/workspace/topology/dat/:/opt/dat/"
+      - "/home/galaxy/volumes/flink/completed-jobs:/opt/flink-1.13.1/completed-jobs"
+      - "/home/galaxy/volumes/flink/checkpoint:/opt/flink-1.13.1/checkpoint"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    network_mode: "host"

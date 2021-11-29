@@ -1,4 +1,4 @@
-# flink集群版 配置文件增加checkpoint history
+# flink集群版 flink-conf.yml配置文件增加checkpoint history
 
 #==============================================================================
 #checkpoint
