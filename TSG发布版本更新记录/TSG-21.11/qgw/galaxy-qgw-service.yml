@@ -8,7 +8,7 @@ spring:
     pin: {{ galaxy_mariadb_key }}
 
 hbase:
-  zookeeperQuorum: {{ machine_host }}:2181
+  zookeeperQuorum: zk1,zk2,zk3:2181
   zookeeperZnodeParent: /hbase
   rpcTimeout: 60000
   report:
@@ -16,3 +16,14 @@ hbase:
     tableName: report_result
     columnFamily: response
     columnName: result
+
+#顶格新增配置 2021 11-30
+service:
+  entity:
+    activeClientIP: 10000
+    topServerIP:
+      TCPBySession: 25000
+      TCPByUniqClientIP: 11500
+      UDPBySession: 80
+      UDPByUniqClientIP: 80
+    topSNI: 2000
