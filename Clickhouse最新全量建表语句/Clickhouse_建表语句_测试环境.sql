@@ -2496,7 +2496,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	radius_acct_output_packets Int64,
 	radius_acct_session_time Int64,
 	radius_acct_link_count Int64,
-	radius_acct_interim_interval Int64
+	radius_acct_interim_interval Int64,
+	radius_acct_authentic Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -2689,7 +2690,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	radius_acct_output_packets Int64,
 	radius_acct_session_time Int64,
 	radius_acct_link_count Int64,
-	radius_acct_interim_interval Int64
+	radius_acct_interim_interval Int64,
+	radius_acct_authentic Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
@@ -3466,7 +3468,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	radius_acct_output_packets Int64,
 	radius_acct_session_time Int64,
 	radius_acct_link_count Int64,
-	radius_acct_interim_interval Int64
+	radius_acct_interim_interval Int64,
+	radius_acct_authentic Int64
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
