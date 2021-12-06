@@ -1,0 +1,3 @@
+-- hbase新增表
+
+create 'tsg_galaxy:recommendation_app_cip', {NAME => 'common', VERSIONS => 1}

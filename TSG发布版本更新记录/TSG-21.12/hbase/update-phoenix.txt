@@ -1,0 +1,11 @@
+-- phoenix 新增字段:
+
+alter view "tsg_galaxy"."relation_account_framedip" add "radius"."acct_status_type" UNSIGNED_INT;
+
+
+-- Phoenix新增表
+CREATE view "tsg_galaxy"."recommendation_app_cip"(
+ROWKEY VARCHAR PRIMARY KEY,
+"common"."app_label" VARCHAR,
+"common"."client_ip_list" VARCHAR,
+"common"."last_update_time" UNSIGNED_LONG);
