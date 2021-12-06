@@ -52,7 +52,7 @@
     "completionTimeout": "PT30M",
     "earlyMessageRejectionPeriod": "PT6H",
     "consumerProperties": {
-      "bootstrap.servers": "192.168.44.12:9094",
+      "bootstrap.servers": "kafkabootstrap",
       "sasl.mechanism": "PLAIN",
       "security.protocol": "SASL_PLAINTEXT",
       "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
