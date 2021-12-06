@@ -1,0 +1,34 @@
+21.12更新记录，按顺序更新
+
+kafka
+1.新增topic TRAFFIC-APP-STAT
+
+hbase
+1.新增hbase表
+2.新增Phoenix视图
+
+clickhouse
+1.新增字段，进入ck客户端执行SQL文件里的SQL
+
+druid
+1.更新Apache Druid任务traffic_app_stat_log
+
+网关
+1.更新镜像350
+2.更新schema 15个
+
+预处理
+1.更新补全jar包及配置
+2.更新topN任务（与druid相关）
+3.更新dos任务及配置
+4.新增account-framedip-Hbase，停accountHbase，frameip任务
+5.新增vpn-recommend任务
+
+hos
+1.更新镜像21.12.01
+
+flink
+
+
+
+执行完成后重启所有gohangout
