@@ -11,7 +11,7 @@ clickhouse
 1.新增字段，进入ck客户端执行SQL文件里的SQL
 
 druid
-1.更新Apache Druid任务traffic_app_stat_log
+1.更新Apache Druid任务traffic_app_stat_log, traffic_metrics_log
 
 网关
 1.更新镜像350
@@ -29,6 +29,8 @@ hos
 
 flink
 
+spark
+1.修改环境变量
 
 
 执行完成后重启所有gohangout

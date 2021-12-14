@@ -1,0 +1,3 @@
+<!-- 将clickhouse的配置文件config.xml下面的最大查询并发度参数由150改为500 -->
+
+<max_concurrent_queries>500</max_concurrent_queries>
