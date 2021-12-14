@@ -1,0 +1,2 @@
+spark-2.2.3-bin-hadoop2.7/conf/spark-env.sh
+新增：export SPARK_PID_DIR=${SPARK_HOME}/tmp

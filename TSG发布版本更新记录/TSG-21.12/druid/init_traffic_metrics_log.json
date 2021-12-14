@@ -1,0 +1,89 @@
+{
+  "type": "index",
+  "spec":{
+	"ioConfig": {
+		"type": "index",
+		"firehose": {
+		"type": "inline",
+		"data": "{\"test_time\":\"3000-01-01T00:00:00.000\",\"device_id\":\" \",\"allow_conn_num\":0,\"allow_in_bytes\":0,\"allow_in_packets\":0,\"allow_out_bytes\":0,\"allow_out_packets\":0,\"close_conn_num\":0,\"default_conn_num\":0,\"default_in_bytes\":0,\"default_in_packets\":0,\"default_out_bytes\":0,\"default_out_packets\":0,\"deny_conn_num\":0,\"deny_in_bytes\":0,\"deny_in_packets\":0,\"deny_out_bytes\":0,\"deny_out_packets\":0,\"established_conn_num\":0,\"intercept_conn_num\":0,\"intercept_in_bytes\":0,\"intercept_in_packets\":0,\"intercept_out_bytes\":0,\"intercept_out_packets\":0,\"monitor_conn_num\":0,\"monitor_in_bytes\":0,\"monitor_in_packets\":0,\"monitor_out_bytes\":0,\"monitor_out_packets\":0,\"new_conn_num\":0,\"total_in_bytes\":0,\"total_in_packets\":0,\"total_out_bytes\":0,\"total_out_packets\":0,\"entrance_id\":0,\"pinning_num\":0,\"not_pinning_num\":0,\"maybe_pinning_num\":0,\"alert_bytes\":0,\"ins_bytes\":0,\"hijk_bytes\":0,\"reflection_bytes\":0,\"flood_bytes\":0,\"intcp_mon_num\":0,\"intcp_allow_num\":0,\"intcp_deny_num\":0,\"intcp_rdirt_num\":0,\"intcp_repl_num\":0,\"intcp_hijk_num\":0,\"intcp_ins_num\":0,\"ad_reflection_bytes\":0,\"ad_flood_bytes\":0,\"ad_cc_bytes\":0,\"intcp_edit_elem_num\":0}"
+		}
+	},
+	"tuningConfig": {
+		"type": "index"
+	},
+	"dataSchema": {
+		"dataSource": "traffic_metrics_log",
+		"granularitySpec": {
+		"type": "uniform",
+		"segmentGranularity": "DAY",
+		"queryGranularity": "NONE",
+		"rollup": false
+		},
+		"parser": {
+		"type": "string",
+		"parseSpec": {
+			"format": "json",
+			"timestampSpec": {
+			"column": "test_time",
+			"format": "iso"
+			},
+			"dimensionsSpec": {
+			"dimensions": [
+				{"name": "device_id","type": "string"},
+				{"name": "allow_conn_num","type": "long"},
+				{"name": "allow_in_bytes","type": "long"},
+				{"name": "allow_in_packets","type": "long"},
+				{"name": "allow_out_bytes","type": "long"},
+				{"name": "allow_out_packets","type": "long"},
+				{"name": "close_conn_num","type": "long"},
+				{"name": "default_conn_num","type": "long"},
+				{"name": "default_in_bytes","type": "long"},
+				{"name": "default_in_packets","type": "long"},
+				{"name": "default_out_bytes","type": "long"},
+				{"name": "default_out_packets","type": "long"},
+				{"name": "deny_conn_num","type": "long"},
+				{"name": "deny_in_bytes","type": "long"},
+				{"name": "deny_in_packets","type": "long"},
+				{"name": "deny_out_bytes","type": "long"},
+				{"name": "deny_out_packets","type": "long"},
+				{"name": "established_conn_num","type": "long"},
+				{"name": "intercept_conn_num","type": "long"},
+				{"name": "intercept_in_bytes","type": "long"},
+				{"name": "intercept_in_packets","type": "long"},
+				{"name": "intercept_out_bytes","type": "long"},
+				{"name": "intercept_out_packets","type": "long"},
+				{"name": "monitor_conn_num","type": "long"},
+				{"name": "monitor_in_bytes","type": "long"},
+				{"name": "monitor_in_packets","type": "long"},
+				{"name": "monitor_out_bytes","type": "long"},
+				{"name": "monitor_out_packets","type": "long"},
+				{"name": "new_conn_num","type": "long"},
+				{"name": "total_in_bytes","type": "long"},
+				{"name": "total_in_packets","type": "long"},
+				{"name": "total_out_bytes","type": "long"},
+                                {"name": "entrance_id","type": "long"},
+				{"name": "total_out_packets","type": "long"},
+                                {"name": "pinning_num","type": "long"},
+                                {"name": "not_pinning_num","type": "long"},
+                                {"name": "maybe_pinning_num","type": "long"},
+                                {"name": "alert_bytes","type": "long"},
+                                {"name": "ins_bytes","type": "long"},
+                                {"name": "hijk_bytes","type": "long"},
+                                {"name": "ad_reflection_bytes","type": "long"},
+                                {"name": "ad_flood_bytes","type": "long"},
+				{"name": "ad_cc_bytes","type": "long"},
+                                {"name": "intcp_mon_num","type": "long"},
+                                {"name": "intcp_allow_num","type": "long"},
+                                {"name": "intcp_deny_num","type": "long"},
+                                {"name": "intcp_rdirt_num","type": "long"},
+                                {"name": "intcp_repl_num","type": "long"},
+                                {"name": "intcp_hijk_num","type": "long"},
+                                {"name": "intcp_ins_num","type": "long"},
+				{"name": "intcp_edit_elem_num","type": "long"}
+			]
+			}
+		}
+		}
+	}
+  }
+}
