@@ -1,0 +1,20 @@
+#在galaxy-qgw-service.yml 配置最下增加以下配置
+
+## job cfg
+job:
+  interactive:
+    timeout: 30000
+  response:
+    timeout: 500
+  execution:
+    timeout: 300000
+  pool:
+    corePoolSize: 20
+    maxPoolSize: 30
+    queueCapacity: 10
+## task cfg
+task:
+  pool:
+    corePoolSize: 8
+    maxPoolSize: 16
+    queueCapacity: 1000

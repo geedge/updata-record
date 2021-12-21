@@ -1,0 +1,4 @@
+# dos-detection任务config中配置新增以下配置
+
+#baseline ttl，单位：天
+hbase.baseline.ttl=30

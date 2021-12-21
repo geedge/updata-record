@@ -1,2 +1,7 @@
+
+#优化spark 使用脚本重启集群失败问题（pid存到/tmp目录）
+
 spark-2.2.3-bin-hadoop2.7/conf/spark-env.sh
-新增：export SPARK_PID_DIR=${SPARK_HOME}/tmp
+新增以下配置项：
+
+export SPARK_PID_DIR=${SPARK_HOME}/tmp

@@ -1,3 +1,10 @@
--- hbase新增表
+-- hbase新增表 在hbase服务器，使用hbase shell命令
 
 create 'tsg_galaxy:recommendation_app_cip', {NAME => 'common', VERSIONS => 1}
+
+
+-- hbase 新增字段
+disable "tsg_galaxy:job_result"
+alter "tsg_galaxy:job_result",NAME=>'detail',TTL=>'1800'
+alter "tsg_galaxy:job_result",NAME=>'result',TTL=>'1800'
+enable "tsg_galaxy:job_result"

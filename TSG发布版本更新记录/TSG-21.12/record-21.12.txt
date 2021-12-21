@@ -1,21 +1,24 @@
-21.12更新记录，按顺序更新
+21.12更新记录，按顺序更新，具体更新文件详见相关目录
 
 kafka
 1.新增topic TRAFFIC-APP-STAT
+
+clickhouse
+1.新增字段，clickhouse-client -h 127.0.0.1 --port 9001 -m -u default --password 进入ck客户端执行SQL文件里的SQL
+2.修改clickhouse-server/config.xml中配置
+
 
 hbase
 1.新增hbase表
 2.新增Phoenix视图
 
-clickhouse
-1.新增字段，进入ck客户端执行SQL文件里的SQL
-
 druid
 1.更新Apache Druid任务traffic_app_stat_log, traffic_metrics_log
+2.druid所有_common/目录下增加log4j2.component.properties
 
 网关
 1.更新镜像350
-2.更新schema 15个
+2.更新schema,使用backup_config.sh备份，push_config.sh提交配置到nacos
 
 预处理
 1.更新补全jar包及配置
@@ -25,12 +28,19 @@ druid
 5.新增vpn-recommend任务
 
 hos
-1.更新镜像21.12.01
+1.更新镜像21.12.20
+
+report
+1.更新镜像21-12-15
 
 flink
+1.修改临时目录
+2.conf目录增加log4j2.component.properties
 
 spark
-1.修改环境变量
+1.修改临时目录
 
+gohangout
+1.更新config下所有任务配置max.partition.fetch.bytes: '31457280'
 
 执行完成后重启所有gohangout
