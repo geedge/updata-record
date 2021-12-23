@@ -3,7 +3,7 @@
 create 'tsg_galaxy:recommendation_app_cip', {NAME => 'common', VERSIONS => 1}
 
 
--- hbase 新增字段
+-- hbase  新增字段TTL，需要先执行Phoenix中job_result SQL会在hbase中自动创建表
 disable "tsg_galaxy:job_result"
 alter "tsg_galaxy:job_result",NAME=>'detail',TTL=>'1800'
 alter "tsg_galaxy:job_result",NAME=>'result',TTL=>'1800'

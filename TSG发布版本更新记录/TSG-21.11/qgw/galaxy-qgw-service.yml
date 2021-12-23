@@ -17,7 +17,7 @@ hbase:
     columnFamily: response
     columnName: result
 
-#顶格新增配置 2021 11-30
+#新增配置 2021 11-30
 service:
   entity:
     activeClientIP: 10000

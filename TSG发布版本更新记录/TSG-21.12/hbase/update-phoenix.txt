@@ -12,7 +12,6 @@ ROWKEY VARCHAR PRIMARY KEY,
 "common"."client_ip_list" VARCHAR,
 "common"."last_update_time" UNSIGNED_LONG);
 
-
 -- Phoenix新增表
 CREATE schema IF NOT EXISTS "tsg_galaxy";
 CREATE table IF NOT EXISTS "tsg_galaxy"."job_result"(
@@ -23,6 +22,7 @@ ROWKEY VARCHAR PRIMARY KEY,
 "detail"."discovery_field" VARCHAR,
 "detail"."last_query_time" UNSIGNED_LONG,
 "detail"."count" UNSIGNED_LONG,
+"detail"."duration_time" UNSIGNED_LONG,
 "result"."app_extra_info" VARCHAR,
 "result"."attack_type" VARCHAR,
 "result"."bit_rate" VARCHAR,
