@@ -44,3 +44,8 @@ gohangout
 1.更新config下所有任务配置max.partition.fetch.bytes: '31457280'
 
 执行完成后重启所有gohangout
+
+
+更新验证
+1.添加SQL统一验证方式为执行完SQL后，查询添加的表或字段是否已经存在。
+2.
