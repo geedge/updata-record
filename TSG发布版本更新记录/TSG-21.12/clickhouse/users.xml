@@ -1,0 +1,13 @@
+<!-- 将clickhouse的配置文件users.xml,在原有的default，readonly标签下新增以下配置-->
+
+<default>
+    <max_distributed_connections>4096</max_distributed_connections>
+    <connect_timeout>100</connect_timeout>
+</default>
+
+
+<readonly>
+<max_distributed_connections>4096</max_distributed_connections>
+<connect_timeout>100</connect_timeout>
+
+</readonly>
