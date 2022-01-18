@@ -5,7 +5,7 @@ druid 任务更新步骤
 一.更新traffic_app_stat_log
 1.登录druid提交任务服务器（通常为第一台）进入 */druid_topology/rule/
 2.停止需要更新的任务 ./supervisor-manger terminate traffic_app_stat_log ， ./supervisor-manger terminate traffic_metrics_log
-3. 修改traffic_app_stat_log.json traffic_metrics_log.json中IP地址后，复制到 */druid_topology/tasks下
+3.修改traffic_app_stat_log.json traffic_metrics_log.json中IP地址后，复制到 */druid_topology/tasks下
 
 4.登录galaxy使用的mariadb，使用druid数据库执行以下SQL
 执行SQL一：

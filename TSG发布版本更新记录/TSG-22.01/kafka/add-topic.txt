@@ -1,0 +1,4 @@
+
+#新增kafka topic，在kafka服务器上运行以下命令，IP地址为zookeeper地址 分区副本以实际为准
+
+kafka-topics.sh '--create' '--zookeeper' 'IP:2181/kafka' '--replication-factor' 1 '--partitions' 1 '--topic' SECURITY-PACKET-CAPTURE-RECORD

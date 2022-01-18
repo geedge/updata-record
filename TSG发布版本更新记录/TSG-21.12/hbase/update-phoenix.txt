@@ -1,5 +1,5 @@
 
-#进入目录 phoenix-hbase-2.2-5.1.2-bin/bin 执行./sqlline.py 后分别执行以下建表语句
+#进入目录 phoenix-hbase-2.2-5.1.2-bin/bin 执行./sqlline.py zookeeperip:2181 后分别执行以下建表语句
 
 -- phoenix 新增字段:
 

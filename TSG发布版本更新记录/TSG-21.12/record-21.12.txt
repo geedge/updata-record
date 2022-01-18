@@ -9,8 +9,8 @@ clickhouse
 
 
 hbase
-1.新增hbase表
-2.新增Phoenix视图
+1.新增Phoenix视图
+2.新增hbase表
 
 druid
 1.更新Apache Druid任务traffic_app_stat_log, traffic_metrics_log
