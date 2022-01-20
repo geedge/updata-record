@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -132,6 +133,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	gtp_version String,
 	gtp_apn String,
 	gtp_imei String,
@@ -167,6 +169,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -229,6 +232,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	gtp_version String,
 	gtp_apn String,
 	gtp_imei String,
@@ -260,6 +264,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_query(
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -322,6 +327,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_query(
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	gtp_version String,
 	gtp_apn String,
 	gtp_imei String,
@@ -354,6 +360,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -416,6 +423,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -544,7 +552,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -569,6 +580,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -631,6 +643,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -720,6 +733,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -782,6 +796,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -910,7 +925,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cluster(
@@ -932,6 +950,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -994,6 +1013,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -1122,7 +1142,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 
@@ -1145,6 +1168,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1207,6 +1231,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -1291,6 +1316,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluste
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1353,6 +1379,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluste
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -1440,6 +1467,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1502,6 +1530,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	sip_call_id String,
 	sip_originator_description String,
 	sip_responder_description String,
@@ -1542,6 +1571,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1604,6 +1634,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	sip_call_id String,
 	sip_originator_description String,
 	sip_responder_description String,
@@ -1644,6 +1675,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1706,6 +1738,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	sip_call_id String,
 	sip_originator_description String,
 	sip_responder_description String,
@@ -1746,6 +1779,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1808,6 +1842,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	nic_name String,
 	origin_source_mac String,
 	origin_dest_mac String,
@@ -1837,6 +1872,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -1899,6 +1935,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -2027,7 +2064,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String	
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String	
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
@@ -2050,6 +2090,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2112,6 +2153,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -2194,6 +2236,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2256,6 +2299,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -2384,7 +2428,10 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -2408,6 +2455,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2470,6 +2518,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	radius_packet_type Int64,
 	radius_nas_ip String,
 	radius_framed_ip String,
@@ -2602,6 +2651,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2664,6 +2714,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	radius_packet_type Int64,
 	radius_nas_ip String,
 	radius_framed_ip String,
@@ -2713,6 +2764,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2775,6 +2827,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -2903,7 +2956,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
@@ -2925,6 +2981,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -2987,6 +3044,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -3067,6 +3125,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3129,6 +3188,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -3257,7 +3317,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_query (
@@ -3279,6 +3342,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3341,6 +3405,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	nic_name String,
 	origin_source_mac String,
 	origin_dest_mac String,
@@ -3380,6 +3445,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3442,6 +3508,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	radius_packet_type Int64,
 	radius_nas_ip String,
 	radius_framed_ip String,
@@ -3491,6 +3558,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3553,6 +3621,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -3681,7 +3750,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
@@ -3703,6 +3775,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3765,6 +3838,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -3845,6 +3919,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -3907,6 +3982,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	http_url String,
 	http_host String,
 	http_domain String,
@@ -4035,7 +4111,10 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	ssh_kex_alg String,
 	ssh_host_key_alg String,
 	ssh_host_key String,
-	ssh_hassh String
+	ssh_hassh String,
+	stratum_cryptocurrency String,
+	stratum_mining_pools String,
+	stratum_mining_program String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_cluster (
@@ -4057,6 +4136,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_data_center String,
 	common_sled_ip String,
 	common_device_group String,
+	common_app_behavior String,
 	common_action Int64,
 	common_sub_action String,
 	common_policy_id Int64,
@@ -4119,6 +4199,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_stream_error String,
 	common_link_info_c2s String,
 	common_link_info_s2c String,
+	common_packet_capture_file String,
 	nic_name String,
 	origin_source_mac String,
 	origin_dest_mac String,
