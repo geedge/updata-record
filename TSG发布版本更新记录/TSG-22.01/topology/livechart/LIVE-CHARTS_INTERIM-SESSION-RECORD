@@ -1,0 +1,60 @@
+﻿#--------------------------------地址配置------------------------------#
+
+#管理kafka地址
+source.kafka.servers=kafkaip1:9094,kafkaip2:9094
+#管理输出kafka地址
+sink.kafka.servers=kafkaip1:9094,kafkaip2:9094
+#--------------------------------HTTP------------------------------#
+#kafka 证书地址
+tools.library=/home/bigdata/topology/dat/
+
+#网关的schema位置
+schema.http=http://10.111.136.252:9999/metadata/schema/v1/fields/liveChart_interim
+
+#网关APP_ID 获取接口
+app.id.http=http://10.111.136.252:9999/open-api/appDicList
+
+#--------------------------------Kafka消费组信息------------------------------#
+
+#kafka 接收数据topic
+source.kafka.topic=INTERIM-SESSION-RECORD
+
+#补全数据 输出 topic
+sink.kafka.topic=TRAFFIC-PROTOCOL-STAT
+
+#读取topic,存储该spout id的消费offset信息，可通过该拓扑命名;具体存储offset的位置，确定下次读取不重复的数据；
+group.id=liveCharts-interim-20220118-a
+
+#生产者压缩模式 none or snappy
+producer.kafka.compression.type=none
+
+#生产者ack
+producer.ack=1
+
+#--------------------------------topology配置------------------------------#
+
+#consumer 并行度
+source.parallelism=1
+
+#map函数并行度
+parse.parallelism=2
+
+#第一次窗口计算并行度
+first.window.parallelism=1
+
+#第二次窗口计算并行度
+second.window.parallelism=1
+
+#producer 并行度
+sink.parallelism=5
+
+#app_id 更新时间，如填写0则不更新缓存
+#app.tick.tuple.freq.secs=0
+
+
+
+###初次随机预聚合窗口时间
+first.count.window.time=5
+
+#聚合窗口时间
+second.count.window.time=15
