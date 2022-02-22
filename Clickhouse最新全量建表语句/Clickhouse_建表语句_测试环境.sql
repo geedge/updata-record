@@ -1,6 +1,62 @@
 create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_cluster;
 create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_query;
 
+
+CREATE TABLE IF NOT EXISTS  tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_cluster
+(
+    common_log_id UInt64,
+    common_recv_time Int64,
+    assessment_date Int64,
+    lot_number String,
+    file_name String,
+    assessment_file String,
+    assessment_type String,
+    features String,
+    size Int64,
+    file_checksum_sha String
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMMDD(toDate(common_recv_time))
+ORDER BY (common_log_id,
+ common_recv_time);
+
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_cluster
+(
+    common_log_id UInt64,
+    common_recv_time Int64,
+    assessment_date Int64,
+    lot_number String,
+    file_name String,
+    assessment_file String,
+    assessment_type String,
+    features String,
+    size Int64,
+    file_checksum_sha String
+)
+ENGINE = Distributed('ck_cluster',
+ 'tsg_galaxy_v3',
+ 'assessment_event_local',
+ rand());
+
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_query
+(
+    common_log_id UInt64,
+    common_recv_time Int64,
+    assessment_date Int64,
+    lot_number String,
+    file_name String,
+    assessment_file String,
+    assessment_type String,
+    features String,
+    size Int64,
+    file_checksum_sha String
+)
+ENGINE = Distributed('ck_cluster',
+ 'tsg_galaxy_v3',
+ 'assessment_event_local',
+ rand());
+
+
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local ON CLUSTER ck_cluster(
 log_id UInt64,
  start_time Int64,
@@ -495,6 +551,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -536,7 +593,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -705,7 +762,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String
 
 )
@@ -868,6 +925,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -909,7 +967,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -1085,6 +1143,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -1126,7 +1185,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -1293,7 +1352,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_local,rand());
 
@@ -1441,7 +1500,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluste
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,transaction_record_local,rand());
 
@@ -1544,7 +1603,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -1648,7 +1707,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -1752,7 +1811,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -2007,6 +2066,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -2048,7 +2108,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -2371,6 +2431,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -2412,7 +2473,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -2899,6 +2960,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -2940,7 +3002,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -3260,6 +3322,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -3301,7 +3364,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -3693,6 +3756,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -3734,7 +3798,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
@@ -4054,6 +4118,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	ssl_cn String,
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
+	ssl_passthrough_reason String,
 	ssl_server_side_latency Int64,
 	ssl_client_side_latency Int64,
 	ssl_server_side_version String,
@@ -4095,7 +4160,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	sip_responder_sdp_media_port Int64,
 	sip_responder_sdp_media_type String,
 	sip_responder_sdp_content String,
-	sip_duration Int64,
+	sip_duration_s Int64,
 	sip_bye String,
 	rtp_payload_type_c2s Nullable(Int64),
 	rtp_payload_type_s2c Nullable(Int64),
