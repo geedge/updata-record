@@ -1,0 +1,5 @@
+# galaxy-qgw-service.yml加入配置
+job:
+  timeSlicing:
+    enabled: true
+    interval: 1800 #单位: Second
