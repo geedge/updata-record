@@ -71,8 +71,7 @@ CREATE TABLE IF NOT EXISTS  tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_c
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,
- common_recv_time)
+ORDER BY (common_log_id, common_recv_time);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_cluster
 (
