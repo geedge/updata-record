@@ -1,0 +1,8 @@
+
+#进入目录 phoenix-hbase-2.2-5.1.2-bin/bin 执行./sqlline.py zookeeperip:2181 后分别执行以下建表语句
+
+-- phoenix 新增字段:
+alter table "tsg_galaxy"."job_result" add "detail"."is_error" BOOLEAN;
+
+-- 验证
+!desc "tsg_galaxy"."job_result";
