@@ -1,0 +1,9 @@
+#galaxy-job-executor docker-compose.yml文件volumes增加以下配置
+
+services:
+  galaxy-job-executor:
+  ......
+    volumes:
+
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/usr/bin/docker:/usr/bin/docker"
