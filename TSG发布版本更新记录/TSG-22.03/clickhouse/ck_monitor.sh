@@ -1,7 +1,9 @@
 #!/bin/bash
 
-ck_username="default"                                         #ck用户名
-ck_password="ceiec2019"                                       #ck密码
+#ck用户名
+ck_username="default"
+#ck密码
+ck_password="******"
 ck_monitor_prom_file="/home/galaxy/volumes/node-exporter/prom/ck_monitor.prom"
 
 current1=`date "+%Y-%m-%d %H:%M:%S"`
