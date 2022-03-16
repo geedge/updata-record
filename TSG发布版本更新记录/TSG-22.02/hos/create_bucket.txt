@@ -1,2 +1,5 @@
 新增桶
 assessment_hos_bucket
+
+
+curl --location -k -L  -w %{http_code} --request PUT 'http://127.0.0.1:9098/hos/assessment_hos_bucket' --header 'token: c21f969b5f03d33d43e04f8f136e7682'
