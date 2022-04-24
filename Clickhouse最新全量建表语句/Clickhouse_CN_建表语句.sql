@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
   common_c2s_pkt_retrans  Int64,
   common_s2c_pkt_retrans  Int64,
   common_establish_latency_ms  Int64,
-  http_response_lantency_ms  Int64,
+  http_response_latency_ms  Int64,
   ssl_con_latency_ms  Int64,
   dns_response_latency_ms  Int64
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY common_recv_time SETTINGS index_granularity = 8192;
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   common_c2s_pkt_retrans  Int64,
   common_s2c_pkt_retrans  Int64,
   common_establish_latency_ms  Int64,
-  http_response_lantency_ms  Int64,
+  http_response_latency_ms  Int64,
   ssl_con_latency_ms  Int64,
   dns_response_latency_ms  Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'session_record_cn_local', rand());
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   common_c2s_pkt_retrans  Int64,
   common_s2c_pkt_retrans  Int64,
   common_establish_latency_ms  Int64,
-  http_response_lantency_ms  Int64,
+  http_response_latency_ms  Int64,
   ssl_con_latency_ms  Int64,
   dns_response_latency_ms  Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'session_record_cn_local', rand());
