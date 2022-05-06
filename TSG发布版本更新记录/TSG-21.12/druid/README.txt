@@ -9,8 +9,7 @@ druid 任务更新步骤
 
 4.登录galaxy使用的mariadb，使用druid数据库执行以下SQL
 执行SQL一：
-DELETE FROM druid.druid_pendingsegments WHERE dataSource = 'traffic_app_stat_log';
-DELETE FROM druid.druid_datasource WHERE dataSource = 'traffic_app_stat_log';
+
 
 执行SQL二：
 单机版sql:
