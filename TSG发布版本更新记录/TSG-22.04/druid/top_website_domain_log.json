@@ -1,0 +1,56 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "top_website_domain_log",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "stat_time",
+          "format": "posix"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+	   "domain",
+           "device_group",
+           "data_center",
+	   "order_by" 
+          ]
+        }
+      }
+    },
+    "metricsSpec" : [
+        { "type" : "longSum", "name" : "session_num", "fieldName" : "session_num" },
+        { "type" : "longSum", "name" : "c2s_pkt_num", "fieldName" : "c2s_pkt_num" },
+        { "type" : "longSum", "name" : "s2c_pkt_num", "fieldName" : "s2c_pkt_num" },
+        { "type" : "longSum", "name" : "c2s_byte_num", "fieldName" : "c2s_byte_num" },
+        { "type" : "longSum", "name" : "s2c_byte_num", "fieldName" : "s2c_byte_num" }
+  ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "DAY",
+      "queryGranularity": {"type": "period", "period": "PT5M"},
+      "rollup": true
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "resetOffsetAutomatically": true,
+    "maxRowsPerSegment": 5000000,
+    "reportParseExceptions": false
+  },
+  "ioConfig": {
+    "topic": "TOP-WEBSITE-DOMAIN",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT1H",
+    "completionTimeout": "PT30M",
+    "consumerProperties": {
+      "bootstrap.servers": "kafkabootstrap",
+      "sasl.mechanism": "PLAIN",
+      "security.protocol": "SASL_PLAINTEXT",
+      "sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"galaxy2019\";"
+    }
+  }
+}

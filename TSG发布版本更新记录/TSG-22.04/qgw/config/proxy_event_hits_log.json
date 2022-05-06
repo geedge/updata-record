@@ -1,0 +1,133 @@
+{
+  "type": "record",
+  "name": "proxy_event_hits_log",
+  "namespace": "druid",
+  "doc": {
+    "partition_key": "__time",
+    "functions": {
+      "$ref": "public_schema_info.json#/functions"
+    },
+    "schema_query": {
+      "references": {
+        "$ref": "public_schema_info.json#/schema_query/references"
+      }
+    }
+  },
+  "fields": [
+    {
+      "name": "__time",
+      "label": "Time",
+      "type": "string",
+      "doc": {
+        "constraints": {
+          "type": "timestamp"
+        }
+      }
+    },
+    {
+      "name": "isp",
+      "label": "ISP",
+      "type": "string",
+      "doc": {
+        "visibility": "disabled"
+      }
+    },
+    {
+      "name": "entrance_id",
+      "label": "Entrance ID",
+      "type": "long",
+      "doc": {
+        "visibility": "disabled"
+      }
+    },
+    {
+      "name": "hits",
+      "label": "Hits",
+      "type": "long"
+    },
+    {
+      "name": "policy_id",
+      "label": "Policy ID",
+      "type": "long",
+      "doc": {
+        "constraints": {
+          "operator_functions": "=,!=,in,not in"
+        }
+      }
+    },
+    {
+      "name": "action",
+      "label": "Action",
+      "type": "long"
+    },
+    {
+      "name": "sub_action",
+      "label": "Sub Action",
+      "type": "string",
+      "doc": {
+        "constraints": {
+          "operator_functions": "=,!=,in,not in"
+        },
+        "data": [
+          {
+            "code": "allow",
+            "value": "Allow"
+          },
+          {
+            "code": "deny",
+            "value": "Deny"
+          },
+          {
+            "code": "monitor",
+            "value": "Monitor"
+          },
+          {
+            "code": "replace",
+            "value": "Replace"
+          },
+          {
+            "code": "redirect",
+            "value": "Redirect"
+          },
+          {
+            "code": "insert",
+            "value": "Insert"
+          },
+          {
+            "code": "hijack",
+            "value": "Hijack"
+          },
+          {
+            "code": "edit_element",
+            "value": "Edit Element"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ip_object",
+      "label": "IP Object",
+      "type": "string"
+    },
+    {
+      "name": "country",
+      "label": "Country",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "label": "Location",
+      "type": "string"
+    },
+    {
+      "name": "c2s_byte_num",
+      "label": "Bytes Sent",
+      "type": "long"
+    },
+    {
+      "name": "s2c_byte_num",
+      "label": "Bytes Received",
+      "type": "long"
+    }
+  ]
+}

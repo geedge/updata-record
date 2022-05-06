@@ -1,0 +1,66 @@
+#--------------------------------地址配置------------------------------#
+
+#管理kafka地址
+source.kafka.servers=192.168.44.11:9094,192.168.44.13:9094,192.168.44.14:9094,192.168.44.15:9094,192.168.44.16:9094
+
+#管理输出kafka地址
+sink.kafka.servers=192.168.44.11:9094,192.168.44.13:9094,192.168.44.14:9094,192.168.44.15:9094,192.168.44.16:9094
+
+#zookeeper 地址 用于配置log_id
+zookeeper.servers=192.168.44.11:2181,192.168.44.14:2181,192.168.44.15:2181
+
+#hbase zookeeper地址 用于连接HBase
+hbase.zookeeper.servers=192.168.44.11:2181,192.168.44.14:2181,192.168.44.15:2181
+
+#--------------------------------HTTP/定位库------------------------------#
+#定位库地址
+tools.library=/home/bigdata/topology/dat/
+
+#--------------------------------nacos配置------------------------------#
+#nacos 地址
+nacos.server=192.168.44.67:8848
+
+#nacos namespace
+nacos.schema.namespace=f507879a-8b1b-4330-913e-83d4fcdc14bb
+
+#nacos topology_common_config.properties namespace
+nacos.common.namespace=f507879a-8b1b-4330-913e-83d4fcdc14bb
+
+#nacos data id
+nacos.data.id=radius_record.json
+
+#--------------------------------Kafka消费组信息------------------------------#
+
+#kafka 接收数据topic
+source.kafka.topic=RADIUS-RECORD
+
+#补全数据 输出 topic
+sink.kafka.topic=RADIUS-RECORD-COMPLETED
+
+#读取topic,存储该spout id的消费offset信息，可通过该拓扑命名;具体存储offset的位置，确定下次读取不重复的数据；
+group.id=radius-record-log-20220408-1
+
+#生产者压缩模式 none or snappy
+producer.kafka.compression.type=none
+
+#--------------------------------topology配置------------------------------#
+
+#consumer 并行度
+source.parallelism=1
+
+#转换函数并行度
+transform.parallelism=1
+
+#kafka producer 并行度
+sink.parallelism=1
+ 
+#数据中心，取值范围(0-63)
+data.center.id.num=5
+
+#hbase 更新时间，如填写0则不更新缓存
+hbase.tick.tuple.freq.secs=180
+
+#--------------------------------默认值配置------------------------------#
+
+#0不需要补全原样输出日志，1需要补全
+log.need.complete=1
