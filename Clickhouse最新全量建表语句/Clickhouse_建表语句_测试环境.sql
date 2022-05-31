@@ -557,8 +557,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -617,7 +617,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -935,8 +950,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -995,7 +1010,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cluster(
@@ -1155,8 +1185,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -1215,7 +1245,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,interim_session_record_local,rand());
 
 
@@ -2088,8 +2133,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -2148,7 +2193,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String	
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String	
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
@@ -2294,7 +2354,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	doh_qclass Int64,
 	doh_cname String,
 	doh_sub Int64,
-	doh_rr String
+	doh_rr String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
 
@@ -2456,8 +2531,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -2516,7 +2591,22 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_log_id,common_data_center,common_recv_time);
@@ -2989,8 +3079,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -3049,7 +3139,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
@@ -3194,7 +3299,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	doh_qclass Int64,
 	doh_cname String,
 	doh_sub Int64,
-	doh_rr String
+	doh_rr String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
@@ -3354,8 +3474,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -3414,7 +3534,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_query (
@@ -3792,8 +3927,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -3852,7 +3987,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
@@ -3997,7 +4147,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	doh_qclass Int64,
 	doh_cname String,
 	doh_sub Int64,
-	doh_rr String
+	doh_rr String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
@@ -4157,8 +4322,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	ssl_pinningst Nullable(Int64),
 	ssl_intercept_state Nullable(Int64),
 	ssl_passthrough_reason String,
-	ssl_server_side_latency Int64,
-	ssl_client_side_latency Int64,
+	ssl_server_side_latency Nullable(Int64),
+	ssl_client_side_latency Nullable(Int64),
 	ssl_server_side_version String,
 	ssl_client_side_version String,
 	ssl_cert_verify Nullable(Int64),
@@ -4217,7 +4382,22 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	ssh_hassh String,
 	stratum_cryptocurrency String,
 	stratum_mining_pools String,
-	stratum_mining_program String
+	stratum_mining_program String,
+	rdp_encryption_method  String,
+	rdp_encryption_level String,
+	rdp_certificate_permanent  Int64,
+	rdp_certificate_count  Int64,
+	rdp_certificate_type  String ,
+	rdp_requested_color_depth  String,
+	rdp_desktop_height  String,
+	rdp_desktop_width  String,
+	rdp_client_product_id  String,
+	rdp_client_name  String,
+	rdp_client_version  String,
+	rdp_keyboard_layout  String,
+	rdp_client_channels  String,
+	rdp_security_protocol  String,
+	rdp_cookie  String
 	) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 
 create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_cluster (
