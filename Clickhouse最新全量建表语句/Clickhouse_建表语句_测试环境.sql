@@ -2759,7 +2759,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip_local O
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_client_ip,common_server_ip,common_recv_time);
@@ -2780,7 +2780,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip_local O
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_server_ip,common_client_ip,common_recv_time);
@@ -2801,7 +2801,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain_local ON CLU
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (http_domain,common_recv_time);
@@ -4555,7 +4555,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUSTER ck_cluster(
@@ -4573,7 +4573,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
@@ -4592,7 +4592,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUSTER ck_query(
@@ -4610,7 +4610,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUSTER ck_query(
@@ -4628,7 +4628,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
@@ -4647,7 +4647,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Int64
+	common_direction Nullable(Int64)
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
 
@@ -4686,7 +4686,7 @@ common_recv_time Int64,
 common_entrance_id Int64,
 common_device_id String,
 common_egress_link_id Nullable(Int64),
-	common_ingress_link_id Nullable(Int64),
+common_ingress_link_id Nullable(Int64),
 common_policy_id Int64,
 common_user_region String,
 ad_method String,
@@ -4714,7 +4714,7 @@ common_recv_time Int64,
 common_entrance_id Int64,
 common_device_id String,
 common_egress_link_id Nullable(Int64),
-	common_ingress_link_id Nullable(Int64),
+common_ingress_link_id Nullable(Int64),
 common_policy_id Int64,
 common_user_region String,
 ad_method String,
@@ -4739,4 +4739,3 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,active_defence_event_local,rand());
 alter table tsg_galaxy_v3.session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
 alter table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
 alter table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
-
