@@ -1,0 +1,28 @@
+inputs:
+    - Kafka:
+        topic:
+            METRIC-DOMAIN: 1
+        #assign:
+        #  weblog: [0,9]
+        codec: json
+        consumer_settings:
+            bootstrap.servers: "192.168.44.55:9092"
+            group.id: tsg-metric_domain_cn
+            max.partition.fetch.bytes: '10485760'
+            auto.commit.interval.ms: '5000'
+            # from.beginning: 'true'
+            # sasl.mechanism: PLAIN
+            # sasl.user: admin
+            # sasl.password: admin-secret
+
+outputs:
+    - Clickhouse:
+        table: 'cyber_narrator_galaxy.metric_domain_local'
+        username: 'default'
+        password: 'ceiec2019'
+        hosts:
+        - 'tcp://192.168.44.55:9001'
+        bulk_actions: 100000
+        flush_interval: 30
+        concurrent: 2
+        conn_max_life_time: 60
