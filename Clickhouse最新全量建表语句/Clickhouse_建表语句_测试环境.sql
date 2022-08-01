@@ -2238,7 +2238,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	rdp_security_protocol  String,
 	rdp_cookie  String	
 )
-ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
+ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time,common_namespace_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
@@ -2401,7 +2401,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	rdp_security_protocol  String,
 	rdp_cookie  String
 )
-ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
+ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time,common_namespace_id);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster(
