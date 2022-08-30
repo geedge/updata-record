@@ -1,11 +1,8 @@
 create_namespace 'tsg'
-create_namespace 'sub'
 create_namespace 'dos'
 create_namespace 'tsg_galaxy'
 
 create 'tsg:report_result', {NAME => 'response', VERSIONS => 1,COMPRESSION => 'GZ',IS_MOB => true, MOB_THRESHOLD => 0}, {NAME => 'detail',COMPRESSION => 'GZ',VERSIONS => 1} 
-
-create 'sub:subscriber_info', {NAME => 'subscriber_id', VERSIONS => 1}
 
 create 'dos:ddos_traffic_baselines', 'TCP SYN Flood','UDP Flood','ICMP Flood','DNS Flood'
 
@@ -13,3 +10,6 @@ create 'tsg_galaxy:relation_account_framedip', {NAME => 'radius', VERSIONS => 1}
 create 'tsg_galaxy:relation_framedip_account', {NAME => 'radius', VERSIONS => 1}
 
 create 'tsg_galaxy:recommendation_app_cip', {NAME => 'common', VERSIONS => 1}
+
+create 'tsg_galaxy:relation_user_teid',{NAME=>'gtp'}
+create 'tsg_galaxy:gtpc_knowledge_base',{NAME => 'gtp',TTL=> '604800'}
