@@ -2,7 +2,7 @@ create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_cluster;
 create database IF NOT EXISTS tsg_galaxy_v3 ON CLUSTER ck_query;
 
 
-CREATE TABLE IF NOT EXISTS  tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_cluster
+CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_cluster
 (
     common_log_id UInt64,
     common_recv_time Int64,
@@ -13,12 +13,13 @@ CREATE TABLE IF NOT EXISTS  tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_c
     assessment_type String,
     features String,
     size Int64,
-    file_checksum_sha String
+    file_checksum_sha String,
+	vsys_id Int64 DEFAULT 1
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,
- common_recv_time);
+PRIMARY KEY (common_log_id,common_recv_time)
+ORDER BY (common_log_id,common_recv_time,vsys_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_cluster
 (
@@ -31,7 +32,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_cluster
     assessment_type String,
     features String,
     size Int64,
-    file_checksum_sha String
+    file_checksum_sha String,
+	vsys_id Int64
 )
 ENGINE = Distributed('ck_cluster',
  'tsg_galaxy_v3',
@@ -49,7 +51,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_query
     assessment_type String,
     features String,
     size Int64,
-    file_checksum_sha String
+    file_checksum_sha String,
+	vsys_id Int64
 )
 ENGINE = Distributed('ck_cluster',
  'tsg_galaxy_v3',
@@ -70,8 +73,12 @@ log_id UInt64,
  source_country_list String,
  session_rate Int64,
  packet_rate Int64,
- bit_rate Int64
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) ORDER BY (log_id, start_time, destination_ip) SETTINGS index_granularity = 8192;
+ bit_rate Int64,
+ vsys_id Int64 DEFAULT 1
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) 
+PRIMARY KEY (log_id, start_time, destination_ip) 
+ORDER BY (log_id, start_time, destination_ip,vsys_id) 
+SETTINGS index_granularity = 8192;
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_cluster(
@@ -87,7 +94,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_cluster(
  source_country_list String,
  session_rate Int64,
  packet_rate Int64,
- bit_rate Int64
+ bit_rate Int64,
+ vsys_id Int64 
 ) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_local', rand());
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_query(
@@ -103,7 +111,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_query(
  source_country_list String,
  session_rate Int64,
  packet_rate Int64,
- bit_rate Int64
+ bit_rate Int64,
+ vsys_id Int64 
 ) ENGINE = Distributed('ck_cluster', 'tsg_galaxy_v3', 'dos_event_local', rand());
 
 
@@ -183,6 +192,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -206,7 +216,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	gtp_end_user_ipv6 String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,common_data_center,common_recv_time);
+PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
+ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
 
 
 
@@ -286,6 +297,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -385,6 +397,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_query(
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -485,6 +498,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -657,7 +671,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,common_data_center,common_recv_time);
+PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
+ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_cluster(
@@ -736,6 +751,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -814,7 +830,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_stream_trace_id,common_data_center,common_recv_time);
+PRIMARY KEY (common_stream_trace_id,common_data_center,common_recv_time)
+ORDER BY (common_stream_trace_id,common_data_center,common_recv_time,common_vsys_id);
 
 
 
@@ -894,6 +911,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1142,6 +1160,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1391,6 +1410,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1544,6 +1564,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluste
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1700,6 +1721,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1730,7 +1752,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	rtp_payload_type_s2c Nullable(Int64),
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
-)ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_data_center,common_recv_time);
+)ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
+PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
+ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_recv_time Int64,
@@ -1808,6 +1832,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -1916,6 +1941,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2024,6 +2050,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2042,7 +2069,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	pcap_storage_task_id Int64,
 	pcap_storage_duration Int64
 )
-ENGINE =MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
+ENGINE =MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
+PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
+ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_cluster(
@@ -2121,6 +2150,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2292,7 +2322,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	rdp_security_protocol  String,
 	rdp_cookie  String	
 )
-ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
+ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
+PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
+ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster(
 	common_recv_time Int64,
@@ -2370,6 +2402,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2456,7 +2489,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	rdp_security_protocol  String,
 	rdp_cookie  String
 )
-ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY (common_log_id,common_policy_id,common_recv_time);
+ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
+PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
+ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_cluster(
@@ -2535,6 +2570,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2707,7 +2743,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,common_data_center,common_recv_time);
+PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
+ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_cluster (
 		common_recv_time Int64,
@@ -2785,6 +2822,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64 DEFAULT 1,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -2826,7 +2864,8 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	radius_acct_authentic Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY (common_log_id,common_data_center,common_recv_time);
+PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
+ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip_local ON CLUSTER ck_cluster(
 	common_log_id UInt64,
@@ -2840,6 +2879,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip_local O
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -2861,6 +2901,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip_local O
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -2882,6 +2923,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain_local ON CLU
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -2891,11 +2933,9 @@ ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (http_domain,common_recv_time);
 
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni,common_schema_type,common_client_port,common_server_port,common_app_label,common_direction FROM tsg_galaxy_v3.session_record_local;
-
-
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_onff_log_local ON CLUSTER ck_cluster(
@@ -2904,10 +2944,12 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_onff_log_local ON CLUSTER ck_clu
 	framed_ip String,
 	acct_status_type Int64,
 	acct_session_id String,
-	acct_session_time Int64
+	acct_session_time Int64,
+	vsys_id Int64 DEFAULT 1
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(event_timestamp))
-ORDER BY (account,event_timestamp);
+PRIMARY KEY (account,event_timestamp)
+ORDER BY (account,event_timestamp,vsys_id);
 
 create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_recv_time Int64,
@@ -2985,6 +3027,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3102,6 +3145,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3350,6 +3394,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3513,6 +3558,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3761,6 +3807,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3787,7 +3834,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_query(
 	framed_ip String,
 	acct_status_type Int64,
 	acct_session_id String,
-	acct_session_time Int64
+	acct_session_time Int64,
+	vsys_id Int64
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
 
@@ -3868,6 +3916,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -3985,6 +4034,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -4233,6 +4283,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -4396,6 +4447,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -4644,6 +4696,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_mirrored_bytes Int64,
 	common_address_type Int64,
 	common_schema_type String,
+	common_vsys_id Int64,
 	common_device_tag String,
 	common_encapsulation Int64,
 	common_tunnels String,
@@ -4670,7 +4723,8 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_cluster(
 	framed_ip String,
 	acct_status_type Int64,
 	acct_session_id String,
-	acct_session_time Int64
+	acct_session_time Int64,
+	vsys_id Int64
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
 
@@ -4696,6 +4750,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -4714,6 +4769,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -4733,6 +4789,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -4751,6 +4808,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -4769,6 +4827,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
@@ -4788,6 +4847,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	http_domain String,
 	ssl_sni  String,
 	common_schema_type LowCardinality(String),
+	common_vsys_id Int64,
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
