@@ -1,0 +1,4 @@
+alter 'tsg_galaxy:relation_account_framedip',{NAME => 'common'}
+alter 'tsg_galaxy:relation_framedip_account',{NAME => 'common'}
+alter 'tsg_galaxy:relation_user_teid',{NAME => 'common'}
+alter 'tsg_galaxy:gtpc_knowledge_base',{NAME => 'common',TTL=> '604800'}
