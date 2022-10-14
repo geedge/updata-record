@@ -6,10 +6,10 @@ create 'tsg:report_result', {NAME => 'response', VERSIONS => 1,COMPRESSION => 'G
 
 create 'dos:ddos_traffic_baselines', 'TCP SYN Flood','UDP Flood','ICMP Flood','DNS Flood'
 
-create 'tsg_galaxy:relation_account_framedip', {NAME => 'radius', VERSIONS => 1}
-create 'tsg_galaxy:relation_framedip_account', {NAME => 'radius', VERSIONS => 1}
+create 'tsg_galaxy:relation_account_framedip', {NAME => 'radius', VERSIONS => 1}, {NAME => 'common', VERSIONS => 1}
+create 'tsg_galaxy:relation_framedip_account', {NAME => 'radius', VERSIONS => 1}, {NAME => 'common', VERSIONS => 1}
 
 create 'tsg_galaxy:recommendation_app_cip', {NAME => 'common', VERSIONS => 1}
 
-create 'tsg_galaxy:relation_user_teid',{NAME=>'gtp'}
-create 'tsg_galaxy:gtpc_knowledge_base',{NAME => 'gtp',TTL=> '604800'}
+create 'tsg_galaxy:relation_user_teid',{NAME=>'gtp'}, {NAME => 'common'}
+create 'tsg_galaxy:gtpc_knowledge_base',{NAME => 'gtp',TTL=> '604800'}, {NAME => 'common',TTL=> '604800'},SPLITS => ['1','2','3']
