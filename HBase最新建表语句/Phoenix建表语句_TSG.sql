@@ -1,6 +1,16 @@
+CREATE schema IF NOT EXISTS "tsg_galaxy";
+CREATE schema IF NOT EXISTS "tsg";
+
 CREATE view "tsg"."report_result"( ROWKEY VARCHAR PRIMARY KEY, "detail"."excute_sql" VARCHAR, "detail"."read_rows" UNSIGNED_LONG, "detail"."result_id" UNSIGNED_INT, "response"."result" VARCHAR);
 
-CREATE view "tsg_galaxy"."relation_account_framedip" ( ROWKEY VARCHAR PRIMARY KEY, "radius"."framed_ip" VARCHAR, "radius"."account" VARCHAR, "radius"."first_found_time" UNSIGNED_LONG, "radius"."last_update_time" UNSIGNED_LONG, "radius"."acct_status_type" UNSIGNED_INT);
+CREATE view IF NOT EXISTS "tsg_galaxy"."relation_account_framedip"(
+ROWKEY VARCHAR PRIMARY KEY,
+"common"."vsys_id" UNSIGNED_INT,
+"radius"."account" VARCHAR,
+"radius"."framed_ip" VARCHAR,
+"radius"."first_found_time" UNSIGNED_LONG,
+"radius"."last_update_time" UNSIGNED_LONG,
+"radius"."acct_status_type" UNSIGNED_INT);
 
 CREATE view "tsg_galaxy"."recommendation_app_cip"(
 ROWKEY VARCHAR PRIMARY KEY,
@@ -10,16 +20,16 @@ ROWKEY VARCHAR PRIMARY KEY,
 
 CREATE view IF NOT EXISTS "tsg_galaxy"."gtpc_knowledge_base"(
 ROWKEY VARCHAR PRIMARY KEY,
+"common"."vsys_id" UNSIGNED_INT,
+"gtp"."teid" UNSIGNED_LONG,
 "gtp"."uplink_teid" UNSIGNED_LONG,
 "gtp"."downlink_teid" UNSIGNED_LONG,
 "gtp"."apn" VARCHAR,
 "gtp"."phone_number" VARCHAR,
 "gtp"."imsi" VARCHAR,
 "gtp"."imei" VARCHAR,
-"gtp"."last_update_time" UNSIGNED_LONG,
-"gtp"."msg_type" UNSIGNED_INT);
-
-CREATE schema IF NOT EXISTS "tsg_galaxy";
+"gtp"."msg_type" UNSIGNED_INT,
+"gtp"."last_update_time" UNSIGNED_LONG); 
 
 CREATE table IF NOT EXISTS "tsg_galaxy"."job_result"(
 ROWKEY VARCHAR PRIMARY KEY,
