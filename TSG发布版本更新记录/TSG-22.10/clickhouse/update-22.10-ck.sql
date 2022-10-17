@@ -75,9 +75,9 @@ ALTER table tsg_galaxy_v3.assessment_event_local on cluster ck_cluster MODIFY co
 ALTER table tsg_galaxy_v3.radius_onff_log_local on cluster ck_cluster MODIFY column IF EXISTS vsys_id Int64 default 1;
 
 
-drop view tsg_galaxy_v3.common_client_ip;
-drop view tsg_galaxy_v3.common_http_domain;
-drop view tsg_galaxy_v3.common_server_ip;
+drop view IF EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster;
+drop view IF EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster;
+drop view IF EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster;
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
