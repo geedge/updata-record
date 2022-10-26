@@ -82,3 +82,41 @@ drop view IF EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster;
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
+
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
+
+ALTER table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_t_vsys_id Int64 after common_vsys_id;
+ALTER table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_t_vsys_id  Int64 after common_vsys_id;
