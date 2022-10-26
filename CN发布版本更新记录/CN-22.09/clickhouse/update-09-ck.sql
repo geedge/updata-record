@@ -15,6 +15,97 @@ ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster add co
 ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query add column IF NOT EXISTS server_zone  String after client_idc_renter;
 
 
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_egress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_ingress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS http_status_code Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_qr Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_opcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_aa Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_rcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_qtype Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_qclass Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_sub Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS domain_reputation_score Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS client_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS client_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS server_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS server_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS app_is_protocol Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS app_risk Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_c2s_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_s2c_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_c2s_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_s2c_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_c2s_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_s2c_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_c2s_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_s2c_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS common_establish_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS http_response_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS ssl_con_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster MODIFY column IF EXISTS dns_response_latency_ms Nullable(Int64);
+
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_egress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_ingress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS http_status_code Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_qr Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_opcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_aa Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_rcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_qtype Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_qclass Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_sub Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS domain_reputation_score Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS client_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS client_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS server_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS server_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS app_is_protocol Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS app_risk Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_c2s_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_s2c_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_c2s_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_s2c_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_c2s_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_s2c_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_c2s_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_s2c_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS common_establish_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS http_response_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS ssl_con_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster MODIFY column IF EXISTS dns_response_latency_ms Nullable(Int64);
+
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_egress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_ingress_link_id Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS http_status_code Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_qr Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_opcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_aa Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_rcode Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_qtype Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_qclass Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_sub Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS domain_reputation_score Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS client_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS client_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS server_longitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS server_latitude Nullable(Float64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS app_is_protocol Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS app_risk Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_c2s_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_s2c_tcp_lostlen Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_c2s_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_s2c_tcp_unorder_num Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_c2s_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_s2c_byte_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_c2s_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_s2c_pkt_retrans Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS common_establish_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS http_response_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS ssl_con_latency_ms Nullable(Int64);
+ALTER table cyber_narrator_galaxy.session_record_cn on cluster ck_query MODIFY column IF EXISTS dns_response_latency_ms Nullable(Int64);
+
+
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_local ON CLUSTER ck_cluster (
  ip String,
  side String,
