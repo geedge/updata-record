@@ -73,6 +73,9 @@ ALTER table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster M
 ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster MODIFY column IF EXISTS vsys_id Int64 default 1;
 ALTER table tsg_galaxy_v3.assessment_event_local on cluster ck_cluster MODIFY column IF EXISTS vsys_id Int64 default 1;
 ALTER table tsg_galaxy_v3.radius_onff_log_local on cluster ck_cluster MODIFY column IF EXISTS vsys_id Int64 default 1;
+ALTER table tsg_galaxy_v3.session_record_common_client_ip_local on cluster ck_cluster MODIFY column IF EXISTS common_vsys_id Int64 default 1;
+ALTER table tsg_galaxy_v3.session_record_common_server_ip_local on cluster ck_cluster MODIFY column IF EXISTS common_vsys_id Int64 default 1;
+ALTER table tsg_galaxy_v3.session_record_http_domain_local on cluster ck_cluster MODIFY column IF EXISTS common_vsys_id Int64 default 1;
 
 
 drop view IF EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster;
