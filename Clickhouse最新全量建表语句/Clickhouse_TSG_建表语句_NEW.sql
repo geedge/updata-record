@@ -18,8 +18,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event_local ON CLUSTER ck_cl
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_log_id,common_recv_time)
-ORDER BY (common_log_id,common_recv_time,vsys_id);
+ORDER BY (vsys_id,common_recv_time,common_log_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.assessment_event ON CLUSTER ck_cluster
 (
@@ -61,7 +60,7 @@ ENGINE = Distributed('ck_cluster',
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local ON CLUSTER ck_cluster(
-log_id UInt64,
+ log_id UInt64,
  start_time Int64,
  end_time Int64,
  attack_type String,
@@ -76,8 +75,7 @@ log_id UInt64,
  bit_rate Int64,
  vsys_id Int64 DEFAULT 1
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(start_time)) 
-PRIMARY KEY (log_id, start_time, destination_ip) 
-ORDER BY (log_id, start_time, destination_ip,vsys_id) 
+ORDER BY (vsys_id,destination_ip,start_time,log_id) 
 SETTINGS index_granularity = 8192;
 
 
@@ -157,6 +155,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -218,13 +217,12 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record_local ON CLUSTER ck_cluster
 	gtp_end_user_ipv6 String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
-ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_data_center,common_recv_time,common_log_id);
 
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
-		common_recv_time Int64,
+	common_recv_time Int64,
 	common_log_id UInt64,
 	common_stream_trace_id UInt64,
 	common_direction Nullable(Int64),
@@ -264,6 +262,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_cluster(
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -366,6 +365,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.gtpc_record ON CLUSTER ck_query(
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -469,6 +469,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -681,8 +682,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record_local ON CLUSTER
 	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
-ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_data_center,common_device_group,common_recv_time,common_log_id);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cluster(
 	common_recv_time Int64,
@@ -725,6 +725,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_cl
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -979,6 +980,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.interim_session_record ON CLUSTER ck_qu
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -1233,6 +1235,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -1349,8 +1352,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record_local ON CLUSTER ck_
 
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_stream_trace_id,common_data_center,common_recv_time)
-ORDER BY (common_stream_trace_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_stream_trace_id,common_data_center,common_recv_time);
 
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluster(
@@ -1394,6 +1396,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_cluste
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -1551,6 +1554,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.transaction_record ON CLUSTER ck_query(
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -1708,6 +1712,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -1777,8 +1782,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local ON CLUSTER ck_cluster
 	rtp_pcap_path String,
 	rtp_originator_dir Int64
 )ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
-PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
-ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_data_center,common_recv_time,common_log_id);
 
 
 
@@ -1823,6 +1827,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_cluster(
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -1935,6 +1940,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record ON CLUSTER ck_query(
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2047,6 +2053,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2104,8 +2111,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event_local ON CLUST
 	pcap_storage_duration Int64
 )
 ENGINE =MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
-PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
-ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_policy_id,common_recv_time,common_log_id);
 
 
 
@@ -2150,6 +2156,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2250,6 +2257,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.sys_packet_capture_event ON CLUSTER ck_
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2350,6 +2358,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2562,8 +2571,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local ON CLUSTER ck_clus
 	rdp_cookie  String	
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
-PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
-ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_action,common_policy_id,common_recv_time,common_log_id);
 
 
 create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
@@ -2607,6 +2615,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_cluster (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -2861,6 +2870,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.security_event ON CLUSTER ck_query (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -3116,6 +3126,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -3241,8 +3252,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	rdp_cookie  String
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
-PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
-ORDER BY (common_log_id,common_policy_id,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_sub_action,common_policy_id,common_recv_time,common_log_id);
 
 
 
@@ -3287,6 +3297,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -3454,6 +3465,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -3621,6 +3633,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -3833,8 +3846,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local ON CLUSTER ck_clus
 	rdp_cookie  String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
-ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_data_center,common_device_group,common_recv_time,common_log_id);
 
 
 create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
@@ -3878,6 +3890,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_cluster (
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -4132,6 +4145,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.session_record ON CLUSTER ck_query (
 	common_server_location LowCardinality(String),
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label LowCardinality(String),
@@ -4386,6 +4400,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -4465,8 +4480,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_record_local ON CLUSTER ck_clust
 	radius_acct_authentic Int64
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-PRIMARY KEY (common_log_id,common_data_center,common_recv_time)
-ORDER BY (common_log_id,common_data_center,common_recv_time,common_vsys_id);
+ORDER BY (common_vsys_id,common_data_center,common_recv_time,common_log_id);
 
 
 
@@ -4511,6 +4525,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_cluster (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -4632,6 +4647,7 @@ create table IF NOT EXISTS tsg_galaxy_v3.radius_record ON CLUSTER ck_query (
 	common_server_location String,
 	common_server_asn String,
 	common_app_id String,
+	common_app_full_path String,
 	common_userdefine_app_name String,
 	common_app_identify_info  String,
 	common_app_label String,
@@ -4729,7 +4745,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip_local O
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_client_ip,common_server_ip,common_recv_time);
@@ -4751,7 +4769,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
 
@@ -4772,7 +4792,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_client_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_client_ip_local,rand());
 
 
@@ -4793,7 +4815,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip_local O
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (common_server_ip,common_client_ip,common_recv_time);
@@ -4815,7 +4839,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
@@ -4836,7 +4862,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_common_server_ip ON CLUS
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_common_server_ip_local,rand());
 
 
@@ -4856,7 +4884,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain_local ON CLU
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time))
 ORDER BY (http_domain,common_recv_time);
@@ -4878,7 +4908,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
 
@@ -4898,14 +4930,16 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_http_domain ON CLUSTER c
 	common_client_port Int64,
 	common_server_port Int64,
 	common_app_label LowCardinality(String),
-	common_direction Nullable(Int64)
+	common_direction Nullable(Int64),
+	common_data_center String,
+	common_device_group String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_http_domain_local,rand());
 
 
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
-CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_client_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_client_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction,common_data_center, common_device_group FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_http_domain ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_http_domain_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction,common_data_center, common_device_group FROM tsg_galaxy_v3.session_record_local;
+CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.common_server_ip ON CLUSTER ck_cluster TO tsg_galaxy_v3.session_record_common_server_ip_local AS SELECT common_log_id, common_recv_time, common_server_ip, common_client_ip, common_sled_ip, common_entrance_id, common_subscriber_id, common_stream_trace_id, http_domain, ssl_sni, common_schema_type, common_vsys_id, common_client_port, common_server_port, common_app_label, common_direction,common_data_center, common_device_group FROM tsg_galaxy_v3.session_record_local;
 
 
 
@@ -4919,8 +4953,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.radius_onff_log_local ON CLUSTER ck_clu
 	vsys_id Int64 DEFAULT 1
 )
 ENGINE=MergeTree PARTITION BY toYYYYMMDD(toDate(event_timestamp))
-PRIMARY KEY (account,event_timestamp)
-ORDER BY (account,event_timestamp,vsys_id);
+ORDER BY (vsys_id,account,event_timestamp);
 
 
 create table IF NOT EXISTS tsg_galaxy_v3.radius_onff_log ON CLUSTER ck_cluster(
@@ -4962,7 +4995,7 @@ common_recv_time Int64,
 common_entrance_id Int64,
 common_device_id String,
 common_egress_link_id Nullable(Int64),
-	common_ingress_link_id Nullable(Int64),
+common_ingress_link_id Nullable(Int64),
 common_policy_id Int64,
 common_user_region String,
 ad_method String,
