@@ -382,3 +382,16 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_rr_cname ON CLUSTER 
  external_query_num Int64,
  avg_response_latency_ms Nullable(Float64)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_dns_rr_cname_local', rand());
+
+
+ALTER table cyber_narrator_galaxy.metric_link_local on cluster ck_cluster add column IF NOT EXISTS client_zone  String after client_region;
+ALTER table cyber_narrator_galaxy.metric_link on cluster ck_cluster add column IF NOT EXISTS client_zone  String after client_region;
+ALTER table cyber_narrator_galaxy.metric_link on cluster ck_query add column IF NOT EXISTS client_zone  String after client_region;
+
+
+ALTER table cyber_narrator_galaxy.metric_link_local on cluster ck_cluster add column IF NOT EXISTS server_zone  String after server_region;
+ALTER table cyber_narrator_galaxy.metric_link on cluster ck_cluster add column IF NOT EXISTS server_zone  String after server_region;
+ALTER table cyber_narrator_galaxy.metric_link on cluster ck_query add column IF NOT EXISTS server_zone  String after server_region;
+
+
+
