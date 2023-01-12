@@ -394,4 +394,4 @@ ALTER table cyber_narrator_galaxy.metric_link on cluster ck_cluster add column I
 ALTER table cyber_narrator_galaxy.metric_link on cluster ck_query add column IF NOT EXISTS server_zone  String after server_region;
 
 
-
+alter table system.query_log on cluster ck_cluster modify TTL event_date + INTERVAL 30 DAY;
