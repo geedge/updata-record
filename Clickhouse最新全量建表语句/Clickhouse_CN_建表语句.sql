@@ -1689,5 +1689,3 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_rr_cname ON CLUSTER 
  external_query_num Int64,
  avg_response_latency_ms Nullable(Float64)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_dns_rr_cname_local', rand());
-
-alter table system.query_log on cluster ck_cluster modify TTL event_date + INTERVAL 30 DAY;
