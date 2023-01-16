@@ -5116,12 +5116,6 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,radius_onff_log_local,rand());
 
 
 
-create table IF NOT EXISTS `system`.tables_cluster ON CLUSTER ck_query as `system`.tables  ENGINE =Distributed(ck_all,`system`,tables,rand());
-create table IF NOT EXISTS `system`.disks_cluster ON CLUSTER ck_query as `system`.disks  ENGINE =Distributed(ck_all,`system`,disks,rand());
-create table IF NOT EXISTS `system`.parts_cluster ON CLUSTER ck_query as `system`.parts  ENGINE =Distributed(ck_all,`system`,parts,rand());
-create table IF NOT EXISTS `system`.query_log_cluster ON CLUSTER ck_query as `system`.query_log  ENGINE =Distributed(ck_all,`system`,query_log,rand());
-CREATE TABLE IF NOT EXISTS `system`.columns_cluster ON CLUSTER ck_query AS `system`.columns ENGINE=Distributed(ck_all,`system`,columns,rand());
-CREATE TABLE IF NOT EXISTS `system`.processes_cluster ON CLUSTER ck_query AS `system`.processes ENGINE=Distributed(ck_all,`system`,processes,rand());
 
   
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.active_defence_event_local ON CLUSTER ck_cluster(
@@ -5216,4 +5210,4 @@ alter table tsg_galaxy_v3.session_record_local on cluster ck_cluster add INDEX I
 alter table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
 alter table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add INDEX IF NOT EXISTS client_index common_client_ip type bloom_filter(0.05) GRANULARITY 1;
 
-alter table system.query_log on cluster ck_cluster modify TTL event_date + INTERVAL 30 DAY;
+
