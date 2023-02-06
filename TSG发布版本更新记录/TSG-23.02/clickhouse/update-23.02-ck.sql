@@ -42,6 +42,9 @@ ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXIS
 
 
 
+ALTER table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_flags_identify_info  String after common_flags;
+ALTER table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_flags_identify_info  String after common_flags;
+ALTER table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_flags_identify_info  String after common_flags;
 
 
 
