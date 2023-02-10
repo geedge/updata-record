@@ -1,0 +1,15 @@
+RENAME TABLE tsg_galaxy_tmp.dos_event_local TO tsg_galaxy_v3.dos_event_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.gtpc_record_local TO tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.voip_record_local TO tsg_galaxy_v3.voip_record_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.security_event_local TO tsg_galaxy_v3.security_event_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.proxy_event_local TO tsg_galaxy_v3.proxy_event_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.session_record_local TO tsg_galaxy_v3.session_record_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.radius_record_local TO tsg_galaxy_v3.radius_record_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.sys_packet_capture_event_local TO tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.interim_session_record_local TO tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.radius_onff_log_local TO tsg_galaxy_v3.radius_onff_log_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.assessment_event_local TO tsg_galaxy_v3.assessment_event_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.transaction_record_local TO tsg_galaxy_v3.transaction_record_local on cluster ck_cluster; 
+RENAME TABLE tsg_galaxy_tmp.session_record_common_client_ip_local TO tsg_galaxy_tmp.session_record_common_client_ip_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.session_record_common_server_ip_local TO tsg_galaxy_tmp.session_record_common_server_ip_local on cluster ck_cluster;
+RENAME TABLE tsg_galaxy_tmp.session_record_http_domain_local TO tsg_galaxy_tmp.session_record_http_domain_local on cluster ck_cluster;
