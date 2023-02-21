@@ -1,5 +1,5 @@
 create database IF NOT EXISTS cyber_narrator_galaxy ON CLUSTER ck_cluster;
-create database IF NOT EXISTS cyber_narrator_galaxy ON CLUSTER ck_query; 
+create database IF NOT EXISTS cyber_narrator_galaxy ON CLUSTER ck_query;
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUSTER ck_cluster (
