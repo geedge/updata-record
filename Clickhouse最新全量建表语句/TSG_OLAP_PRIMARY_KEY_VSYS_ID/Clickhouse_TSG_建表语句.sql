@@ -61,6 +61,7 @@ ENGINE = Distributed('ck_cluster',
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local ON CLUSTER ck_cluster(
  log_id UInt64,
+ profile_id UInt64,
  start_time Int64,
  end_time Int64,
  attack_type String,
@@ -81,6 +82,7 @@ SETTINGS index_granularity = 8192;
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_cluster(
  log_id UInt64,
+ profile_id UInt64,
  start_time Int64,
  end_time Int64,
  attack_type String,
@@ -98,6 +100,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_cluster(
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event ON CLUSTER ck_query(
  log_id UInt64,
+ profile_id UInt64,
  start_time Int64,
  end_time Int64,
  attack_type String,
