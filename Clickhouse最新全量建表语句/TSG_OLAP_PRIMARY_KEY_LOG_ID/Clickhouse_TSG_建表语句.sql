@@ -3355,7 +3355,27 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	rdp_keyboard_layout  String,
 	rdp_client_channels  String,
 	rdp_security_protocol  String,
-	rdp_cookie  String
+	rdp_cookie  String,
+	ssl_version String,
+	ssl_sni String,
+	ssl_san String,
+	ssl_cn String,
+	ssl_con_latency_ms Int64,
+	ssl_ja3_fingerprint String,
+	ssl_ja3_hash String,
+	ssl_ja3s_fingerprint String,
+	ssl_ja3s_hash String,
+	ssl_cert_issuer String,
+	ssl_cert_subject String,
+	intercept_pinning_status Int64,
+	intercept_status Int64,
+	intercept_passthrough_reason String,
+	intercept_server_side_latency Int64,
+	intercept_client_side_latency Int64,
+	intercept_server_side_version String,
+	intercept_client_side_version String,
+	intercept_cert_verify Int64,
+	intercept_error String
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
 PRIMARY KEY (common_log_id,common_policy_id,common_recv_time)
@@ -3532,7 +3552,27 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	rdp_keyboard_layout  String,
 	rdp_client_channels  String,
 	rdp_security_protocol  String,
-	rdp_cookie  String
+	rdp_cookie  String,
+	ssl_version String,
+	ssl_sni String,
+	ssl_san String,
+	ssl_cn String,
+	ssl_con_latency_ms Int64,
+	ssl_ja3_fingerprint String,
+	ssl_ja3_hash String,
+	ssl_ja3s_fingerprint String,
+	ssl_ja3s_hash String,
+	ssl_cert_issuer String,
+	ssl_cert_subject String,
+	intercept_pinning_status Int64,
+	intercept_status Int64,
+	intercept_passthrough_reason String,
+	intercept_server_side_latency Int64,
+	intercept_client_side_latency Int64,
+	intercept_server_side_version String,
+	intercept_client_side_version String,
+	intercept_cert_verify Int64,
+	intercept_error String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
 
@@ -3705,7 +3745,27 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	rdp_keyboard_layout  String,
 	rdp_client_channels  String,
 	rdp_security_protocol  String,
-	rdp_cookie  String
+	rdp_cookie  String,
+	ssl_version String,
+	ssl_sni String,
+	ssl_san String,
+	ssl_cn String,
+	ssl_con_latency_ms Int64,
+	ssl_ja3_fingerprint String,
+	ssl_ja3_hash String,
+	ssl_ja3s_fingerprint String,
+	ssl_ja3s_hash String,
+	ssl_cert_issuer String,
+	ssl_cert_subject String,
+	intercept_pinning_status Int64,
+	intercept_status Int64,
+	intercept_passthrough_reason String,
+	intercept_server_side_latency Int64,
+	intercept_client_side_latency Int64,
+	intercept_server_side_version String,
+	intercept_client_side_version String,
+	intercept_cert_verify Int64,
+	intercept_error String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
 
