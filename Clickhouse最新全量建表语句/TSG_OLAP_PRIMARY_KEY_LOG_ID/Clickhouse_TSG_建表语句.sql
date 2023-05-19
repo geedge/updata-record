@@ -3352,14 +3352,14 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local ON CLUSTER ck_cluster
 	ssl_ja3s_hash String,
 	ssl_cert_issuer String,
 	ssl_cert_subject String,
-	intercept_pinning_status Int64,
-	intercept_status Int64,
+	intercept_pinning_status Nullable(Int64),
+	intercept_status Nullable(Int64),
 	intercept_passthrough_reason String,
-	intercept_server_side_latency Int64,
-	intercept_client_side_latency Int64,
+	intercept_server_side_latency Nullable(Int64),
+	intercept_client_side_latency Nullable(Int64),
 	intercept_server_side_version String,
 	intercept_client_side_version String,
-	intercept_cert_verify Int64,
+	intercept_cert_verify Nullable(Int64),
 	intercept_error String
 )
 ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) 
@@ -3534,14 +3534,14 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_cluster (
 	ssl_ja3s_hash String,
 	ssl_cert_issuer String,
 	ssl_cert_subject String,
-	intercept_pinning_status Int64,
-	intercept_status Int64,
+	intercept_pinning_status Nullable(Int64),
+	intercept_status Nullable(Int64),
 	intercept_passthrough_reason String,
-	intercept_server_side_latency Int64,
-	intercept_client_side_latency Int64,
+	intercept_server_side_latency Nullable(Int64),
+	intercept_client_side_latency Nullable(Int64),
 	intercept_server_side_version String,
 	intercept_client_side_version String,
-	intercept_cert_verify Int64,
+	intercept_cert_verify Nullable(Int64),
 	intercept_error String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
@@ -3712,14 +3712,14 @@ create table IF NOT EXISTS tsg_galaxy_v3.proxy_event ON CLUSTER ck_query (
 	ssl_ja3s_hash String,
 	ssl_cert_issuer String,
 	ssl_cert_subject String,
-	intercept_pinning_status Int64,
-	intercept_status Int64,
+	intercept_pinning_status Nullable(Int64),
+	intercept_status Nullable(Int64),
 	intercept_passthrough_reason String,
-	intercept_server_side_latency Int64,
-	intercept_client_side_latency Int64,
+	intercept_server_side_latency Nullable(Int64),
+	intercept_client_side_latency Nullable(Int64),
 	intercept_server_side_version String,
 	intercept_client_side_version String,
-	intercept_cert_verify Int64,
+	intercept_cert_verify Nullable(Int64),
 	intercept_error String
 ) ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,proxy_event_local,rand());
 
