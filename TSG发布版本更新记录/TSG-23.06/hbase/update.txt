@@ -1,0 +1,3 @@
+alter 'tsg_galaxy:relation_user_teid',{NAME => 'common',TTL=> '604800'}, {NAME => 'gtp',TTL=> '604800'}
+alter 'tsg_galaxy:relation_framedip_account',{NAME => 'common',TTL=> '2592000'}, {NAME => 'radius',TTL=> '2592000'}
+alter 'tsg_galaxy:relation_account_framedip',{NAME => 'common',TTL=> '2592000'}, {NAME => 'radius',TTL=> '2592000'}
