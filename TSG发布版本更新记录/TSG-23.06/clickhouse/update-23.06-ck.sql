@@ -11,149 +11,149 @@ ALTER TABLE tsg_galaxy_v3.proxy_event on cluster ck_cluster DROP COLUMN IF  EXIS
 ALTER TABLE tsg_galaxy_v3.proxy_event on cluster ck_query DROP COLUMN IF  EXISTS rdp_encryption_method, DROP COLUMN IF  EXISTS rdp_encryption_level, DROP COLUMN IF  EXISTS rdp_certificate_permanent, DROP COLUMN IF  EXISTS rdp_certificate_count, DROP COLUMN IF  EXISTS rdp_certificate_type, DROP COLUMN IF  EXISTS rdp_requested_color_depth, DROP COLUMN IF  EXISTS rdp_desktop_height, DROP COLUMN IF  EXISTS rdp_desktop_width, DROP COLUMN IF  EXISTS rdp_client_product_id, DROP COLUMN IF  EXISTS rdp_client_name, DROP COLUMN IF  EXISTS rdp_client_version, DROP COLUMN IF  EXISTS rdp_keyboard_layout, DROP COLUMN IF  EXISTS rdp_client_channels, DROP COLUMN IF  EXISTS rdp_security_protocol, DROP COLUMN IF  EXISTS rdp_cookie;
 
 
-ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_outgoing_destination_mac  String after common_server_domain;
-
-
-ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-
-ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_incoming_destination_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_out_dst_mac  String after common_server_domain;
 
 
-ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
-ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_outgoing_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_in_dst_mac  String after common_server_domain;
 
 
-ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
 
-ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
-ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_incoming_source_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_out_src_mac  String after common_phone_number;
+
+
+ALTER  table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.interim_session_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.interim_session_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.sys_packet_capture_event on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.radius_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.radius_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.gtpc_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.gtpc_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+
+ALTER  table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
+ALTER  table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS common_in_src_mac  String after common_phone_number;
