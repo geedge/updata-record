@@ -1,4 +1,4 @@
- CREATE TABLE cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
+CREATE TABLE if not exists cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
 (
     app_name String,
     fqdn String,
@@ -11,10 +11,9 @@
     update_time Int64
 )
 ENGINE = MergeTree
-ORDER BY (common_server_ip,
- common_server_port,
- common_app_label,
- domain)
+ORDER BY (ip,
+ fqdn,
+ app_name)
 TTL toDateTime(update_time) + toIntervalSecond(2592000),
  toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
  fqdn,
@@ -59,7 +58,7 @@ ENGINE = Distributed('ck_cluster',
  rand());
   
  
-  CREATE TABLE cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster
+  CREATE TABLE if not exists cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster
 (
     ip String,
     l7_protocol String,
@@ -145,4 +144,3 @@ SELECT
 FROM cyber_narrator_galaxy.session_record_cn_local c1
 where common_l4_protocol ='IPv4_TCP' OR common_server_port in(53,443)
 GROUP BY ip,l7_protocol,port;  
- 
