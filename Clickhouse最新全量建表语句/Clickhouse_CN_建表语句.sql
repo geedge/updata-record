@@ -1709,7 +1709,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_rr_cname ON CLUSTER 
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_dns_rr_cname_local', rand());
 
 
- CREATE TABLE cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
+CREATE TABLE if not exists cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
 (
     app_name String,
     fqdn String,
@@ -1722,10 +1722,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_rr_cname ON CLUSTER 
     update_time Int64
 )
 ENGINE = MergeTree
-ORDER BY (common_server_ip,
- common_server_port,
- common_app_label,
- domain)
+ORDER BY (ip,
+ fqdn,
+ app_name)
 TTL toDateTime(update_time) + toIntervalSecond(2592000),
  toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
  fqdn,
@@ -1770,7 +1769,7 @@ ENGINE = Distributed('ck_cluster',
  rand());
   
  
-  CREATE TABLE cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster
+  CREATE TABLE if not exists cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster
 (
     ip String,
     l7_protocol String,
