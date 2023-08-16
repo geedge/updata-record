@@ -252,3 +252,280 @@ drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_quer
 drop view IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation_view on cluster ck_cluster;
 drop view IF EXISTS cyber_narrator_galaxy.cn_entity_relation_view on cluster ck_cluster;
 
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = MergeTree
+ORDER BY (ip,
+ domain,
+ app_name)
+TTL toDateTime(update_time) + toIntervalSecond(2592000),
+ toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
+ domain,
+ app_name SET create_time = min(create_time),
+ update_time = max(update_time),
+ ip_country_region = anyLast(ip_country_region),
+ ip_super_admin_area = anyLast(ip_super_admin_area),
+ ip_admin_area = anyLast(ip_admin_area),
+ ip_asn = anyLast(ip_asn),
+ ip_isp = anyLast(ip_isp),
+ domain_category_name = anyLast(domain_category_name),
+ domain_category_group = anyLast(domain_category_group),
+ app_category = anyLast(app_category),
+ app_subcategory = anyLast(app_subcategory), 
+ entity_tags = groupUniqArrayArray(entity_tags);
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_query
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_entity_relation_local',
+ rand());
+
+ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_cluster
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_entity_relation_local',
+ rand());
+ 
+
+CREATE TABLE tsg_galaxy_v3.ttt
+(
+    `common_recv_time` Int64,
+    `common_recv_time_float` Float64,
+    `common_recv_time_long` Int64)
+ENGINE = MergeTree
+PARTITION BY toYYYYMMDD(toDate(common_recv_time))
+ORDER BY common_recv_time
+
+
+  CREATE MATERIALIZED VIEW  if not exists cyber_narrator_galaxy.cn_entity_relation_view  on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    common_app_label AS app_name,
+    domain AS domain,
+    common_server_ip AS ip,
+    anyLast(server_country_region) AS ip_country_region,
+    anyLast(server_super_admin_area) AS ip_super_admin_area,
+    anyLast(server_admin_area) AS ip_admin_area,
+    anyLast(server_asn) AS ip_asn,
+    anyLast(server_isp) AS ip_isp,
+    anyLast(domain_category_name) AS domain_category_name,
+    anyLast(domain_category_group) AS domain_category_group,
+    anyLast(app_category) AS app_category,
+    anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(arrayConcat(server_ip_tags,domain_tags,app_tags)) AS entity_tags,
+    min(c1.common_recv_time) AS create_time,
+    max(c1.common_recv_time) AS update_time
+FROM cyber_narrator_galaxy.session_record_cn_local AS c1
+WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
+ 443))
+GROUP BY
+    ip,
+    app_name,
+    domain;
+   
+   
+  CREATE MATERIALIZED VIEW  if not exists  cyber_narrator_galaxy.cn_entity_relation_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    app_name AS app_name,
+    domain AS domain,
+    ip AS ip,
+    anyLast(ip_country_region) AS ip_country_region,
+    anyLast(ip_super_admin_area) AS ip_super_admin_area,
+    anyLast(ip_admin_area) AS ip_admin_area,
+    anyLast(ip_asn) AS ip_asn,
+    anyLast(ip_isp) AS ip_isp,
+    anyLast(domain_category_name) AS domain_category_name,
+    anyLast(domain_category_group) AS domain_category_group,
+    anyLast(app_category) AS app_category,
+    anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(entity_tags) AS entity_tags,
+    min(c1.start_time) AS create_time,
+    max(c1.start_time) AS update_time
+FROM cyber_narrator_galaxy.metric_relation_local AS c1
+GROUP BY
+    ip,
+    app_name,
+    domain;   
+ 
+
+   
+ 
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_local on cluster ck_cluster
+(
+    ip String,
+    l7_protocol String,
+    port Int64,
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = MergeTree
+ORDER BY (ip,
+ port,
+ l7_protocol)
+TTL toDateTime(update_time) + toIntervalSecond(2592000),
+ toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
+ port,
+ l7_protocol SET create_time = min(create_time),
+ update_time = max(update_time);
+ 
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute on cluster ck_query
+(
+    ip String,
+    l7_protocol String,
+    port Int64,
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_ip_dynamic_attribute_local',
+ rand());
+
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute on cluster ck_cluster
+(
+    ip String,
+    l7_protocol String,
+    port Int64,
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_ip_dynamic_attribute_local',
+ rand());
+  
+ 
+ CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
+(
+    ip String,
+    l7_protocol String,
+    port Int64,
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    common_server_ip AS ip,
+    common_l7_protocol AS l7_protocol,
+    common_server_port AS port,
+    min(c1.common_recv_time) AS create_time,
+    max(c1.common_recv_time) AS update_time
+FROM cyber_narrator_galaxy.session_record_cn_local AS c1
+WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
+ 443))
+GROUP BY
+    ip,
+    l7_protocol,
+    port;
+ 
+ 
+ 
+ CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
+(
+    ip String,
+    l7_protocol String,
+    port Int64,
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    ip AS ip,
+    l7_protocol AS l7_protocol,
+    port AS port,
+    min(c1.stat_time) AS create_time,
+    max(c1.stat_time) AS update_time
+FROM cyber_narrator_galaxy.metric_ip_dynamic_attribute_local AS c1
+GROUP BY
+    ip,
+    l7_protocol,
+    port;
+ 
+
