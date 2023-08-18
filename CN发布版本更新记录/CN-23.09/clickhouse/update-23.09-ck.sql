@@ -428,8 +428,8 @@ SELECT
     anyLast(app_category) AS app_category,
     anyLast(app_subcategory) AS app_subcategory,
     groupUniqArrayArray(entity_tags) AS entity_tags,
-    min(c1.start_time) AS create_time,
-    max(c1.start_time) AS update_time
+    min(c1.stat_time) AS create_time,
+    max(c1.stat_time) AS update_time
 FROM cyber_narrator_galaxy.metric_relation_local AS c1
 GROUP BY
     ip,
