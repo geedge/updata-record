@@ -339,16 +339,6 @@ ENGINE = Distributed('ck_cluster',
  'cyber_narrator_galaxy',
  'cn_entity_relation_local',
  rand());
- 
-
-CREATE TABLE tsg_galaxy_v3.ttt
-(
-    `common_recv_time` Int64,
-    `common_recv_time_float` Float64,
-    `common_recv_time_long` Int64)
-ENGINE = MergeTree
-PARTITION BY toYYYYMMDD(toDate(common_recv_time))
-ORDER BY common_recv_time
 
 
   CREATE MATERIALIZED VIEW  if not exists cyber_narrator_galaxy.cn_entity_relation_view  on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
@@ -394,7 +384,6 @@ GROUP BY
     app_name,
     domain;
    
-   
   CREATE MATERIALIZED VIEW  if not exists  cyber_narrator_galaxy.cn_entity_relation_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
 (
 
@@ -437,8 +426,6 @@ GROUP BY
     domain;   
  
 
-   
- 
  CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_local on cluster ck_cluster
 (
     ip String,
@@ -482,8 +469,8 @@ ENGINE = Distributed('ck_cluster',
  'cyber_narrator_galaxy',
  'cn_ip_dynamic_attribute_local',
  rand());
-  
- 
+
+
  CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (
     ip String,
@@ -505,9 +492,7 @@ GROUP BY
     ip,
     l7_protocol,
     port;
- 
- 
- 
+
  CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (
     ip String,
@@ -527,5 +512,3 @@ GROUP BY
     ip,
     l7_protocol,
     port;
- 
-

@@ -4,8 +4,8 @@ create database IF NOT EXISTS cyber_narrator_galaxy ON CLUSTER ck_query;
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUSTER ck_cluster (
   common_recv_time  Int64,
-  common_direction  Int64,
-  common_stream_dir  Int64,
+  common_log_id  UInt64,
+  common_flags  UInt64,
   common_start_time Int64,
   common_end_time Int64,
   common_con_duration_ms  Int64,
@@ -14,14 +14,12 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
   common_server_ip  String,
   common_client_port  Int64,
   common_server_port  Int64,
-  common_server_fqdn  String,
   common_app_label  String,
-  common_app_id  String,
+  common_app_full_path  String,
   common_l4_protocol  String,
   common_l7_protocol  String,
-  common_isp  String,
-  common_egress_link_id  Nullable(Int64),
-  common_ingress_link_id  Nullable(Int64),
+  common_out_link_id  Nullable(Int64),
+  common_in_link_id  Nullable(Int64),
   http_host  String,
   http_url  String,
   http_cookie  String,
@@ -33,8 +31,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
   ssl_sni  String,
   ssl_version String,
   ssl_san  String,
-  ssl_ja3s_fingerprint String,
-  ssl_ja3_fingerprint  String,
   ssl_ja3_hash  String,
   ssl_ja3s_hash String,
   ssl_cert_issuer  String,
@@ -62,52 +58,39 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
   stratum_cryptocurrency String,
   stratum_mining_pools String,
   stratum_mining_program String,
-  egress_link_direction  String,
-  ingress_link_direction  String,
+  out_link_direction  String,
+  in_link_direction  String,
   domain  String,
+  domain_sld  String,
   domain_category_name  String,
   domain_category_group  String,
-  domain_reputation_score  Nullable(Int64),
   domain_reputation_level  String,
   domain_icp_company_name  String,
   domain_whois_org  String,
   domain_tags Array(String),
-  http_host_tags Array(String),
-  ssl_sni_tags Array(String),
   client_zone  String,
-  client_country  String,
-  client_province  String,
-  client_region  String,
+  client_country_region  String,
+  client_super_admin_area  String,
+  client_admin_area  String,
   client_longitude  Nullable(Float64),
   client_latitude  Nullable(Float64),
   client_isp  String,
   client_asn String,
-  client_whois_owner  String,
-  client_idc_renter  String,
   client_ip_tags Array(String),
   server_zone  String,
-  server_country  String,
-  server_province  String,
-  server_region  String,
+  server_country_region  String,
+  server_super_admin_area  String,
+  server_admin_area  String,
   server_longitude  Nullable(Float64),
   server_latitude  Nullable(Float64),
   server_isp  String,
   server_asn String,
-  server_whois_owner  String,
-  server_idc_renter  String,
   server_ip_tags Array(String),
   app_category  String,
   app_subcategory  String,
-  app_is_protocol  Nullable(Int64),
   app_company  String,
   app_company_category  String,
-  app_risk  Nullable(Int64),
   app_tags Array(String),
-  dns_server_role  Array(String),
-  dns_server_org  String,
-  dns_server_os  String,
-  dns_server_software  String,
-  dns_protocol  String,
   common_c2s_pkt_num  Int64,
   common_c2s_byte_num  Int64,
   common_s2c_pkt_num  Int64,
@@ -129,8 +112,8 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck_cluster (
   common_recv_time  Int64,
-  common_direction  Int64,
-  common_stream_dir  Int64,
+  common_log_id  UInt64,
+  common_flags  UInt64,
   common_start_time Int64,
   common_end_time Int64,
   common_con_duration_ms  Int64,
@@ -139,14 +122,12 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   common_server_ip  String,
   common_client_port  Int64,
   common_server_port  Int64,
-  common_server_fqdn  String,
   common_app_label  String,
-  common_app_id  String,
+  common_app_full_path  String,
   common_l4_protocol  String,
   common_l7_protocol  String,
-  common_isp  String,
-  common_egress_link_id  Nullable(Int64),
-  common_ingress_link_id  Nullable(Int64),
+  common_out_link_id  Nullable(Int64),
+  common_in_link_id  Nullable(Int64),
   http_host  String,
   http_url  String,
   http_cookie  String,
@@ -158,8 +139,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   ssl_sni  String,
   ssl_version String,
   ssl_san  String,
-  ssl_ja3s_fingerprint String,
-  ssl_ja3_fingerprint  String,
   ssl_ja3_hash  String,
   ssl_ja3s_hash String,
   ssl_cert_issuer  String,
@@ -187,52 +166,40 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   stratum_cryptocurrency String,
   stratum_mining_pools String,
   stratum_mining_program String,
-  egress_link_direction  String,
-  ingress_link_direction  String,
+  out_link_direction  String,
+  in_link_direction  String,
   domain  String,
+  domain_sld  String,
   domain_category_name  String,
   domain_category_group  String,
-  domain_reputation_score  Nullable(Int64),
   domain_reputation_level  String,
   domain_icp_company_name  String,
   domain_whois_org  String,
   domain_tags Array(String),
-  http_host_tags Array(String),
-  ssl_sni_tags Array(String),
   client_zone  String,
-  client_country  String,
-  client_province  String,
-  client_region  String,
+  client_country_region  String,
+  client_super_admin_area  String,
+  client_admin_area  String,
   client_longitude  Nullable(Float64),
   client_latitude  Nullable(Float64),
   client_isp  String,
   client_asn String,
-  client_whois_owner  String,
-  client_idc_renter  String,
   client_ip_tags Array(String),
   server_zone  String,
-  server_country  String,
-  server_province  String,
-  server_region  String,
+  server_country_region  String,
+  server_super_admin_area  String,
+  server_admin_area  String,
   server_longitude  Nullable(Float64),
   server_latitude  Nullable(Float64),
   server_isp  String,
   server_asn String,
-  server_whois_owner  String,
-  server_idc_renter  String,
   server_ip_tags Array(String),
   app_category  String,
   app_subcategory  String,
-  app_is_protocol  Nullable(Int64),
   app_company  String,
   app_company_category  String,
-  app_risk  Nullable(Int64),
   app_tags Array(String),
-  dns_server_role  Array(String),
-  dns_server_org  String,
-  dns_server_os  String,
-  dns_server_software  String,
-  dns_protocol  String,
+
   common_c2s_pkt_num  Int64,
   common_c2s_byte_num  Int64,
   common_s2c_pkt_num  Int64,
@@ -254,8 +221,8 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck_query (
   common_recv_time  Int64,
-  common_direction  Int64,
-  common_stream_dir  Int64,
+  common_log_id  UInt64,
+  common_flags  UInt64,
   common_start_time Int64,
   common_end_time Int64,
   common_con_duration_ms  Int64,
@@ -264,14 +231,12 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   common_server_ip  String,
   common_client_port  Int64,
   common_server_port  Int64,
-  common_server_fqdn  String,
   common_app_label  String,
-  common_app_id  String,
+  common_app_full_path  String,
   common_l4_protocol  String,
   common_l7_protocol  String,
-  common_isp  String,
-  common_egress_link_id  Nullable(Int64),
-  common_ingress_link_id  Nullable(Int64),
+  common_out_link_id  Nullable(Int64),
+  common_in_link_id  Nullable(Int64),
   http_host  String,
   http_url  String,
   http_cookie  String,
@@ -283,8 +248,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   ssl_sni  String,
   ssl_version String,
   ssl_san  String,
-  ssl_ja3s_fingerprint String,
-  ssl_ja3_fingerprint  String,
   ssl_ja3_hash  String,
   ssl_ja3s_hash String,
   ssl_cert_issuer  String,
@@ -312,52 +275,39 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
   stratum_cryptocurrency String,
   stratum_mining_pools String,
   stratum_mining_program String,
-  egress_link_direction  String,
-  ingress_link_direction  String,
+  out_link_direction  String,
+  in_link_direction  String,
   domain  String,
+  domain_sld  String,
   domain_category_name  String,
   domain_category_group  String,
-  domain_reputation_score  Nullable(Int64),
   domain_reputation_level  String,
   domain_icp_company_name  String,
   domain_whois_org  String,
   domain_tags Array(String),
-  http_host_tags Array(String),
-  ssl_sni_tags Array(String),
   client_zone  String,
-  client_country  String,
-  client_province  String,
-  client_region  String,
+  client_country_region  String,
+  client_super_admin_area  String,
+  client_admin_area  String,
   client_longitude  Nullable(Float64),
   client_latitude  Nullable(Float64),
   client_isp  String,
   client_asn String,
-  client_whois_owner  String,
-  client_idc_renter  String,
   client_ip_tags Array(String),
   server_zone  String,
-  server_country  String,
-  server_province  String,
-  server_region  String,
+  server_country_region  String,
+  server_super_admin_area  String,
+  server_admin_area  String,
   server_longitude  Nullable(Float64),
   server_latitude  Nullable(Float64),
   server_isp  String,
   server_asn String,
-  server_whois_owner  String,
-  server_idc_renter  String,
   server_ip_tags Array(String),
   app_category  String,
   app_subcategory  String,
-  app_is_protocol  Nullable(Int64),
   app_company  String,
   app_company_category  String,
-  app_risk  Nullable(Int64),
   app_tags Array(String),
-  dns_server_role  Array(String),
-  dns_server_org  String,
-  dns_server_os  String,
-  dns_server_software  String,
-  dns_protocol  String,
   common_c2s_pkt_num  Int64,
   common_c2s_byte_num  Int64,
   common_s2c_pkt_num  Int64,
@@ -484,115 +434,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip ON CLUSTER ck_query (
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_local', rand());
 
 
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region_local ON CLUSTER ck_cluster (
- country String,
- province String,
- city String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,country,province,city) SETTINGS index_granularity = 8192;
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region ON CLUSTER ck_cluster (
- country String,
- province String,
- city String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_region_local', rand());
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region ON CLUSTER ck_query (
- country String,
- province String,
- city String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_region_local', rand());
-
-
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_asn_local ON CLUSTER ck_cluster (
  asn String,
  isp String,
@@ -697,109 +538,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_asn ON CLUSTER ck_query 
  avg_http_response_latency_ms Nullable(Float64),
  avg_ssl_con_latency_ms Nullable(Float64)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_asn_local', rand());
-
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_idc_renter_local ON CLUSTER ck_cluster (
- idc_renter String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,idc_renter) SETTINGS index_granularity = 8192;
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_idc_renter ON CLUSTER ck_cluster (
- idc_renter String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_idc_renter_local', rand());
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_idc_renter ON CLUSTER ck_query (
- idc_renter String,
- side String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_idc_renter_local', rand());
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_application_local ON CLUSTER ck_cluster (
@@ -913,6 +651,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_application ON CLUSTER c
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain_local ON CLUSTER ck_cluster (
  domain String,
+ domain_sld String,
  domain_category_name String,
  domain_category_group String,
  stat_time Int64,
@@ -948,6 +687,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain_local ON CLUSTER 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain ON CLUSTER ck_cluster (
  domain String,
+ domain_sld String,
  domain_category_name String,
  domain_category_group String,
  stat_time Int64,
@@ -983,6 +723,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain ON CLUSTER ck_clu
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain ON CLUSTER ck_query (
  domain String,
+ domain_sld String,
  domain_category_name String,
  domain_category_group String,
  stat_time Int64,
@@ -1015,206 +756,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_domain ON CLUSTER ck_que
  avg_http_response_latency_ms Nullable(Float64),
  avg_ssl_con_latency_ms Nullable(Float64)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_domain_local', rand());
-
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_http_host_local ON CLUSTER ck_cluster (
- http_host String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,http_host) SETTINGS index_granularity = 8192;
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_http_host ON CLUSTER ck_cluster (
- http_host String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_http_host_local', rand());
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_http_host ON CLUSTER ck_query (
- http_host String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_http_host_local', rand());
-
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ssl_sni_local ON CLUSTER ck_cluster (
- ssl_sni String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,ssl_sni) SETTINGS index_granularity = 8192;
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ssl_sni ON CLUSTER ck_cluster (
- ssl_sni String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ssl_sni_local', rand());
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ssl_sni ON CLUSTER ck_query (
- ssl_sni String,
- stat_time Int64,
- common_c2s_pkt_num Int64,
- common_c2s_byte_num Int64,
- common_s2c_pkt_num Int64,
- common_s2c_byte_num Int64,
- common_sessions Int64,
- traffic_inbound_byte Int64,
- traffic_inbound_pkt Int64,
- traffic_outbound_byte Int64,
- traffic_outbound_pkt Int64,
- traffic_internal_byte Int64,
- traffic_internal_pkt Int64,
- traffic_through_byte Int64,
- traffic_through_pkt Int64,
- c2s_tcp_lostlen_ratio Nullable(Float64),
- s2c_tcp_lostlen_ratio Nullable(Float64),
- tcp_lostlen_ratio Nullable(Float64),
- c2s_tcp_unorder_num_ratio Nullable(Float64),
- s2c_tcp_unorder_num_ratio Nullable(Float64),
- tcp_unorder_num_ratio Nullable(Float64),
- c2s_byte_retrans_ratio Nullable(Float64),
- s2c_byte_retrans_ratio Nullable(Float64),
- byte_retrans_ratio Nullable(Float64),
- c2s_pkt_retrans_ratio Nullable(Float64),
- s2c_pkt_retrans_ratio Nullable(Float64),
- pkt_retrans_ratio Nullable(Float64),
- avg_establish_latency_ms Nullable(Float64),
- avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ssl_sni_local', rand());
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_protocol_local ON CLUSTER ck_cluster (
@@ -1321,18 +862,18 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_protocol ON CLUSTER ck_q
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link_local ON CLUSTER ck_cluster (
- client_country  String,
- client_province String,
- client_region String,
+ client_country_region  String,
+ client_super_admin_area String,
+ client_admin_area String,
  client_zone String,
- server_country String,
- server_province String,
- server_region String,
+ server_country_region String,
+ server_super_admin_area String,
+ server_admin_area String,
  server_zone String,
- common_egress_link_id Int64,
- common_ingress_link_id Int64,
- egress_link_direction String,
- ingress_link_direction String,
+ common_out_link_id Int64,
+ common_in_link_id Int64,
+ out_link_direction String,
+ in_link_direction String,
  stat_time Int64,
  common_c2s_pkt_num Int64,
  common_c2s_byte_num Int64,
@@ -1365,18 +906,18 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link_local ON CLUSTER ck
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time) SETTINGS index_granularity = 8192;
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link ON CLUSTER ck_cluster (
- client_country  String,
- client_province String,
- client_region String,
+ client_country_region  String,
+ client_super_admin_area String,
+ client_admin_area String,
  client_zone String,
- server_country String,
- server_province String,
- server_region String,
+ server_country_region String,
+ server_super_admin_area String,
+ server_admin_area String,
  server_zone String,
- common_egress_link_id Int64,
- common_ingress_link_id Int64,
- egress_link_direction String,
- ingress_link_direction String,
+ common_out_link_id Int64,
+ common_in_link_id Int64,
+ out_link_direction String,
+ in_link_direction String,
  stat_time Int64,
  common_c2s_pkt_num Int64,
  common_c2s_byte_num Int64,
@@ -1409,18 +950,18 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link ON CLUSTER ck_clust
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_link_local', rand());
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link ON CLUSTER ck_query (
- client_country  String,
- client_province String,
- client_region String,
+ client_country_region  String,
+ client_super_admin_area String,
+ client_admin_area String,
  client_zone String,
- server_country String,
- server_province String,
- server_region String,
+ server_country_region String,
+ server_super_admin_area String,
+ server_admin_area String,
  server_zone String,
- common_egress_link_id Int64,
- common_ingress_link_id Int64,
- egress_link_direction String,
- ingress_link_direction String,
+ common_out_link_id Int64,
+ common_in_link_id Int64,
+ out_link_direction String,
+ in_link_direction String,
  stat_time Int64,
  common_c2s_pkt_num Int64,
  common_c2s_byte_num Int64,
@@ -1455,10 +996,10 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_link ON CLUSTER ck_query
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip_local ON CLUSTER ck_cluster (
  server_ip String,
- server_country String,
+ server_country_region String,
+ server_super_admin_area String,
  server_city String,
  server_isp String,
- server_org String,
  server_role Array(String),
  stat_time Int64,
  query_num Int64,
@@ -1471,10 +1012,10 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip_local ON C
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip ON CLUSTER ck_cluster (
  server_ip String,
- server_country String,
+ server_country_region String,
+ server_super_admin_area String,
  server_city String,
  server_isp String,
- server_org String,
  server_role Array(String),
  stat_time Int64,
  query_num Int64,
@@ -1487,10 +1028,10 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip ON CLUSTER
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip ON CLUSTER ck_query (
  server_ip String,
- server_country String,
+ server_country_region String,
+ server_super_admin_area String,
  server_city String,
  server_isp String,
- server_org String,
  server_role Array(String),
  stat_time Int64,
  query_num Int64,
@@ -1712,67 +1253,363 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_rr_cname ON CLUSTER 
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_dns_rr_cname_local', rand());
 
 
-CREATE TABLE if not exists cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region_local ON CLUSTER ck_cluster (
+ country_region String,
+ super_admin_area String,
+ admin_area String,
+ side String,
+ stat_time Int64,
+ common_c2s_pkt_num Int64,
+ common_c2s_byte_num Int64,
+ common_s2c_pkt_num Int64,
+ common_s2c_byte_num Int64,
+ common_sessions Int64,
+ traffic_inbound_byte Int64,
+ traffic_inbound_pkt Int64,
+ traffic_outbound_byte Int64,
+ traffic_outbound_pkt Int64,
+ traffic_internal_byte Int64,
+ traffic_internal_pkt Int64,
+ traffic_through_byte Int64,
+ traffic_through_pkt Int64,
+ c2s_tcp_lostlen_ratio Nullable(Float64),
+ s2c_tcp_lostlen_ratio Nullable(Float64),
+ tcp_lostlen_ratio Nullable(Float64),
+ c2s_tcp_unorder_num_ratio Nullable(Float64),
+ s2c_tcp_unorder_num_ratio Nullable(Float64),
+ tcp_unorder_num_ratio Nullable(Float64),
+ c2s_byte_retrans_ratio Nullable(Float64),
+ s2c_byte_retrans_ratio Nullable(Float64),
+ byte_retrans_ratio Nullable(Float64),
+ c2s_pkt_retrans_ratio Nullable(Float64),
+ s2c_pkt_retrans_ratio Nullable(Float64),
+ pkt_retrans_ratio Nullable(Float64),
+ avg_establish_latency_ms Nullable(Float64),
+ avg_http_response_latency_ms Nullable(Float64),
+ avg_ssl_con_latency_ms Nullable(Float64)
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,country_region,super_admin_area,admin_area) SETTINGS index_granularity = 8192;
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region ON CLUSTER ck_cluster (
+ country_region String,
+ super_admin_area String,
+ admin_area String,
+ side String,
+ stat_time Int64,
+ common_c2s_pkt_num Int64,
+ common_c2s_byte_num Int64,
+ common_s2c_pkt_num Int64,
+ common_s2c_byte_num Int64,
+ common_sessions Int64,
+ traffic_inbound_byte Int64,
+ traffic_inbound_pkt Int64,
+ traffic_outbound_byte Int64,
+ traffic_outbound_pkt Int64,
+ traffic_internal_byte Int64,
+ traffic_internal_pkt Int64,
+ traffic_through_byte Int64,
+ traffic_through_pkt Int64,
+ c2s_tcp_lostlen_ratio Nullable(Float64),
+ s2c_tcp_lostlen_ratio Nullable(Float64),
+ tcp_lostlen_ratio Nullable(Float64),
+ c2s_tcp_unorder_num_ratio Nullable(Float64),
+ s2c_tcp_unorder_num_ratio Nullable(Float64),
+ tcp_unorder_num_ratio Nullable(Float64),
+ c2s_byte_retrans_ratio Nullable(Float64),
+ s2c_byte_retrans_ratio Nullable(Float64),
+ byte_retrans_ratio Nullable(Float64),
+ c2s_pkt_retrans_ratio Nullable(Float64),
+ s2c_pkt_retrans_ratio Nullable(Float64),
+ pkt_retrans_ratio Nullable(Float64),
+ avg_establish_latency_ms Nullable(Float64),
+ avg_http_response_latency_ms Nullable(Float64),
+ avg_ssl_con_latency_ms Nullable(Float64)
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_region_local', rand());
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region ON CLUSTER ck_query (
+ country_region String,
+ super_admin_area String,
+ admin_area String,
+ side String,
+ stat_time Int64,
+ common_c2s_pkt_num Int64,
+ common_c2s_byte_num Int64,
+ common_s2c_pkt_num Int64,
+ common_s2c_byte_num Int64,
+ common_sessions Int64,
+ traffic_inbound_byte Int64,
+ traffic_inbound_pkt Int64,
+ traffic_outbound_byte Int64,
+ traffic_outbound_pkt Int64,
+ traffic_internal_byte Int64,
+ traffic_internal_pkt Int64,
+ traffic_through_byte Int64,
+ traffic_through_pkt Int64,
+ c2s_tcp_lostlen_ratio Nullable(Float64),
+ s2c_tcp_lostlen_ratio Nullable(Float64),
+ tcp_lostlen_ratio Nullable(Float64),
+ c2s_tcp_unorder_num_ratio Nullable(Float64),
+ s2c_tcp_unorder_num_ratio Nullable(Float64),
+ tcp_unorder_num_ratio Nullable(Float64),
+ c2s_byte_retrans_ratio Nullable(Float64),
+ s2c_byte_retrans_ratio Nullable(Float64),
+ byte_retrans_ratio Nullable(Float64),
+ c2s_pkt_retrans_ratio Nullable(Float64),
+ s2c_pkt_retrans_ratio Nullable(Float64),
+ pkt_retrans_ratio Nullable(Float64),
+ avg_establish_latency_ms Nullable(Float64),
+ avg_http_response_latency_ms Nullable(Float64),
+ avg_ssl_con_latency_ms Nullable(Float64)
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_region_local', rand());
+
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_relation_local ON CLUSTER ck_cluster (
+ app_name String,
+ domain String,
+ ip String,
+ ip_country_region String,
+ ip_super_admin_area String,
+ ip_admin_area String,
+ ip_asn String,
+ ip_isp String,
+ domain_category_name String,
+ domain_category_group String,
+ app_category String,
+ app_subcategory String,
+ entity_tags Array(String),
+ stat_time Int64
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time) SETTINGS index_granularity = 8192;
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_relation ON CLUSTER ck_cluster (
+ app_name String,
+ domain String,
+ ip String,
+ ip_country_region String,
+ ip_super_admin_area String,
+ ip_admin_area String,
+ ip_asn String,
+ ip_isp String,
+ domain_category_name String,
+ domain_category_group String,
+ app_category String,
+ app_subcategory String,
+ entity_tags Array(String),
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_relation_local', rand());
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_relation ON CLUSTER ck_query (
+ app_name String,
+ domain String,
+ ip String,
+ ip_country_region String,
+ ip_super_admin_area String,
+ ip_admin_area String,
+ ip_asn String,
+ ip_isp String,
+ domain_category_name String,
+ domain_category_group String,
+ app_category String,
+ app_subcategory String,
+ entity_tags Array(String),
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_relation_local', rand());
+
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute_local ON CLUSTER ck_cluster (
+ ip String,
+ l7_protocol String,
+ port Int64,
+ stat_time Int64
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time) SETTINGS index_granularity = 8192;
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute ON CLUSTER ck_cluster (
+ ip String,
+ l7_protocol String,
+ port Int64,
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_dynamic_attribute_local', rand());
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute ON CLUSTER ck_query (
+ ip String,
+ l7_protocol String,
+ port Int64,
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_dynamic_attribute_local', rand());
+
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
 (
+
     app_name String,
-    fqdn String,
+    domain String,
     ip String,
-    country String,
-    province String,
-    region String,
-    asn String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
     create_time Int64,
     update_time Int64
 )
 ENGINE = MergeTree
 ORDER BY (ip,
- fqdn,
+ domain,
  app_name)
 TTL toDateTime(update_time) + toIntervalSecond(2592000),
  toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
- fqdn,
+ domain,
  app_name SET create_time = min(create_time),
  update_time = max(update_time),
- country = anyLast(country),
- province = anyLast(province),
- region = anyLast(region),
- asn = anyLast(asn) ;
+ ip_country_region = anyLast(ip_country_region),
+ ip_super_admin_area = anyLast(ip_super_admin_area),
+ ip_admin_area = anyLast(ip_admin_area),
+ ip_asn = anyLast(ip_asn),
+ ip_isp = anyLast(ip_isp),
+ domain_category_name = anyLast(domain_category_name),
+ domain_category_group = anyLast(domain_category_group),
+ app_category = anyLast(app_category),
+ app_subcategory = anyLast(app_subcategory), 
+ entity_tags = groupUniqArrayArray(entity_tags);
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_query
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_entity_relation_local',
+ rand());
+
+ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_cluster
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_entity_relation_local',
+ rand());
+
+
+  CREATE MATERIALIZED VIEW  if not exists cyber_narrator_galaxy.cn_entity_relation_view  on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
+(
+
+    app_name String,
+    domain String,
+    ip String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    common_app_label AS app_name,
+    domain AS domain,
+    common_server_ip AS ip,
+    anyLast(server_country_region) AS ip_country_region,
+    anyLast(server_super_admin_area) AS ip_super_admin_area,
+    anyLast(server_admin_area) AS ip_admin_area,
+    anyLast(server_asn) AS ip_asn,
+    anyLast(server_isp) AS ip_isp,
+    anyLast(domain_category_name) AS domain_category_name,
+    anyLast(domain_category_group) AS domain_category_group,
+    anyLast(app_category) AS app_category,
+    anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(arrayConcat(server_ip_tags,domain_tags,app_tags)) AS entity_tags,
+    min(c1.common_recv_time) AS create_time,
+    max(c1.common_recv_time) AS update_time
+FROM cyber_narrator_galaxy.session_record_cn_local AS c1
+WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
+ 443))
+GROUP BY
+    ip,
+    app_name,
+    domain;
    
- CREATE TABLE if not exists cyber_narrator_galaxy.cn_entity_relation  on cluster ck_query
+  CREATE MATERIALIZED VIEW  if not exists  cyber_narrator_galaxy.cn_entity_relation_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
 (
+
     app_name String,
-    fqdn String,
+    domain String,
     ip String,
-    country String,
-    province String,
-    region String,
-    asn String,
+    ip_country_region String,
+    ip_super_admin_area String,
+    ip_admin_area String,
+    ip_asn String,
+    ip_isp String,
+    domain_category_name String,
+    domain_category_group String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
     create_time Int64,
     update_time Int64
-)
-ENGINE = Distributed('ck_cluster',
- 'cyber_narrator_galaxy',
- 'cn_entity_relation_local',
- rand());
- CREATE TABLE if not exists cyber_narrator_galaxy.cn_entity_relation  on cluster ck_cluster
-(
-    app_name String,
-    fqdn String,
-    ip String,
-    country String,
-    province String,
-    region String,
-    asn String,
-    create_time Int64,
-    update_time Int64
-)
-ENGINE = Distributed('ck_cluster',
- 'cyber_narrator_galaxy',
- 'cn_entity_relation_local',
- rand());
-  
+) AS
+SELECT
+    app_name AS app_name,
+    domain AS domain,
+    ip AS ip,
+    anyLast(ip_country_region) AS ip_country_region,
+    anyLast(ip_super_admin_area) AS ip_super_admin_area,
+    anyLast(ip_admin_area) AS ip_admin_area,
+    anyLast(ip_asn) AS ip_asn,
+    anyLast(ip_isp) AS ip_isp,
+    anyLast(domain_category_name) AS domain_category_name,
+    anyLast(domain_category_group) AS domain_category_group,
+    anyLast(app_category) AS app_category,
+    anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(entity_tags) AS entity_tags,
+    min(c1.stat_time) AS create_time,
+    max(c1.stat_time) AS update_time
+FROM cyber_narrator_galaxy.metric_relation_local AS c1
+GROUP BY
+    ip,
+    app_name,
+    domain;   
  
-  CREATE TABLE if not exists cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster
+
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_local on cluster ck_cluster
 (
     ip String,
     l7_protocol String,
@@ -1781,13 +1618,16 @@ ENGINE = Distributed('ck_cluster',
     update_time Int64
 )
 ENGINE = MergeTree
-ORDER BY (ip,port,l7_protocol)
-TTL toDateTime(update_time) + toIntervalSecond(2592000) DELETE,
- toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,port,l7_protocol
- SET create_time = min(create_time),
- update_time = max(update_time)  ;
+ORDER BY (ip,
+ port,
+ l7_protocol)
+TTL toDateTime(update_time) + toIntervalSecond(2592000),
+ toDateTime(update_time) + toIntervalSecond(1) GROUP BY ip,
+ port,
+ l7_protocol SET create_time = min(create_time),
+ update_time = max(update_time);
  
- CREATE TABLE if not exists cyber_narrator_galaxy.cn_dynamic_info_relation  on cluster ck_query
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute on cluster ck_query
 (
     ip String,
     l7_protocol String,
@@ -1797,10 +1637,10 @@ TTL toDateTime(update_time) + toIntervalSecond(2592000) DELETE,
 )
 ENGINE = Distributed('ck_cluster',
  'cyber_narrator_galaxy',
- 'cn_dynamic_info_relation_local',
+ 'cn_ip_dynamic_attribute_local',
  rand());
- 
- CREATE TABLE if not exists cyber_narrator_galaxy.cn_dynamic_info_relation  on cluster ck_cluster
+
+ CREATE TABLE if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute on cluster ck_cluster
 (
     ip String,
     l7_protocol String,
@@ -1810,38 +1650,33 @@ ENGINE = Distributed('ck_cluster',
 )
 ENGINE = Distributed('ck_cluster',
  'cyber_narrator_galaxy',
- 'cn_dynamic_info_relation_local',
+ 'cn_ip_dynamic_attribute_local',
  rand());
 
 
- create MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_entity_relation_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
+ CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (
-    app_name String,
-    fqdn String,
     ip String,
-    country String,
-    province String,
-    region String,
-    asn String,
+    l7_protocol String,
+    port Int64,
     create_time Int64,
     update_time Int64
 ) AS
 SELECT
-    common_app_label AS app_name,
-    common_server_fqdn AS fqdn,
     common_server_ip AS ip,
-    anyLast(server_country) AS country,
-    anyLast(server_province) AS province,
-    anyLast(server_region) AS region,
-    anyLast(server_asn) AS asn,
+    common_l7_protocol AS l7_protocol,
+    common_server_port AS port,
     min(c1.common_recv_time) AS create_time,
     max(c1.common_recv_time) AS update_time
-FROM cyber_narrator_galaxy.session_record_cn_local c1
-where common_l4_protocol ='IPv4_TCP' OR common_server_port in(53,443)
-GROUP BY ip,app_name,fqdn;  
- 
- 
-  create MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_dynamic_info_relation_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_dynamic_info_relation_local
+FROM cyber_narrator_galaxy.session_record_cn_local AS c1
+WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
+ 443))
+GROUP BY
+    ip,
+    l7_protocol,
+    port;
+
+ CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (
     ip String,
     l7_protocol String,
@@ -1850,13 +1685,13 @@ GROUP BY ip,app_name,fqdn;
     update_time Int64
 ) AS
 SELECT
-    common_server_ip as ip,
-    common_l7_protocol as l7_protocol,
-    common_server_port as port,
-    min(c1.common_recv_time) AS create_time,
-    max(c1.common_recv_time) AS update_time
-FROM cyber_narrator_galaxy.session_record_cn_local c1
-where common_l4_protocol ='IPv4_TCP' OR common_server_port in(53,443)
-GROUP BY ip,l7_protocol,port;  
- 
-
+    ip AS ip,
+    l7_protocol AS l7_protocol,
+    port AS port,
+    min(c1.stat_time) AS create_time,
+    max(c1.stat_time) AS update_time
+FROM cyber_narrator_galaxy.metric_ip_dynamic_attribute_local AS c1
+GROUP BY
+    ip,
+    l7_protocol,
+    port;
