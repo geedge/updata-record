@@ -1,5 +1,36 @@
 set distributed_ddl_task_timeout = 180;
 
+drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter on cluster ck_query;
+
+drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni on cluster ck_query;
+
+drop table IF EXISTS cyber_narrator_galaxy.metric_http_host_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_http_host on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_http_host on cluster ck_query;
+
+
+drop table IF EXISTS cyber_narrator_galaxy.metric_region_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_region on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.metric_region on cluster ck_query;
+
+
+drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation on cluster ck_query;
+
+drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_cluster;
+drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_query;
+
+drop view IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation_view on cluster ck_cluster;
+drop view IF EXISTS cyber_narrator_galaxy.cn_entity_relation_view on cluster ck_cluster;
+
+
+
 ALTER  table cyber_narrator_galaxy.session_record_cn_local on cluster ck_cluster add column IF NOT EXISTS common_flags  UInt64 after common_recv_time , add column IF NOT EXISTS common_log_id  UInt64 after common_recv_time , add column IF NOT EXISTS common_app_full_path  String after common_app_label  , add column IF NOT EXISTS domain_sld  String after domain;
 ALTER  table cyber_narrator_galaxy.session_record_cn on cluster ck_cluster add column IF NOT EXISTS common_flags  UInt64 after common_recv_time ,add column IF NOT EXISTS common_log_id  UInt64 after common_recv_time , add column IF NOT EXISTS common_app_full_path  String after common_app_label  , add column IF NOT EXISTS domain_sld  String after domain;
 ALTER  table cyber_narrator_galaxy.session_record_cn on cluster ck_query add column IF NOT EXISTS common_flags  UInt64 after common_recv_time ,add column IF NOT EXISTS common_log_id  UInt64 after common_recv_time , add column IF NOT EXISTS common_app_full_path  String after common_app_label , add column IF NOT EXISTS domain_sld  String after domain;
@@ -37,23 +68,6 @@ ALTER  table cyber_narrator_galaxy.metric_domain_local on cluster ck_cluster add
 ALTER  table cyber_narrator_galaxy.metric_domain on cluster ck_cluster add column IF NOT EXISTS domain_sld  String after domain;
 ALTER  table cyber_narrator_galaxy.metric_domain on cluster ck_query add column IF NOT EXISTS domain_sld  String after domain;
 
-
-drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_idc_renter on cluster ck_query;
-
-drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_ssl_sni on cluster ck_query;
-
-drop table IF EXISTS cyber_narrator_galaxy.metric_http_host_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_http_host on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_http_host on cluster ck_query;
-
-
-drop table IF EXISTS cyber_narrator_galaxy.metric_region_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_region on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_region on cluster ck_query;
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_region_local ON CLUSTER ck_cluster (
@@ -238,19 +252,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute ON 
  stat_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_dynamic_attribute_local', rand());
 
-
-
-
-drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation on cluster ck_query;
-
-drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_query;
-
-drop view IF EXISTS cyber_narrator_galaxy.cn_dynamic_info_relation_view on cluster ck_cluster;
-drop view IF EXISTS cyber_narrator_galaxy.cn_entity_relation_view on cluster ck_cluster;
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_entity_relation_local on cluster ck_cluster
