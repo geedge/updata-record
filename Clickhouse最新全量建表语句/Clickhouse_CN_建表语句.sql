@@ -360,7 +360,17 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip_local ON CLUSTER ck_c
  pkt_retrans_ratio Nullable(Float64),
  avg_establish_latency_ms Nullable(Float64),
  avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
+ avg_ssl_con_latency_ms Nullable(Float64),
+ asymmetric_sessions Int64,
+ bulky_sessions Int64,
+ cbr_streaming_sessions Int64,
+ download_sessions Int64,
+ interactive_sessions Int64,
+ pseudo_unidirectional_sessions Int64,
+ streaming_sessions Int64,
+ unidirectional_sessions Int64,
+ random_looking_sessions Int64,
+ bidirectional_sessions Int64
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,ip) SETTINGS index_granularity = 8192;
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip ON CLUSTER ck_cluster (
@@ -395,7 +405,17 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip ON CLUSTER ck_cluster
  pkt_retrans_ratio Nullable(Float64),
  avg_establish_latency_ms Nullable(Float64),
  avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
+ avg_ssl_con_latency_ms Nullable(Float64),
+ asymmetric_sessions Int64,
+ bulky_sessions Int64,
+ cbr_streaming_sessions Int64,
+ download_sessions Int64,
+ interactive_sessions Int64,
+ pseudo_unidirectional_sessions Int64,
+ streaming_sessions Int64,
+ unidirectional_sessions Int64,
+ random_looking_sessions Int64,
+ bidirectional_sessions Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_local', rand());
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip ON CLUSTER ck_query (
@@ -430,7 +450,17 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_ip ON CLUSTER ck_query (
  pkt_retrans_ratio Nullable(Float64),
  avg_establish_latency_ms Nullable(Float64),
  avg_http_response_latency_ms Nullable(Float64),
- avg_ssl_con_latency_ms Nullable(Float64)
+ avg_ssl_con_latency_ms Nullable(Float64),
+ asymmetric_sessions Int64,
+ bulky_sessions Int64,
+ cbr_streaming_sessions Int64,
+ download_sessions Int64,
+ interactive_sessions Int64,
+ pseudo_unidirectional_sessions Int64,
+ streaming_sessions Int64,
+ unidirectional_sessions Int64,
+ random_looking_sessions Int64,
+ bidirectional_sessions Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_ip_local', rand());
 
 
