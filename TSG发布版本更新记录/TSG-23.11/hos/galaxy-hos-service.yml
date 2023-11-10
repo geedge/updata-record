@@ -1,0 +1,107 @@
+#服务端口
+server:
+  port: 8186
+  tomcat:
+    max-threads: 400
+#tomcat缓存大小，单位KB系统默认10M，配置10g
+tomcat:
+  cacheMaxSize: 1000000
+#hbase参数
+hbase:
+  zookeeper_quorum: 192.168.44.11,192.168.44.14,192.168.44.15
+  zookeeper_port: 2181
+  zookeeper_znode_parent: /hbase
+  client_retries_number: 9
+  rpc_timeout: 100000
+  connect_pool: 10
+  client_write_buffer: 10485760
+  client_key_value_maxsize: 1073741824
+  mob_threshold: 10485760
+  #part 最大数据量
+  max_parts: 100000
+  #每次获取的part数
+  get_part_batch: 10
+  #hbase索引表前缀，前缀为以下的都为索引表
+  time_index_table_prefix: index_time_
+  filename_index_table_prefix: index_filename_
+  partfile_index_table_prefix: index_partfile_
+  system_bucket_meta: system:bucket_meta
+  #创建表预分区时的分区，为空则不分区
+  region_start_key: 1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
+  filename_head: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
+  part_head: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
+  #获取文件大小的目录
+  data_path: /hbase
+  #1是集群0是单机
+  standalone: 1
+  #hadoop集群namenode节点
+  hadoop_name_nodes: 192.168.44.11,192.168.44.14
+  #hadoop端口
+  hadoop_port: 9000
+  hadoop_user: root
+  hadoop_default_fs: hdfs://ns1
+  hadoop_name_services: ns1
+  hadoop_name_nodes_ns1: nn1,nn2
+  hadoop_replication: 2
+  #ttl相关参数
+  ttl_scan_batch: 1000
+  ttl_scan_caching: 1000
+  ttl_delete_batch: 1000
+#是否打开验证，0打开，打开需要使用S3身份验证或者token访问服务
+auth:
+  open: 0
+  #http访问使用的token
+  token: ENC(vknRT6U4I739rLIha9CvojM+4uFyXZLEYpO2HZayLnRak1HPW0K2yZ3vnQBA2foo)
+  #s3验证
+  s3:
+    accesskey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+    secretkey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+hos:
+  #文件大小阈值
+  maxFileSize: 5073741800
+  #大文件阈值
+  uploadThreshold: 104857600
+  #长连接超时时间
+  keepAliveTimeout: 60000
+  #批量删除对象的最大数量
+  deleteMultipleNumber: 1000
+  #获取对象列表等操作的最大值
+  maxResultLimit: 100000
+  #分块上传的最大分块数
+  maxPartNumber: 10000
+  #追加上传的最大次数
+  maxAppendNumber: 100000
+  #是否快速下载文件，1打开，hbase内存小于20G的集群设为0
+  isQuickDownloadFile: 0
+  #用户白名单（hbase的namespace），获取存储配额
+  users: default
+  #元数据存储占比
+  metaProportion: 0.02
+  #是否打开限流,0:关闭，1:打开
+  openRateLimiter: 0
+  #限流每秒请求数
+  rateLimiterQps: 20000
+  #是否打开手动ttl，1打开，默认为1
+  manualTtl: 1
+  #执行ttl的线程数
+  ttlThread: 10
+#设置上传文件大小的最大值
+spring:
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+#Prometheus参数
+  application:
+    name: HosServiceApplication
+#Prometheus参数
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+logging:
+  config: ./config/log4j2-dev.xml

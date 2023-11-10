@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+/**
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<configuration>
+<property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://ns1/hbase/hbase-2.2.3</value>
+</property>
+
+<property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+</property>
+
+<property>
+  <name>hbase.zookeeper.quorum</name>
+  <value>192.168.44.11,192.168.44.14,192.168.44.15</value>
+</property>
+
+<property>
+  <name>hbase.zookeeper.property.clientPort</name>
+  <value>2181</value>
+</property>
+
+<property> 
+  <name>hbase.master.info.port</name>
+  <value>60010</value> 
+</property> 
+
+<property>
+  <name>hbase.server.keyvalue.maxsize</name>
+  <value>5368709120</value>
+</property>
+
+<property>
+  <name>zookeeper.znode.parent</name>
+  <value>/hbase</value>
+</property>
+
+<property>
+  <name>hbase.cluster.distributed</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>hbase.rpc.timeout</name>
+  <value>300000</value>
+  <description>This is for the RPC layer to define how long (millisecond) HBase client applications
+      take for a remote call to time out. It uses pings to check connections
+      but will eventually throw a TimeoutException.</description>
+</property>
+  
+<property>
+    <name>zookeeper.session.timeout</name>
+    <value>300000</value>
+</property>
+
+<property>
+    <name>hbase.regionserver.maxlogs</name>
+    <value>64</value>
+</property>
+
+<!--超过该值的文件将在mob compaction中合并-->
+<property>
+     <name>hbase.mob.compaction.mergeable.threshold</name>     
+     <value>1342177280</value> 
+</property>
+
+<property>
+    <name>hbase.mob.file.cache.size</name>
+    <value>10000</value>
+    <description>
+      Number of opened file handlers to cache.
+      A larger value will benefit reads by providing more file handlers per mob
+      file cache and would reduce frequent file opening and closing.
+      However, if this is set too high, this could lead to a "too many opened file handers"
+      The default value is 1000.
+    </description>
+</property>
+
+<!--mob cache回收缓存周期-->
+<property>
+    <name>hbase.mob.cache.evict.period</name>
+    <value>3600</value>
+    <description>
+      The amount of time in seconds after which an unused file is evicted from the
+      MOB cache. The default value is 3600 seconds.
+    </description>
+</property>
+
+<!--mob cache回收之后cache中保留文件个数比例，cache数量超过hbase.mob.file.cache.size会回收-->
+<property>
+    <name>hbase.mob.cache.evict.remain.ratio</name>
+    <value>0.5f</value>
+    <description>
+      A multiplier (between 0.0 and 1.0), which determines how many files remain cached
+      after the threshold of files that remains cached after a cache eviction occurs
+      which is triggered by reaching the `hbase.mob.file.cache.size` threshold.
+      The default value is 0.5f, which means that half the files (the least-recently-used
+      ones) are evicted.
+    </description>
+</property>
+
+<!--开启mob-->
+<property>
+  <name>hfile.format.version</name>
+  <value>3</value>
+</property>
+
+<property> 
+    <name>hbase.hregion.memstore.flush.size</name> 
+    <value>33554432</value> 
+    <description> 
+    memstore的大小超过该限制（单位：byte）后将被flush到磁盘。这个大小由一个线程间断性的检查，检查的间隔由 
+    hbase.server.thread.wakefrequency决定 
+    </description> 
+</property> 
+
+<property>
+    <name>hbase.hstore.flusher.count</name>
+    <value>2</value>
+</property>
+
+<property>
+    <name>hbase.regionserver.flush.check.period</name>
+    <value>10000</value>
+    <description>
+	It determines the flushing check period of PeriodicFlusher in regionserver.
+    If unset, it uses hbase.server.thread.wakefrequency as default value.
+    (in milliseconds)
+	</description>
+</property>
+  
+<property>
+    <name>hbase.regionserver.compaction.check.period</name>
+    <value>10000</value>
+</property>
+
+  <property>
+    <name>hbase.regionserver.global.memstore.size.lower.limit</name>
+    <value>0.95</value>
+  </property>
+
+  <property>
+    <name>hbase.regionserver.global.memstore.size</name>
+    <value>0.45</value>
+  </property>
+
+<property>
+  <name>hfile.block.cache.size</name>
+  <value>0.3</value>
+  <description>
+    Percentage of maximum heap (-Xmx setting) to allocate to block cache
+    used by a StoreFile. Default of 0.4 means allocate 40%.
+    Set to 0 to disable but it's not recommended; you need at least
+    enough cache to hold the storefile indices.
+  </description>
+</property>
+  
+<property> 
+    <name>hbase.hregion.memstore.block.multiplier</name> 
+    <value>2</value>
+</property> 
+
+<property>
+    <name>hbase.ipc.server.max.callqueue.length</name>
+    <value>1073741824</value>
+</property>
+
+<property>
+  <name>hbase.regionserver.handler.count</name>
+  <value>10</value>
+  <description>
+    Count of RPC Listener instances spun up on RegionServers.
+    Same property is used by the Master for count of master handlers.
+  </description>
+</property>
+
+<property>
+  <name>hbase.zookeeper.property.maxClientCnxns</name>
+  <value>1000</value>
+</property>
+
+<property>
+    <name>hbase.ipc.max.request.size</name>
+    <value>1173741824</value>
+  </property>
+  
+<property>
+    <name>hbase.hstore.blockingWaitTime</name>
+    <value>30000</value>
+    <description>
+      The time an HRegion will block updates for after hitting the StoreFile
+      limit defined by hbase.hstore.blockingStoreFiles.
+      After this time has elapsed, the HRegion will stop blocking updates even
+      if a compaction has not been completed.
+    </description>
+  </property>
+  
+<property>
+    <name>hbase.hstore.blockingStoreFiles</name>
+    <value>100</value>
+    <description>
+    If more than this number of StoreFiles in any one Store
+    (one StoreFile is written per flush of MemStore) then updates are
+    blocked for this HRegion until a compaction is completed, or
+    until hbase.hstore.blockingWaitTime has been exceeded.
+    </description>
+</property>
+
+<property>
+　  <name>hbase.hregion.max.filesize</name>
+　  <value>3221225472</value>
+</property>
+  
+<property>
+    <name>hbase.regionserver.regionSplitLimit</name>
+    <value>1000</value>
+</property>
+  
+<property>
+    <name>hbase.replication</name>
+    <value>true</value>
+</property>
+
+<property>
+   <name>phoenix.schema.isNamespaceMappingEnabled</name>
+   <value>true</value>
+</property>
+
+<property>
+  <name>phoenix.schema.mapSystemTablesToNamespace</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>hbase.coprocessor.master.classes</name>
+  <value>org.apache.hadoop.hbase.rsgroup.RSGroupAdminEndpoint</value>
+</property>
+
+<property>
+  <name>hbase.master.loadbalancer.class</name>
+  <value>org.apache.hadoop.hbase.rsgroup.RSGroupBasedLoadBalancer</value>
+</property>
+
+<!--表region自动平衡-->
+<property>
+  <name>hbase.master.loadbalance.bytable</name>
+  <value>true</value>
+</property> 
+
+</configuration>
