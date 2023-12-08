@@ -1,0 +1,14 @@
+disable 'tsg_galaxy:relation_account_framedip'
+drop 'tsg_galaxy:relation_account_framedip'
+
+disable 'tsg_galaxy:relation_framedip_account'
+drop 'tsg_galaxy:relation_framedip_account'
+
+disable 'tsg_galaxy:relation_user_teid'
+drop 'tsg_galaxy:relation_user_teid'
+
+disable 'tsg_galaxy:gtpc_knowledge_base'
+drop 'tsg_galaxy:gtpc_knowledge_base'
+
+disable 'tsg_galaxy:recommendation_app_cip'
+drop 'tsg_galaxy:recommendation_app_cip'
