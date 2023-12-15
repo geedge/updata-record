@@ -48,7 +48,7 @@
 
 <property>
   <name>hbase.server.keyvalue.maxsize</name>
-  <value>1073741824</value>
+  <value>5368709120</value>
 </property>
 
 <property>
@@ -128,12 +128,16 @@
 
 <property> 
     <name>hbase.hregion.memstore.flush.size</name> 
-    <value>134217728</value> 
+    <value>33554432</value> 
+    <description> 
+    memstore的大小超过该限制（单位：byte）后将被flush到磁盘。这个大小由一个线程间断性的检查，检查的间隔由 
+    hbase.server.thread.wakefrequency决定 
+    </description> 
 </property> 
 
 <property>
     <name>hbase.hstore.flusher.count</name>
-    <value>4</value>
+    <value>2</value>
 </property>
 
 <property>
@@ -164,6 +168,12 @@
 <property>
   <name>hfile.block.cache.size</name>
   <value>0.3</value>
+  <description>
+    Percentage of maximum heap (-Xmx setting) to allocate to block cache
+    used by a StoreFile. Default of 0.4 means allocate 40%.
+    Set to 0 to disable but it's not recommended; you need at least
+    enough cache to hold the storefile indices.
+  </description>
 </property>
   
 <property> 
@@ -197,7 +207,7 @@
   
 <property>
     <name>hbase.hstore.blockingWaitTime</name>
-    <value>20000</value>
+    <value>30000</value>
     <description>
       The time an HRegion will block updates for after hitting the StoreFile
       limit defined by hbase.hstore.blockingStoreFiles.
@@ -219,12 +229,17 @@
 
 <property>
 　  <name>hbase.hregion.max.filesize</name>
-　  <value>10737418240‬</value>
+　  <value>3221225472</value>
 </property>
   
 <property>
     <name>hbase.regionserver.regionSplitLimit</name>
-    <value>500</value>
+    <value>1000</value>
+</property>
+  
+<property>
+    <name>hbase.replication</name>
+    <value>true</value>
 </property>
 
 <property>
@@ -253,50 +268,4 @@
   <value>true</value>
 </property> 
 
-  <!-- storefile数量大于该值执行compact -->
-  <property>
-      <name>hbase.hstore.compactionThreshold</name>
-      <value>5</value>
-  </property>
-  <property>
-    <name>hbase.hstore.compaction.min</name>
-    <value>5</value>
-  </property>  
-  <!-- 最多选取多少个storefile进行compace -->
-  <property>
-      <name>hbase.hstore.compaction.max</name>
-      <value>20</value>
-  </property>
-  <property>
-    <name>hbase.hstore.compaction.min.size</name>
-    <value>134217728</value>
-  </property>
-  <property>
-    <name>hbase.hstore.compaction.max.size</name>
-    <value>10737418240</value>
-  </property>
-  <property>
-    <name>hbase.regionserver.thread.compaction.throttle</name>
-    <value>2684354560</value>
-  </property>
-  <property>
-      <name>hbase.regionserver.thread.compaction.small</name>
-      <value>5</value>
-  </property>
-  <property>
-      <name>hbase.regionserver.thread.compaction.large</name>
-      <value>5</value>
-  </property>
-  <property>
-    <name>hbase.hstore.compaction.kv.max</name>
-    <value>10</value>
-  </property>
-  <property>
-    <name>hbase.mob.compaction.threads.max</name>
-    <value>2</value>
-  </property>
-  <property>
-    <name>hbase.hregion.majorcompaction</name>
-    <value>604800000</value>
-  </property>
 </configuration>

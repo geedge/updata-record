@@ -1,4 +1,3 @@
-#服务端口
 server:
   port: 8186
   tomcat:
@@ -9,18 +8,21 @@ tomcat:
 #hbase参数
 hbase:
   zookeeper_quorum: 192.168.44.11,192.168.44.14,192.168.44.15
-  zookeeper_port: 2181
+  zookeeper_property_clientPort: 2181
   zookeeper_znode_parent: /hbase
   client_retries_number: 9
   rpc_timeout: 100000
   connect_pool: 10
   client_write_buffer: 10485760
-  client_key_value_maxsize: 1073741824
-  mob_threshold: 10485760
+  client_keyvalue_maxsize: 1024000000
+  #批量获取数量
+  get_batch: 10000
   #part 最大数据量
-  max_parts: 100000
+  maxParts: 100000
   #每次获取的part数
-  get_part_batch: 10
+  get_part_batch: 1000
+  #每次追加是否更新主文件
+  isUpdate: 1
   #hbase索引表前缀，前缀为以下的都为索引表
   time_index_table_prefix: index_time_
   filename_index_table_prefix: index_filename_
@@ -31,22 +33,25 @@ hbase:
   filename_head: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
   part_head: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
   #获取文件大小的目录
-  data_path: /hbase
-  #1是集群0是单机
-  standalone: 1
+  hbasePath: /hbase/hbase-2.2.3
+  #1是集群0是单机，主要针对存储配额获取方式
+  standone: 1
   #hadoop集群namenode节点
-  hadoop_name_nodes: 192.168.44.11,192.168.44.14
+  namenodes: 192.168.44.11,192.168.44.14
   #hadoop端口
   hadoop_port: 9000
   hadoop_user: root
-  hadoop_default_fs: hdfs://ns1
-  hadoop_name_services: ns1
-  hadoop_name_nodes_ns1: nn1,nn2
+  hadoop_defaultFS: hdfs://ns1
+  hadoop_nameservices: ns1
+  hadoop_namenodes_ns1: nn1,nn2
   hadoop_replication: 2
+  #建表时是否打开hbase wal，1打开，0关闭
+  openWal: 0
   #ttl相关参数
-  ttl_scan_batch: 1000
+  ttl_scan_batch: 500
   ttl_scan_caching: 1000
   ttl_delete_batch: 1000
+
 #是否打开验证，0打开，打开需要使用S3身份验证或者token访问服务
 auth:
   open: 0
@@ -54,13 +59,9 @@ auth:
   token: ENC(vknRT6U4I739rLIha9CvojM+4uFyXZLEYpO2HZayLnRak1HPW0K2yZ3vnQBA2foo)
   #s3验证
   s3:
-    accesskey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
-    secretkey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+    accessKey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+    secretKey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
 hos:
-  #文件大小阈值
-  maxFileSize: 5073741800
-  #大文件阈值
-  uploadThreshold: 104857600
   #长连接超时时间
   keepAliveTimeout: 60000
   #批量删除对象的最大数量
@@ -70,21 +71,33 @@ hos:
   #分块上传的最大分块数
   maxPartNumber: 10000
   #追加上传的最大次数
-  maxAppendNumber: 100000
+  maxPosition: 100000
+  #存放对象的用户自定义元数据的请求头
+  metaHeader: x-hos-meta-message
+  #存放对象信息的请求头
+  objectInfo: x-hos-object-info
   #是否快速下载文件，1打开，hbase内存小于20G的集群设为0
   isQuickDownloadFile: 0
+  #是否打开对象列表查询功能，1打开
+  simple: 1
   #用户白名单（hbase的namespace），获取存储配额
   users: default
   #元数据存储占比
-  metaProportion: 0.02
+  metaProportion: 0.03
   #是否打开限流,0:关闭，1:打开
-  openRateLimiter: 0
+  openRateLimiter: 1
   #限流每秒请求数
   rateLimiterQps: 20000
-  #是否打开手动ttl，1打开，默认为1
-  manualTtl: 1
+  #展示追加文件丢失块的最大数量
+  lostPartsCount: 10
   #执行ttl的线程数
-  ttlThread: 10
+  thread: 10
+  #是否打开手动ttl，1打开，默认为1
+  manualTtl: 0
+  #文件最大值
+  maxFileSize: 5368709000
+  #小文件阈值
+  uploadThreshold: 10485760
 #设置上传文件大小的最大值
 spring:
   servlet:
