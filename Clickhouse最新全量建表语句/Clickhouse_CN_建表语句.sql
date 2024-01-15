@@ -15,8 +15,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
@@ -114,7 +115,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
  http_response_latency_ms Nullable(Int64),
  ssl_handshake_latency_ms Nullable(Int64),
  dns_response_latency_ms Nullable(Int64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY common_recv_time SETTINGS index_granularity = 8192;
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(recv_time)) ORDER BY recv_time SETTINGS index_granularity = 8192;
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck_cluster (
  recv_time Int64,
@@ -129,8 +130,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
@@ -243,8 +245,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
@@ -1693,9 +1696,8 @@ ENGINE = Distributed('ck_cluster',
  rand());
 
 
-  CREATE MATERIALIZED VIEW  if not exists cyber_narrator_galaxy.cn_entity_relation_view  on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
+CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_entity_relation_view TO cyber_narrator_galaxy.cn_entity_relation_local
 (
-
     app_name String,
     domain String,
     ip String,
@@ -1713,9 +1715,9 @@ ENGINE = Distributed('ck_cluster',
     update_time Int64
 ) AS
 SELECT
-    common_app_label AS app_name,
+    app AS app_name,
     domain AS domain,
-    common_server_ip AS ip,
+    server_ip AS ip,
     anyLast(server_country_region) AS ip_country_region,
     anyLast(server_super_admin_area) AS ip_super_admin_area,
     anyLast(server_admin_area) AS ip_admin_area,
@@ -1725,16 +1727,16 @@ SELECT
     anyLast(domain_category_group) AS domain_category_group,
     anyLast(app_category) AS app_category,
     anyLast(app_subcategory) AS app_subcategory,
-    groupUniqArrayArray(arrayConcat(server_ip_tags,domain_tags,app_tags)) AS entity_tags,
-    min(c1.common_recv_time) AS create_time,
-    max(c1.common_recv_time) AS update_time
+    groupUniqArrayArray(arrayConcat(server_ip_tags, domain_tags, app_tags)) AS entity_tags,
+    min(c1.recv_time) AS create_time,
+    max(c1.recv_time) AS update_time
 FROM cyber_narrator_galaxy.session_record_cn_local AS c1
-WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
- 443))
+WHERE (decoded_path LIKE '%IPv4_TCP%') OR (server_port IN (53, 443))
 GROUP BY
     ip,
     app_name,
-    domain;
+    domain
+;
    
   CREATE MATERIALIZED VIEW  if not exists  cyber_narrator_galaxy.cn_entity_relation_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_entity_relation_local
 (
@@ -1823,7 +1825,7 @@ ENGINE = Distributed('ck_cluster',
  rand());
 
 
- CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
+CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (
     ip String,
     l7_protocol String,
@@ -1832,18 +1834,18 @@ ENGINE = Distributed('ck_cluster',
     update_time Int64
 ) AS
 SELECT
-    common_server_ip AS ip,
-    common_l7_protocol AS l7_protocol,
-    common_server_port AS port,
-    min(c1.common_recv_time) AS create_time,
-    max(c1.common_recv_time) AS update_time
+    server_ip AS ip,
+    l7_protocol AS l7_protocol,
+    server_port AS port,
+    min(c1.recv_time) AS create_time,
+    max(c1.recv_time) AS update_time
 FROM cyber_narrator_galaxy.session_record_cn_local AS c1
-WHERE (common_l4_protocol = 'IPv4_TCP') OR (common_server_port IN (53,
- 443))
+WHERE (decoded_path LIKE '%IPv4_TCP%') OR (server_port IN (53, 443))
 GROUP BY
     ip,
     l7_protocol,
-    port;
+    port
+;
 
  CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric on cluster ck_cluster TO cyber_narrator_galaxy.cn_ip_dynamic_attribute_local
 (

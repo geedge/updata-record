@@ -671,8 +671,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
@@ -770,7 +771,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn_local ON CLUS
  http_response_latency_ms Nullable(Int64),
  ssl_handshake_latency_ms Nullable(Int64),
  dns_response_latency_ms Nullable(Int64)
-) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(common_recv_time)) ORDER BY common_recv_time SETTINGS index_granularity = 8192;
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(recv_time)) ORDER BY recv_time SETTINGS index_granularity = 8192;
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck_cluster (
  recv_time Int64,
@@ -785,8 +786,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
@@ -899,8 +901,9 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_record_cn ON CLUSTER ck
  client_port Int64,
  server_port Int64,
  app String,
- app_path String,
- protocol_path String,
+ app_transition String,
+ decoded_path String,
+ ip_protocol LowCardinality(String),
  l7_protocol String,
  out_link_id Nullable(Int64),
  in_link_id Nullable(Int64),
