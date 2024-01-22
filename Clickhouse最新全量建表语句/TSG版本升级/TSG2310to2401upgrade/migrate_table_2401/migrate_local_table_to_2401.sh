@@ -61,6 +61,7 @@ if [ $timestamp_start -ge $timestamp_end ]; then
 fi
 
 echo "#####################start `date --utc +'%Y-%m-%d %H:%M:%S'`#######################"
+echo "migrate_table_start:`date --utc +'%Y-%m-%d %H:%M:%S'`"
 echo "输入参数: table:$table"
 echo "输入参数: data_start_time:$data_start_time($timestamp_start)"
 echo "输入参数: data_end_time:$data_end_time($timestamp_end)"
@@ -2593,6 +2594,8 @@ case $table in
     echo "所迁移表${table}不在范围:session_record，security_event，monitor_event，transaction_record，voip_record，proxy_event，dos_event"
 ;;
 esac
+
+echo "migrate_table_end:`date --utc +'%Y-%m-%d %H:%M:%S'`, 成功迁移数据段:${insert_success_cnt}, 失败迁移数据段:${insert_fail_cnt}"
 
 echo "成功迁移数据段:${insert_success_cnt}, 失败迁移数据段:${insert_fail_cnt}"
 
