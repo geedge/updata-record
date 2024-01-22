@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 本脚本逐时间段按最新往前顺序迁移clickhouse数据，TSG23.11日志重组后数据迁移
+# 本脚本逐时间段按最新往前顺序迁移clickhouse数据，TSG24.01日志重组后数据迁移
 
 # 迁移表 参数，可选值：session_record，security_event，monitor_event，transaction_record，voip_record，proxy_event，dos_event
 table=$1

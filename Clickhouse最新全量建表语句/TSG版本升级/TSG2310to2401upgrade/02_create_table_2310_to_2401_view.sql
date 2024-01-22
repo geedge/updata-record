@@ -1,4 +1,4 @@
-set distributed_ddl_task_timeout = 1800;
+set distributed_ddl_task_timeout = 180;
 
 -- 创建同步源表同步2401临时表物化视图, 七个表
 

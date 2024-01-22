@@ -1,4 +1,4 @@
-set distributed_ddl_task_timeout = 1800;
+set distributed_ddl_task_timeout = 180;
 
 -- 删除源表同步到临时表物化视图, 七个表
 drop view if exists tsg_galaxy_v3.session_record_local_2310_to_2401_view on cluster ck_cluster;

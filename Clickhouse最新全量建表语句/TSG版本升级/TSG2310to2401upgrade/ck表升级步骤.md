@@ -1,17 +1,21 @@
 # 说明
 * 请按步骤依次执行，执行脚本报错时联系研发处理后再执行之后的步骤。  
 * 除了离线同步历史数据步骤需要在ck各data节点执行，其它所有ck步骤都需要在query节点执行
+* 执行所有sql语句之前需要停止日志留存调度任务，确保ck中无分布式ddl语句H执行，否则执行的sql会阻塞住，影响后续步骤执行
+验证sql需要在query节点执行
+clickhouse-client -h 127.0.0.1 --port 9001 -m -u default --password ****** --query "select query  from system.distributed_ddl_queue where status =0 limit 1"
+若返回结果为空则可执行升级步骤，否则需要等待。
 
 # 一、实时同步任务
 
 * 1.创建临时表
 ```sh
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy2019 --distributed_ddl_task_timeout 180 < 01_create_table_2401.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_create_table_2401.sql
 ```
 
 * 2.创建源表同步到临时表的物化视图
 ```sh
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy2019 --distributed_ddl_task_timeout 180 < 02_create_table_2310_to_2401_view.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 02_create_table_2310_to_2401_view.sql
 ```
 
 # 二、升级各个数据中心(可选)
@@ -28,17 +32,17 @@ clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy201
 
 * 3.重命名旧表和临时表
 ```sql
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy2019 --distributed_ddl_task_timeout 180 < 03_rename_table.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 03_rename_table.sql
 ```
 
 * 4.执行2401版本初始化建表语句
 ```
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy2019 --distributed_ddl_task_timeout 180 < 04_init_new_table.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 04_init_new_table.sql
 ```
 
 * 5.校验表结构
 ```
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password galaxy2019 --distributed_ddl_task_timeout 180 < 05_check.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 05_check.sql
 ```
 无报错信息说明校验通过
 
