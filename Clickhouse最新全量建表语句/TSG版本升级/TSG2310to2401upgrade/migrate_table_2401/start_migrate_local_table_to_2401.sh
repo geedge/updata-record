@@ -66,6 +66,11 @@ if [ $timestamp_start -ge $timestamp_end ]; then
     exit 1
 fi
 
+if [[ ! "$slice_interval_minute" =~ ^[1-9][0-9]*$ ]]; then
+    echo "slice_interval_minute参数必须是正确的分钟数"
+    exit 1
+fi
+
 # 后台执行，输出日志
 nohup ./migrate_local_table_to_2401.sh "$table" "$data_start_time" "$data_end_time" $slice_interval_minute > "log_$table.txt" 2>&1 &
 echo "已启动迁移${table}表任务，时间范围[$data_start_time, $data_end_time], 每批迁移段分钟:$slice_interval_minute, 日志输出到:log_$table.txt。请查看日志文件确认每段数据迁移情况"

@@ -66,6 +66,11 @@ if [ $timestamp_start -ge $timestamp_end ]; then
     exit 1
 fi
 
+if [[ ! "$slice_interval_minute" =~ ^[1-9][0-9]*$ ]]; then
+    echo "slice_interval_minute参数必须是正确的分钟数"
+    exit 1
+fi
+
 home=$(cd `dirname $0`; pwd)
 
 # 遍历每个节点执行迁移
