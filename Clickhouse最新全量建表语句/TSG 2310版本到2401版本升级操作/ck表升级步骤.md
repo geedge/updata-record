@@ -20,7 +20,7 @@ clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --
 
 # 二、升级各个数据中心(可选)
 
-* 1.国家中心启动ck入库任务(XX_2401 task)同步临时表：创建kafka临时topic(以_2401结尾)，启动Gohangout同步到临时表任务
+* 1.国家中心启动ck入库任务(XX_2401 task)同步临时表：创建kafka临时topic(以_2401结尾)，启动ck同步到临时表任务
 
 * 2.升级各个分数据中心：启动ETL任务发送到国家中心临时topic(以_2401结尾)
 
