@@ -1161,8 +1161,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_subscriber_app_local ON 
  imsi String,
  phone_number String,
  apn String,
- subscriber_longitude Nullable(Float64),
- subscriber_latitude Nullable(Float64),
  stat_time Int64,
  sent_pkts Int64,
  sent_bytes Int64,
@@ -1201,8 +1199,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_subscriber_app ON CLUSTE
  imsi String,
  phone_number String,
  apn String,
- subscriber_longitude Nullable(Float64),
- subscriber_latitude Nullable(Float64),
  stat_time Int64,
  sent_pkts Int64,
  sent_bytes Int64,
@@ -1241,8 +1237,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_subscriber_app ON CLUSTE
  imsi String,
  phone_number String,
  apn String,
- subscriber_longitude Nullable(Float64),
- subscriber_latitude Nullable(Float64),
  stat_time Int64,
  sent_pkts Int64,
  sent_bytes Int64,
@@ -1273,6 +1267,49 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_subscriber_app ON CLUSTE
  avg_http_response_latency_ms Nullable(Float64),
  avg_ssl_handshake_latency_ms Nullable(Float64)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_subscriber_app_local', rand());
+
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster (
+ subscriber_id String,
+ imei String,
+ imsi String,
+ phone_number String,
+ apn String,
+ subscriber_longitude Nullable(Float64),
+ subscriber_latitude Nullable(Float64),
+ first_location String,
+ second_location String,
+ third_location String,
+ stat_time Int64
+) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time,subscriber_id) SETTINGS index_granularity = 8192;
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster (
+ subscriber_id String,
+ imei String,
+ imsi String,
+ phone_number String,
+ apn String,
+ subscriber_longitude Nullable(Float64),
+ subscriber_latitude Nullable(Float64),
+ first_location String,
+ second_location String,
+ third_location String,
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'location_subscriber_local', rand());
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_query (
+ subscriber_id String,
+ imei String,
+ imsi String,
+ phone_number String,
+ apn String,
+ subscriber_longitude Nullable(Float64),
+ subscriber_latitude Nullable(Float64),
+ first_location String,
+ second_location String,
+ third_location String,
+ stat_time Int64
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'location_subscriber_local', rand());
 
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_dns_server_ip_local ON CLUSTER ck_cluster (
