@@ -2,9 +2,9 @@ set distributed_ddl_task_timeout = 180;
 
 -- 创建同步源表同步2402临时表物化视图, 七个表
 
--- tsg_galaxy_v3.session_record_local_2402
+-- tsg_galaxy_v3.session_record_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.session_record_local_2307_to_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.session_record_local_2402
+TO tsg_galaxy_v3.session_record_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -457,12 +457,12 @@ SELECT
     common_has_dup_traffic as dup_traffic_flag,
     common_tunnel_endpoint_a_desc as tunnel_endpoint_a_desc,
     common_tunnel_endpoint_b_desc as tunnel_endpoint_b_desc
-FROM tsg_galaxy_v3.session_record_local
+FROM tsg_galaxy_v3.session_record_local_old
 ;
 
--- tsg_galaxy_v3.security_event_local_2402
+-- tsg_galaxy_v3.security_event_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_local_2307_to_security_event_local_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.security_event_local_2402
+TO tsg_galaxy_v3.security_event_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -919,13 +919,13 @@ SELECT
     common_has_dup_traffic as dup_traffic_flag,
     common_tunnel_endpoint_a_desc as tunnel_endpoint_a_desc,
     common_tunnel_endpoint_b_desc as tunnel_endpoint_b_desc
-FROM tsg_galaxy_v3.security_event_local
+FROM tsg_galaxy_v3.security_event_local_old
 where common_action in (16, 96)
 ;
 
--- tsg_galaxy_v3.monitor_event_local_2402
+-- tsg_galaxy_v3.monitor_event_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_local_2307_to_monitor_event_local_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.monitor_event_local_2402
+TO tsg_galaxy_v3.monitor_event_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -1382,13 +1382,13 @@ SELECT
     common_has_dup_traffic as dup_traffic_flag,
     common_tunnel_endpoint_a_desc as tunnel_endpoint_a_desc,
     common_tunnel_endpoint_b_desc as tunnel_endpoint_b_desc
-FROM tsg_galaxy_v3.security_event_local
+FROM tsg_galaxy_v3.security_event_local_old
 where common_action = 1
 ;
 
--- tsg_galaxy_v3.transaction_record_local_2402
+-- tsg_galaxy_v3.transaction_record_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.transaction_record_local_2307_to_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.transaction_record_local_2402
+TO tsg_galaxy_v3.transaction_record_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -1565,12 +1565,12 @@ SELECT
     sip_responder_sdp_content as sip_responder_sdp_content,
     sip_duration_s as sip_duration_s,
     sip_bye as sip_bye
-FROM tsg_galaxy_v3.transaction_record_local
+FROM tsg_galaxy_v3.transaction_record_local_old
 ;
 
--- tsg_galaxy_v3.voip_record_local_2402
+-- tsg_galaxy_v3.voip_record_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.voip_record_local_2307_to_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.voip_record_local_2402
+TO tsg_galaxy_v3.voip_record_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -1801,12 +1801,12 @@ SELECT
     common_has_dup_traffic as dup_traffic_flag,
     common_tunnel_endpoint_a_desc as tunnel_endpoint_a_desc,
     common_tunnel_endpoint_b_desc as tunnel_endpoint_b_desc
-FROM tsg_galaxy_v3.voip_record_local
+FROM tsg_galaxy_v3.voip_record_local_old
 ;
 
--- tsg_galaxy_v3.proxy_event_local_2402
+-- tsg_galaxy_v3.proxy_event_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.proxy_event_local_2307_to_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.proxy_event_local_2402
+TO tsg_galaxy_v3.proxy_event_local
 (
     recv_time Int64,
     log_id UInt64,
@@ -2099,12 +2099,12 @@ SELECT
     common_has_dup_traffic as dup_traffic_flag,
     common_tunnel_endpoint_a_desc as tunnel_endpoint_a_desc,
     common_tunnel_endpoint_b_desc as tunnel_endpoint_b_desc
-FROM tsg_galaxy_v3.proxy_event_local
+FROM tsg_galaxy_v3.proxy_event_local_old
 ;
 
--- tsg_galaxy_v3.dos_event_local_2402
+-- tsg_galaxy_v3.dos_event_local
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.dos_event_local_2307_to_2402_view on cluster ck_cluster 
-TO tsg_galaxy_v3.dos_event_local_2402
+TO tsg_galaxy_v3.dos_event_local
 (
     vsys_id Int32,
     recv_time Int64,
@@ -2141,5 +2141,5 @@ SELECT
     session_rate as session_rate,
     packet_rate as packet_rate,
     bit_rate as bit_rate
-FROM tsg_galaxy_v3.dos_event_local
+FROM tsg_galaxy_v3.dos_event_local_old
 ;

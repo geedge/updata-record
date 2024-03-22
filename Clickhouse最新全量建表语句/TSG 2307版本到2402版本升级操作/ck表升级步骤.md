@@ -6,50 +6,64 @@
 clickhouse-client -h 127.0.0.1 --port 9001 -m -u default --password ****** --query "select query  from system.distributed_ddl_queue where status =0 limit 1"
 若返回结果为空则可执行升级步骤，否则需要等待。
 
-# 一、实时同步任务
+# 一、停止旧表ck入库任务
 
-* 1.创建临时表
-```sh
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_create_table_2402.sql
-```
+停止旧表ck入库任务
 
-* 2.创建源表同步到临时表的物化视图
-```sh
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 02_create_table_2307_to_2402_view.sql
-```
+# 二、旧表重命名为历史表
 
-# 二、升级各个数据中心(可选)
-
-* 1.国家中心启动ck入库任务(XX_2402 task)同步临时表：创建kafka临时topic(以_2402结尾)，启动ck同步到临时表任务
-
-* 2.升级各个分数据中心：启动ETL任务发送到国家中心临时topic(以_2402结尾)
-
-# 三、所有分中心升级完毕，临时表切换为目标表，源表切换为历史表
-
-* 1.停止源表ck入库任务
-
-* 2.停止ck入库临时表任务
-
-* 3.重命名旧表和临时表
+重命名旧表, 删除废弃表
 ```sql
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 03_rename_table.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_rename_old_table.sql
 ```
 
-* 4.执行2402版本初始化建表语句
+# 三、初始化新表
+
+* 1.执行2402版本初始化建表语句
 ```
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 04_init_new_table.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 02_init_new_table.sql
 ```
 
-* 5.校验表结构
+* 2.校验表结构
 ```
-clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 05_check.sql
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 03_check.sql
 ```
-无报错信息说明校验通过
 
-* 6.启动目标表ck入库任务(升级完成)
+**无报错信息说明校验通过**
+
+# 四、创建旧表同步新表任务(可选)
+
+创建旧表同步到新表的物化视图(如果还有分数据中心向旧表写数据)
+```sh
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 04_create_table_2307_to_2402_view.sql
+```
+
+# 五、启动ck入库任务
+
+* 1.启动新表ck入库任务
+
+* 2.启动旧表ck入库任务(如果还有分数据中心向旧表写数据)
+```sh
+# 重命名旧表, 删除废弃表后, 存在的旧表:
+tsg_galaxy_v3.session_record_local_old
+tsg_galaxy_v3.security_event_local_old
+tsg_galaxy_v3.transaction_record_local_old
+tsg_galaxy_v3.voip_record_local_old
+tsg_galaxy_v3.proxy_event_local_old
+tsg_galaxy_v3.dos_event_local_old
+```
+
+# 六、各个数据中心全部升级完成后停止旧表ck入库任务
+
+* 1.升级各个数据中心，各个数据中心全部升级完成后，停止旧表ck入库任务(如果启动的话)
+
+* 2.删除旧表同步新表物化视图
+```sh
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 05_drop_table_2307_to_2402_view.sql
+```
 
 
-# 四、离线同步历史数据(可选)
+# 七、离线同步历史数据(可选)
 
 在query节点执行以下步骤，iplist.txt中为ck所有data节点ip地址。
 
