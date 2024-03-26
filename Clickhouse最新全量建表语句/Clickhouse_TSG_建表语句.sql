@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local on cluster ck_cluster (
     recv_time Int64,
     log_id UInt64,
     profile_id Int64,
+    rule_id Int64,
     start_time Int64,
     end_time Int64,
     attack_type String,
@@ -15,8 +16,11 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local on cluster ck_cluster (
     destination_country String,
     source_ip_list String,
     source_country_list String,
+    sessions Int64,
     session_rate Int64,
+    packets Int64,
     packet_rate Int64,
+    bytes Int64,
     bit_rate Int64
 )
 ENGINE = MergeTree
@@ -28,6 +32,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event on cluster ck_cluster (
     recv_time Int64,
     log_id UInt64,
     profile_id Int64,
+    rule_id Int64,
     start_time Int64,
     end_time Int64,
     attack_type String,
@@ -37,8 +42,11 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event on cluster ck_cluster (
     destination_country String,
     source_ip_list String,
     source_country_list String,
+    sessions Int64,
     session_rate Int64,
+    packets Int64,
     packet_rate Int64,
+    bytes Int64,
     bit_rate Int64
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,dos_event_local,rand());
@@ -48,6 +56,7 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event on cluster ck_query (
     recv_time Int64,
     log_id UInt64,
     profile_id Int64,
+    rule_id Int64,
     start_time Int64,
     end_time Int64,
     attack_type String,
@@ -57,8 +66,11 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event on cluster ck_query (
     destination_country String,
     source_ip_list String,
     source_country_list String,
+    sessions Int64,
     session_rate Int64,
+    packets Int64,
     packet_rate Int64,
+    bytes Int64,
     bit_rate Int64
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,dos_event_local,rand());
