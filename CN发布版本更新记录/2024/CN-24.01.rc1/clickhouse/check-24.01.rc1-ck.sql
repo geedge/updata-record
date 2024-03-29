@@ -1,4 +1,0 @@
-set distributed_ddl_task_timeout = 180;
-
-SELECT status, is_builtin, rule_type, victim_ip,victim_country_region, victim_super_admin_area, victim_admin_area, victim_longitude, victim_latitude, offender_ip, offender_country_region, offender_super_admin_area, offender_admin_area, offender_longitude, offender_latitude, offender_ip, event_info, event_key, severity, event_type, duration_s, event_name, app, `domain`, event_id, rule_id, start_time, end_time, match_times
-FROM cyber_narrator_galaxy.cn_security_event where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
