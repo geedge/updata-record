@@ -189,6 +189,28 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS server_sub_administrative_area String after server_administrative_area;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS server_sub_administrative_area String after server_administrative_area;
 
+-- 增加公共字段tunnel_id_list
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
+
+
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
 TO tsg_galaxy_v3.security_event_local
@@ -423,6 +445,7 @@ TO tsg_galaxy_v3.security_event_local
     out_dest_mac String,
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
+    tunnel_id_list Array(Int64),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -658,6 +681,7 @@ SELECT
     out_dest_mac,
     encapsulation,
     dup_traffic_flag,
+    tunnel_id_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
@@ -898,6 +922,7 @@ TO tsg_galaxy_v3.monitor_event_local
     out_dest_mac String,
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
+    tunnel_id_list Array(Int64),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -1133,6 +1158,7 @@ SELECT
     out_dest_mac,
     encapsulation,
     dup_traffic_flag,
+    tunnel_id_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
