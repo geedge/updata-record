@@ -1,0 +1,6 @@
+set distributed_ddl_task_timeout = 180;
+
+SELECT subscriber_id, app, imei, imsi, phone_number, apn, stat_time, sent_pkts, sent_bytes, received_pkts, received_bytes, sessions, traffic_inbound_byte, traffic_inbound_pkt, traffic_outbound_byte, traffic_outbound_pkt, traffic_internal_byte, traffic_internal_pkt, traffic_through_byte, traffic_through_pkt, tcp_c2s_lost_bytes_ratio, tcp_s2c_lost_bytes_ratio, tcp_lost_bytes_ratio, tcp_c2s_o3_pkts_ratio, tcp_s2c_o3_pkts_ratio, tcp_o3_pkts_ratio, tcp_c2s_rtx_bytes_ratio, tcp_s2c_rtx_bytes_ratio, tcp_rtx_bytes_ratio, tcp_c2s_rtx_pkts_ratio, tcp_s2c_rtx_pkts_ratio, tcp_rtx_pkts_ratio, avg_tcp_rtt_ms, avg_http_response_latency_ms, avg_ssl_handshake_latency_ms
+FROM cyber_narrator_galaxy.metric_subscriber_app where stat_time >= toUnixTimestamp('2030-01-01 00:00:00') AND stat_time <toUnixTimestamp('2030-01-01 00:00:01');
+SELECT subscriber_id, imei, imsi, phone_number, apn, subscriber_longitude, subscriber_latitude, first_location, second_location, third_location,  stat_time
+FROM cyber_narrator_galaxy.location_subscriber where stat_time >= toUnixTimestamp('2030-01-01 00:00:00') AND stat_time <toUnixTimestamp('2030-01-01 00:00:01');
