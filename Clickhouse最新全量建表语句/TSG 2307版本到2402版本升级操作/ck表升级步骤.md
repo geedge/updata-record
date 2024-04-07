@@ -1,13 +1,13 @@
 由于需要升级多个数据中心，为了保证业务连续性且不丢失数据，采用实时增量同步的方法进行数据迁移。
 具体步骤：  
 - Step1 ：停止国家中心gohangout入库任务。  
-- Step2 ：23.07版本clickhouse库表_local表重命名_old,删除相关视图及废弃表。  
+- Step2 ：23.07版本clickhouse库表_local表重命名_local_old,删除相关视图及废弃表。  
 - Step3 ：升级国家中心，初始化24.02版本clickhouse库表，并进行校验。  
-- Step4 ：国家中心ck创建同步物化视图（*_old->*_local）。gohangout入库任务修改配置将入库表修改为*_old,已经删除的库表对应的gohangout任务也可删除，gohangout保留任务（session_record,security_event,transaction_record,voip_record,proxy_event,dos_event）,重启gohangout。 
+- Step4 ：国家中心ck创建同步物化视图（*_local_old->*_local）。gohangout入库任务修改配置将入库表修改为*_local_old,已经删除的库表对应的gohangout任务也可删除，gohangout保留任务（session_record,security_event,transaction_record,voip_record,proxy_event,dos_event）,重启gohangout。 
 - Step5 : 单个分中心升级，TSG OS →  分中心Kafka → 分中心ETL（grootstream）→ 国家中心Kafka（*-PROCESSED） → 国家中心Groot →  24.02库表
-- 未升级的分中心仍保留原先的ETL任务，最终汇入国家中心kafka(*-COMPLETED)中→ 国家中心（gohangout） →  *_old库表 -> ck物化视图同步至24.02库表中  
+- 未升级的分中心仍保留原先的ETL任务，最终汇入国家中心kafka(*-COMPLETED)中→ 国家中心（gohangout） →  *_local_old库表 -> ck物化视图同步至24.02库表中  
 - Step6 : 所有分中心升级完毕，关闭国家中心gohangout，删除ck同步物化视图。  
-- Step7 :  按照具体情况选择是否删除所有的历史表 xx_old，或是否启动离线同步历史数据任务。  
+- Step7 :  按照具体情况选择是否删除所有的历史表 *_local_old，或是否启动离线同步历史数据任务。  
 
 
 # 说明
