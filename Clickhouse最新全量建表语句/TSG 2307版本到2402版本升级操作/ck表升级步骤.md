@@ -24,9 +24,14 @@ clickhouse-client -h 127.0.0.1 --port 9001 -m -u default --password ****** --que
 
 # 二、旧表重命名为历史表
 
-重命名旧表, 删除废弃表
+* 1.重命名旧表, 删除废弃表
 ```sql
 clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_rename_old_table.sql
+```
+
+* 2.查看旧表数据量
+```
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_cat_old_table_row_count.sql
 ```
 
 # 三、初始化新表
@@ -63,6 +68,11 @@ tsg_galaxy_v3.transaction_record_local_old
 tsg_galaxy_v3.voip_record_local_old
 tsg_galaxy_v3.proxy_event_local_old
 tsg_galaxy_v3.dos_event_local_old
+```
+
+* 3.查看旧表是否有数据入库(间隔一段时间查询,后面查询比前面查询行数多说明有数据写入)
+```
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 01_cat_old_table_row_count.sql
 ```
 
 # 六、各个数据中心全部升级完成后停止旧表ck入库任务
@@ -294,4 +304,11 @@ WHERE start_time >= toUnixTimestamp('2024-01-10 00:00:00') and start_time < toUn
 group by date_trunc('day', toDateTime(start_time))
 order by d
 ;
+```
+
+# 八、删除旧表
+数据迁移完成后，不需要查看旧表时，删除旧表。
+
+```sh
+clickhouse-client -h 127.0.0.1 --port 9001 -m -n -u default --password ****** --distributed_ddl_task_timeout 180 < 06_drop_old_table.sql
 ```
