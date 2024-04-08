@@ -16,3 +16,5 @@ SELECT app_name,subscriber_id,imei,imsi,phone_number,apn,app_category,app_subcat
 FROM cyber_narrator_galaxy.session_relation_subscriber_app_view_metric where create_time >= toUnixTimestamp('2030-01-01 00:00:00') AND create_time <toUnixTimestamp('2030-01-01 00:00:01');
 SELECT ip, l7_protocol, port, create_time, update_time
 FROM cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric where create_time >= toUnixTimestamp('2030-01-01 00:00:00') AND create_time <toUnixTimestamp('2030-01-01 00:00:01');
+SELECT tag, stat_time, ip_sketch, domain_sketch,ip_sketch_agg_state, domain_sketch_agg_state 
+FROM cyber_narrator_galaxy.metric_tag where stat_time >= toUnixTimestamp('2030-01-01 00:00:00') AND stat_time <toUnixTimestamp('2030-01-01 00:00:01');

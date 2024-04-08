@@ -297,3 +297,35 @@ GROUP BY
     ip,
     l7_protocol,
     port;
+
+
+CREATE TABLE cyber_narrator_galaxy.metric_tag_local
+(
+    tag String,
+    stat_time Int64,
+    ip_sketch String,
+    domain_sketch String,
+    ip_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(ip_sketch),
+    domain_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(domain_sketch)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMMDD(toDate(stat_time))
+ORDER BY (stat_time, tag);
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_tag ON CLUSTER ck_cluster (
+    tag String,
+    stat_time Int64,
+    ip_sketch String,
+    domain_sketch String,
+    ip_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(ip_sketch),
+    domain_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(domain_sketch)
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_tag_local', rand());
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_tag ON CLUSTER ck_query (
+    tag String,
+    stat_time Int64,
+    ip_sketch String,
+    domain_sketch String,
+    ip_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(ip_sketch),
+    domain_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(domain_sketch)
+) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_tag_local', rand());
