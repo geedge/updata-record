@@ -29,24 +29,6 @@ processing_pipelines:
     remove_fields:
     output_fields:
     functions: # [array of object] Function List
-      - function: SNOWFLAKE_ID
-        lookup_fields: [ '' ]
-        output_fields: [ log_id ]
-        filter:
-        parameters:
-          data_center_id_num: 1
-
-      - function: UNIX_TIMESTAMP_CONVERTER
-        lookup_fields: [ __timestamp ]
-        output_fields: [ recv_time ]
-        parameters:
-          precision: seconds
-
-      - function: EVAL
-        output_fields: [ ingestion_time ]
-        parameters:
-          value_expression: recv_time
-
       - function: EVAL
         output_fields: [ domain ]
         parameters:
