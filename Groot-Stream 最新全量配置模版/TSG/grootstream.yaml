@@ -1,0 +1,18 @@
+grootstream:
+  knowledge_base:
+#    - name: tsg_ip_asn
+#      fs_type: http
+#      fs_path: http://192.168.44.12:9999/v1/knowledge_base
+#      files:
+#        - f9f6bc91-2142-4673-8249-e097c00fe1ea
+        
+    - name: tsg_ip_asn
+      fs_type: local
+      fs_path: /data/hdd/olap/flink/topology/data/
+      files:
+        - asn_builtin.mmdb
+  properties:
+    hos.path: http://192.168.44.12:9098/hos
+    hos.bucket.name.traffic_file: traffic_file_bucket
+    hos.bucket.name.troubleshooting_file: troubleshooting_file_bucket
+    scheduler.knowledge_base.update.interval.minutes: 5
