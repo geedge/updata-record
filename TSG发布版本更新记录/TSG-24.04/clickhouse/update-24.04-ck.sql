@@ -210,6 +210,24 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS tunnel_id_list Array(Int64) after dup_traffic_flag;
 
+-- GAL-549 clickhouse添加mail_starttls_flag字段
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+
+ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
+
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -365,6 +383,7 @@ TO tsg_galaxy_v3.security_event_local
     mail_subject_charset String,
     mail_attachment_name String,
     mail_attachment_name_charset String,
+    mail_starttls_flag Nullable(Int32),
     mail_eml_file String,
     ftp_account String,
     ftp_url String,
@@ -601,6 +620,7 @@ SELECT
     mail_subject_charset,
     mail_attachment_name,
     mail_attachment_name_charset,
+    mail_starttls_flag,
     mail_eml_file,
     ftp_account,
     ftp_url,
@@ -842,6 +862,7 @@ TO tsg_galaxy_v3.monitor_event_local
     mail_subject_charset String,
     mail_attachment_name String,
     mail_attachment_name_charset String,
+    mail_starttls_flag Nullable(Int32),
     mail_eml_file String,
     ftp_account String,
     ftp_url String,
@@ -1078,6 +1099,7 @@ SELECT
     mail_subject_charset,
     mail_attachment_name,
     mail_attachment_name_charset,
+    mail_starttls_flag,
     mail_eml_file,
     ftp_account,
     ftp_url,
