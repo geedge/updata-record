@@ -228,6 +228,27 @@ ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add col
 ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
 ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS mail_starttls_flag Nullable(Int32) after mail_attachment_name_charset;
 
+-- TSG-20773 clickhouse公共字段添加app_extra_info
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -306,6 +327,7 @@ TO tsg_galaxy_v3.security_event_local
     app LowCardinality(String),
     app_debug_info String,
     app_content String,
+    app_extra_info String,
     fqdn_category_list Array(Int64),
     ip_protocol LowCardinality(String),
     decoded_path LowCardinality(String),
@@ -543,6 +565,7 @@ SELECT
     app,
     app_debug_info,
     app_content,
+    app_extra_info,
     fqdn_category_list,
     ip_protocol,
     decoded_path,
@@ -785,6 +808,7 @@ TO tsg_galaxy_v3.monitor_event_local
     app LowCardinality(String),
     app_debug_info String,
     app_content String,
+    app_extra_info String,
     fqdn_category_list Array(Int64),
     ip_protocol LowCardinality(String),
     decoded_path LowCardinality(String),
@@ -1022,6 +1046,7 @@ SELECT
     app,
     app_debug_info,
     app_content,
+    app_extra_info,
     fqdn_category_list,
     ip_protocol,
     decoded_path,
