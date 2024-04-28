@@ -175,6 +175,26 @@ processing_pipelines:
           #kb_name: cn_internal_ip
 
       - function: EVAL
+        output_fields: [ sent_bytes ]
+        parameters:
+          value_expression: "sent_bytes == null ? 0 : sent_bytes"
+
+      - function: EVAL
+        output_fields: [ sent_pkts ]
+        parameters:
+          value_expression: "sent_pkts == null ? 0 : sent_pkts"
+
+      - function: EVAL
+        output_fields: [ received_bytes ]
+        parameters:
+          value_expression: "received_bytes == null ? 0 : received_bytes"
+
+      - function: EVAL
+        output_fields: [ received_pkts ]
+        parameters:
+          value_expression: "received_pkts == null ? 0 : received_pkts"
+
+      - function: EVAL
         output_fields: [ traffic_inbound_byte ]
         parameters:
           value_expression: "client_zone == 'internal' && server_zone == 'external' ? received_bytes : traffic_inbound_byte"
