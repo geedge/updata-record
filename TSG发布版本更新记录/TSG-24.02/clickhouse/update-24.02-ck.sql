@@ -64,6 +64,32 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS app_extra_info String after app_content;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS app_extra_info String after app_content;
 
+-- TSG-20923 OLAP 公共字段增加direction
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS direction String after address_type;
+
+
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
 TO tsg_galaxy_v3.security_event_local
@@ -87,6 +113,7 @@ TO tsg_galaxy_v3.security_event_local
     device_group String,
     sled_ip String,
     address_type Int32,
+    direction String,
     vsys_id Int32,
     t_vsys_id Int32,
     flags Int64,
@@ -316,6 +343,7 @@ SELECT
     device_group,
     sled_ip,
     address_type,
+    direction,
     vsys_id,
     t_vsys_id,
     flags,
@@ -550,6 +578,7 @@ TO tsg_galaxy_v3.monitor_event_local
     device_group String,
     sled_ip String,
     address_type Int32,
+    direction String,
     vsys_id Int32,
     t_vsys_id Int32,
     flags Int64,
@@ -779,6 +808,7 @@ SELECT
     device_group,
     sled_ip,
     address_type,
+    direction,
     vsys_id,
     t_vsys_id,
     flags,
