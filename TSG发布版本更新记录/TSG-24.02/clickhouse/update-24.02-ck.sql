@@ -77,10 +77,6 @@ ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column I
 ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
 ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS direction String after address_type;
 
-ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
-ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
-ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS direction String after address_type;
-
 ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
 ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
 ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS direction String after address_type;
