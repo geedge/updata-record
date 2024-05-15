@@ -15,26 +15,26 @@ timestamp_start=`date --utc --date="$data_start_time" +%s`
 timestamp_end=`date --utc --date="$data_end_time" +%s`
 
 # 需要迁移的表名称
-session_record_table_src="tsg_galaxy_v3.session_record_local_old"
-session_record_table_dest="tsg_galaxy_v3.session_record_local"
+session_record_table_src="tsg_galaxy_tmp.session_record_local_old"
+session_record_table_dest="tsg_galaxy_tmp.session_record_local"
 
-security_event_table_src="tsg_galaxy_v3.security_event_local_old"
-security_event_table_dest="tsg_galaxy_v3.security_event_local"
+security_event_table_src="tsg_galaxy_tmp.security_event_local_old"
+security_event_table_dest="tsg_galaxy_tmp.security_event_local"
 
-monitor_event_table_src="tsg_galaxy_v3.security_event_local_old"
-monitor_event_table_dest="tsg_galaxy_v3.monitor_event_local"
+monitor_event_table_src="tsg_galaxy_tmp.security_event_local_old"
+monitor_event_table_dest="tsg_galaxy_tmp.monitor_event_local"
 
-transaction_record_table_src="tsg_galaxy_v3.transaction_record_local_old"
-transaction_record_table_dest="tsg_galaxy_v3.transaction_record_local"
+transaction_record_table_src="tsg_galaxy_tmp.transaction_record_local_old"
+transaction_record_table_dest="tsg_galaxy_tmp.transaction_record_local"
 
-voip_record_table_src="tsg_galaxy_v3.voip_record_local_old"
-voip_record_table_dest="tsg_galaxy_v3.voip_record_local"
+voip_record_table_src="tsg_galaxy_tmp.voip_record_local_old"
+voip_record_table_dest="tsg_galaxy_tmp.voip_record_local"
 
-proxy_event_table_src="tsg_galaxy_v3.proxy_event_local_old"
-proxy_event_table_dest="tsg_galaxy_v3.proxy_event_local"
+proxy_event_table_src="tsg_galaxy_tmp.proxy_event_local_old"
+proxy_event_table_dest="tsg_galaxy_tmp.proxy_event_local"
 
-dos_event_table_src="tsg_galaxy_v3.dos_event_local_old"
-dos_event_table_dest="tsg_galaxy_v3.dos_event_local"
+dos_event_table_src="tsg_galaxy_tmp.dos_event_local_old"
+dos_event_table_dest="tsg_galaxy_tmp.dos_event_local"
 
 # ck客户端参数
 ip="127.0.0.1"
