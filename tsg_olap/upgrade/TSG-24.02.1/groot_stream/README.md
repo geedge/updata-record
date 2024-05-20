@@ -17,3 +17,10 @@
     - Topology: kafka_source -> etl_processor -> post_output_field_processor -> kafka_sink
     - Data Flow: SESSION-RECORD(SESSION-RECORD-PROCESSED) -> SESSION-RECORD-CN
      
+## data_transporter.yaml.template
+
+- troubleshooting_file_stream_kafka_to_ndc_kafka
+
+    - Topology:  kafka_source  -> kafka_sink (format:raw)
+    - Data Flow: TROUBLESHOOTING-FILE-STREAM-RECORD -> TROUBLESHOOTING-FILE-STREAM-RECORD
+
