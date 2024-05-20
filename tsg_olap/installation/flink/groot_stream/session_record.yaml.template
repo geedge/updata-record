@@ -23,7 +23,7 @@ processing_pipelines:
       lookup_fields: ['']
       output_fields: [log_id]
       parameters:
-        data_center_id_num: {{ data_center_id_num }}
+        data_center_id_num: {{ data_center_id_num }}  # [number] Data Center ID, Default is 0, range is 0-31. Multi-data center deployment, each data center has a unique ID.
 
     - function: JSON_EXTRACT
       lookup_fields: [device_tag]
