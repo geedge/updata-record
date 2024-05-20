@@ -23,7 +23,7 @@ processing_pipelines:
       lookup_fields: ['']
       output_fields: [log_id]
       parameters:
-        data_center_id_num: {{ data_center_id_num }}  # [number] Data Center ID, Default is 0, range is 0-31. Multi-data center deployment, each data center has a unique ID.
+        data_center_id_num: {{ data_center_id_num }}
 
     - function: JSON_EXTRACT
       lookup_fields: [device_tag]
@@ -136,7 +136,7 @@ sinks:
       connection.query_timeout: 300
 
 application:
-  env: 
+  env:
     name: {{ job_name }}
     shade.identifier: aes
     pipeline:
@@ -147,5 +147,6 @@ application:
   - name: etl_processor
     downstream: [clickhouse_sink]
   - name: clickhouse_sink
+    downstream: []
 
 
