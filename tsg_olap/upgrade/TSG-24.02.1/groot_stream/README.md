@@ -10,7 +10,8 @@
     - Data Flow: SESSION-RECORD -> session_record_local
 
 ## realtime_log_streaming_cn_session_record.yaml.template
-// 1. 需安装CN UDFs 2. 安装Groot Stream在配置文件grootstream.yaml定义CN知识库
+
+`使用install_cn_udf.sh安装CN UDFs；配置文件grootstream.yaml定义CN知识库`
 
 - etl_session_record_kafka_to_cn_kafka
     - Topology: kafka_source -> etl_processor -> post_output_field_processor -> kafka_sink
