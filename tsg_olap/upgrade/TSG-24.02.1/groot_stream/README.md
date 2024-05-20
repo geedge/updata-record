@@ -11,7 +11,7 @@
 
 ## realtime_log_streaming_cn_session_record.yaml.template
 
-`使用install_cn_udf.sh安装CN UDFs；配置文件grootstream.yaml定义CN知识库`
+`install_cn_udf.sh安装CN UDFs；grootstream.yaml定义CN知识库`
 
 - etl_session_record_kafka_to_cn_kafka
     - Topology: kafka_source -> etl_processor -> post_output_field_processor -> kafka_sink
