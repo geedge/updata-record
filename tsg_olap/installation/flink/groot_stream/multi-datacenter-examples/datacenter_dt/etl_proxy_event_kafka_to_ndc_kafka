@@ -1,33 +1,28 @@
 sources:
   kafka_source:
     type: kafka
-    # fields: # [array of object] Field List, if not set, all fields(Map<String, Object>) will be output.
     properties:
-      topic: SESSION-RECORD
+      topic: PROXY-EVENT
       kafka.bootstrap.servers: "{{ kafka_source_servers }}"
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
-      kafka.security.protocol: SSL
-      kafka.ssl.endpoint.identification.algorithm: ""
-      kafka.ssl.keystore.location: /data/tsg/olap/flink/topology/data/keystore.jks
-      kafka.ssl.keystore.password: 86cf0e2ffba3f541a6c6761313e5cc7e
-      kafka.ssl.truststore.location: /data/tsg/olap/flink/topology/data/truststore.jks
-      kafka.ssl.truststore.password: 86cf0e2ffba3f541a6c6761313e5cc7e
-      kafka.ssl.key.password: 86cf0e2ffba3f541a6c6761313e5cc7e
-	  #kafka.security.protocol: SASL_PLAINTEXT
-      #kafka.sasl.mechanism: PLAIN
-      #kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
-      kafka.group.id: etl_session_record_kafka_to_kafka-20231221
+      kafka.security.protocol: SASL_PLAINTEXT
+      kafka.sasl.mechanism: PLAIN
+      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
+      kafka.group.id: etl_proxy_event_kafka_to_ndc_kafka
       kafka.auto.offset.reset: latest
       format: json
 
 processing_pipelines:
   etl_processor: # [object] Processing Pipeline
     type: com.geedgenetworks.core.processor.projection.ProjectionProcessorImpl
-    remove_fields: # [array of object] Field List, if not set, all fields(Map<String, Object>) will be output.
-    output_fields: # [array of object] Field List, if set, fields will be remove.
+    remove_fields:
+    output_fields:
+    properties:
+      key: value
     functions: # [array of object] Function List
+
     - function: ASN_LOOKUP
       lookup_fields: [server_ip]
       output_fields: [server_asn]
@@ -130,8 +125,8 @@ sinks:
   kafka_sink:
     type : kafka
     properties:
-      topic: SESSION-RECORD-PROCESSED
-      kafka.bootstrap.servers: {{ national_center_kafka_servers }}
+      topic: PROXY-EVENT-PROCESSED
+      kafka.bootstrap.servers: "{{ kafka_sink_servers }}"
       kafka.retries: 0
       kafka.linger.ms: 10
       kafka.request.timeout.ms: 30000
@@ -148,7 +143,7 @@ sinks:
 application:
 
   env: # [object] Environment Variables
-    name: etl_session_record_kafka_to_kafka # [string] Job Name
+    name: etl_proxy_event_kafka_to_ndc_kafka # [string] Job Name
     shade.identifier: aes
     pipeline:
       object-reuse: true # [boolean] Object Reuse, default is false
