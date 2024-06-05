@@ -1090,3 +1090,5 @@ ENGINE = Distributed('ck_cluster',
  'tsg_galaxy_v3',
  'traffic_sketch_metric_local',
  rand());
+ 
+create table IF not EXISTS system.distributed_ddl_queue_cluster ON CLUSTER ck_cluster as system.distributed_ddl_queue  ENGINE =Distributed(ck_cluster,`system`,distributed_ddl_queue,rand());

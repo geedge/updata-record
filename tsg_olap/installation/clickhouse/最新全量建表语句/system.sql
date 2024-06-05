@@ -5,4 +5,5 @@ create table IF NOT EXISTS `system`.query_log_cluster ON CLUSTER ck_cluster as `
 CREATE TABLE IF NOT EXISTS `system`.columns_cluster ON CLUSTER ck_cluster AS `system`.columns ENGINE=Distributed(ck_cluster,`system`,columns,rand());
 CREATE TABLE IF NOT EXISTS `system`.processes_cluster ON CLUSTER ck_cluster AS `system`.processes ENGINE=Distributed(ck_cluster,`system`,processes,rand());
 alter table system.query_log on cluster ck_cluster modify TTL event_date + INTERVAL 60 DAY;
+create table IF not EXISTS system.distributed_ddl_queue_cluster ON CLUSTER ck_cluster as system.distributed_ddl_queue  ENGINE =Distributed(ck_cluster,`system`,distributed_ddl_queue,rand());
 
