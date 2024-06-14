@@ -7,7 +7,7 @@ sources:
     # watermark_lag: 60 # [number] Watermark Lag, default is 60
     properties:
       topic: TRANSACTION-RECORD
-      kafka.bootstrap.servers: 192.168.44.11:9094,192.168.44.13:9094,192.168.44.14:9094,192.168.44.15:9094,192.168.44.16:9094
+      kafka.bootstrap.servers: "{{ kafka_source_servers }}"
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
@@ -71,12 +71,6 @@ processing_pipelines:
       parameters:
         value_expression: recv_time
 
-    - function: DOMAIN
-      lookup_fields: [http_host, ssl_sni, dtls_sni, quic_sni]
-      output_fields: [server_domain]
-      parameters:
-        option: FIRST_SIGNIFICANT_SUBDOMAIN
-
     - function: BASE64_DECODE_TO_STRING
       output_fields: [mail_subject]
       parameters:
@@ -123,7 +117,7 @@ sinks:
   clickhouse_sink:
     type: clickhouse
     properties:
-      host: 192.168.44.13:9001,192.168.44.14:9001,192.168.44.15:9001,192.168.44.16:9001
+      host: "{{ clickhouse_servers }}"
       table: tsg_galaxy_v3.transaction_record_local
       batch.size: 100000
       batch.interval: 30s
