@@ -3,7 +3,7 @@ sources:
     type: kafka
     # fields: # [array of object] Field List, if not set, all fields(Map<String, Object>) will be output.
     properties: # [object] Source Properties
-      topic: SESSION-RECORD-PROCESSED
+      topic: {{ tsg_olap_kafka_session_record_or_session_record_processed_topic }} # SESSION-RECORD/SESSION-RECORD-PROCESSED
       kafka.bootstrap.servers: {{ tsg_olap_kafka_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
@@ -11,7 +11,7 @@ sources:
       kafka.security.protocol: SASL_PLAINTEXT
       kafka.sasl.mechanism: PLAIN
       kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
-      kafka.group.id: etl_processed_session_record_kafka_to_cn_kafka
+      kafka.group.id: etl_session_record_kafka_to_cn_kafka
       kafka.auto.offset.reset: latest
       format: json
 
@@ -21,6 +21,28 @@ processing_pipelines:
     remove_fields:
     output_fields:
     functions: # [array of object] Function List
+      - function: SNOWFLAKE_ID
+        lookup_fields: [ '' ]
+        output_fields: [ cn_log_id ]
+        parameters:
+          data_center_id_num: 1
+
+      - function: EVAL
+        output_fields: [ log_id ]
+        parameters:
+          value_expression: "log_id == null ? cn_log_id : log_id"
+
+      - function: UNIX_TIMESTAMP_CONVERTER
+        lookup_fields: [ __timestamp ]
+        output_fields: [ kafka_recv_time ]
+        parameters:
+          precision: seconds
+
+      - function: EVAL
+        output_fields: [ recv_time ]
+        parameters:
+          value_expression: "recv_time == null ? kafka_recv_time : recv_time"
+
       - function: EVAL
         output_fields: [ domain ]
         parameters:
@@ -261,19 +283,19 @@ processing_pipelines:
         parameters:
           value_expression: "client_zone == 'external' ? sessions : external_query_num"
 
-      - function: CN_VPN_LOOKUP
+      - function: CN_ANONYMITY_LOOKUP
         lookup_fields: [ server_ip ]
-        output_fields: [ server_vpn_service_name ]
+        output_fields: [ server_node_type ]
         parameters:
-          kb_name: cn_vpn_learning_ip
-          option: IP_TO_VPN
+          kb_name: cn_ioc_darkweb
+          option: IP_TO_NODE_TYPE
 
-      - function: CN_VPN_LOOKUP
+      - function: CN_ANONYMITY_LOOKUP
         lookup_fields: [ domain ]
-        output_fields: [ domain_vpn_service_name ]
+        output_fields: [ domain_node_type ]
         parameters:
-          kb_name: cn_vpn_learning_domain
-          option: DOMAIN_TO_VPN
+          kb_name: cn_ioc_darkweb
+          option: DOMAIN_TO_NODE_TYPE
 
       - function: CN_IOC_LOOKUP
         lookup_fields: [ server_ip ]
@@ -289,69 +311,39 @@ processing_pipelines:
           kb_name: cn_ioc_malware
           option: DOMAIN_TO_MALWARE
 
-      - function: CN_USER_DEFINE_TAG_LOOKUP
+      - function: CN_INTELLIGENCE_INDICATOR_LOOKUP
         lookup_fields: [ client_ip ]
         output_fields: [ client_ip_tags ]
         parameters:
-          kb_name: cn_ip_tag_user_define
+          kb_name: cn_intelligence_indicator
           option: IP_TO_TAG
 
-      - function: CN_USER_DEFINE_TAG_LOOKUP
+      - function: CN_INTELLIGENCE_INDICATOR_LOOKUP
         lookup_fields: [ server_ip ]
         output_fields: [ server_ip_tags ]
         parameters:
-          kb_name: cn_ip_tag_user_define
+          kb_name: cn_intelligence_indicator
           option: IP_TO_TAG
 
-      - function: CN_USER_DEFINE_TAG_LOOKUP
+      - function: CN_INTELLIGENCE_INDICATOR_LOOKUP
         lookup_fields: [ domain ]
         output_fields: [ domain_tags ]
         parameters:
-          kb_name: cn_domain_tag_user_define
+          kb_name: cn_intelligence_indicator
           option: DOMAIN_TO_TAG
-
-      - function: CN_USER_DEFINE_TAG_LOOKUP
-        lookup_fields: [ app ]
-        output_fields: [ app_tags ]
-        parameters:
-          kb_name: cn_app_tag_user_define
-          option: APP_TO_TAG
 
       - function: GENERATE_STRING_ARRAY
         lookup_fields: [ client_idc_renter,client_ip_tags ]
         output_fields: [ client_ip_tags ]
 
       - function: GENERATE_STRING_ARRAY
-        lookup_fields: [ server_idc_renter,server_dns_server,server_node_type,server_malware,server_vpn_service_name,server_ip_tags ]
+        lookup_fields: [ server_idc_renter,server_dns_server,server_node_type,server_malware,server_ip_tags ]
         output_fields: [ server_ip_tags ]
 
       - function: GENERATE_STRING_ARRAY
-        lookup_fields: [ domain_node_type,domain_malware,domain_vpn_service_name,domain_tags ]
+        lookup_fields: [ domain_node_type,domain_malware,domain_tags ]
         output_fields: [ domain_tags ]
 
-      - function: CN_ARRAY_ELEMENTS_PREPEND
-        lookup_fields: [ client_ip_tags ]
-        output_fields: [ client_ip_tags ]
-        parameters:
-          prefix: ip.
-
-      - function: CN_ARRAY_ELEMENTS_PREPEND
-        lookup_fields: [ server_ip_tags ]
-        output_fields: [ server_ip_tags ]
-        parameters:
-          prefix: ip.
-
-      - function: CN_ARRAY_ELEMENTS_PREPEND
-        lookup_fields: [ domain_tags ]
-        output_fields: [ domain_tags ]
-        parameters:
-          prefix: domain.
-
-      - function: CN_ARRAY_ELEMENTS_PREPEND
-        lookup_fields: [ app_tags ]
-        output_fields: [ app_tags ]
-        parameters:
-          prefix: app.
 postprocessing_pipelines:
   remove_field_processor: # [object] Processing Pipeline
     type: com.geedgenetworks.core.processor.projection.ProjectionProcessorImpl
@@ -377,7 +369,7 @@ sinks:
 
 application:
   env:
-    name: etl_session_record_processed_kafka_to_cn_kafka
+    name: etl_session_record_kafka_to_cn_kafka
     shade.identifier: aes
     pipeline:
       object-reuse: true
