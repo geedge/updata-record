@@ -1,6 +1,6 @@
 # 配置模版举例
 
-## session_record.yaml.j2
+## session_record.yaml.j2 （会话日志ETL场景）
 
 - 多数中心部署场景: 分中心Data Transporter预处理后，集中汇聚至国家中心（NDC）
     - etl_session_record_kafka_to_ndc_kafka (A-DT) 
@@ -15,13 +15,13 @@
         - Topology: kafka_source -> etl_processor -> clickhouse_sink
         - Data Flow: SESSION-RECORD -> session_record_local
      
-## data_transporter.yaml.j2
+## data_transporter.yaml.j2 (数据回传场景)
 
 - troubleshooting_file_stream_kafka_to_ndc_kafka
     - Topology:  kafka_source  -> kafka_sink (format:raw)
     - Data Flow: TROUBLESHOOTING-FILE-STREAM-RECORD -> TROUBLESHOOTING-FILE-STREAM-RECORD
 
-## realtime_log_streaming_cn_session_record.yaml.template
+## realtime_log_streaming_cn_session_record.yaml.template （向其它厂商/第三方推送场景）
 
 `install_cn_udf.sh安装CN UDFs；grootstream.yaml定义CN知识库`
 
