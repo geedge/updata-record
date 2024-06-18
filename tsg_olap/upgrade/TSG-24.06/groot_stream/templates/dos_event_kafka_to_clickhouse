@@ -1,0 +1,49 @@
+sources:
+  kafka_source:
+    type: kafka
+    properties:
+      topic: DOS-EVENT
+      kafka.bootstrap.servers: "{{ kafka_source_servers }}"
+      kafka.session.timeout.ms: 60000
+      kafka.max.poll.records: 3000
+      kafka.max.partition.fetch.bytes: 31457280
+      kafka.security.protocol: SASL_PLAINTEXT
+      kafka.ssl.keystore.location:
+      kafka.ssl.keystore.password:
+      kafka.ssl.truststore.location:
+      kafka.ssl.truststore.password:
+      kafka.ssl.key.password:
+      kafka.sasl.mechanism: PLAIN
+      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
+      kafka.buffer.memory:
+      kafka.group.id: dos_event_kafka_to_clickhouse-20231221
+      kafka.auto.offset.reset: latest
+      kafka.max.request.size:
+      kafka.compression.type: none
+      format: json
+
+
+sinks:
+  clickhouse_sink:
+    type: clickhouse
+    properties:
+      host: "{{ clickhouse_servers }}"
+      table: tsg_galaxy_v3.dos_event_local
+      batch.size: 100000
+      batch.interval: 30s
+      connection.user: e54c9568586180eede1506eecf3574e9
+      connection.password: 86cf0e2ffba3f541a6c6761313e5cc7e
+
+
+application:
+  env:
+    name: dos_event_kafka_to_clickhouse
+    shade.identifier: aes
+    pipeline:
+      object-reuse: true # [boolean] Object Reuse, default is false
+  topology:
+  - name: kafka_source
+    downstream: [clickhouse_sink]
+  - name: clickhouse_sink
+
+
