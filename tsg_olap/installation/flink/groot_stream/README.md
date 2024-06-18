@@ -1,4 +1,3 @@
-
 # 配置模版举例
 
 ## session_record.yaml.j2
@@ -16,7 +15,7 @@
         - Topology: kafka_source -> etl_processor -> clickhouse_sink
         - Data Flow: SESSION-RECORD -> session_record_local
      
-## datapath_telemetry_record.yaml.j2
+## data_transporter.yaml.j2
 
 - troubleshooting_file_stream_kafka_to_ndc_kafka
     - Topology:  kafka_source  -> kafka_sink (format:raw)
