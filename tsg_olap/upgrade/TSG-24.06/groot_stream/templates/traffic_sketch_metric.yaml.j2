@@ -2,7 +2,7 @@ sources:
   kafka_source:
     type: kafka
     properties:
-      topic: TRAFFIC-SKETCH-METRIC
+      topic: {{ kafka_source_topic }}
       kafka.bootstrap.servers: {{ kafka_source_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
@@ -62,12 +62,11 @@ processing_pipelines:
         parameters:
           data_center_id_num: 1
 
-
 sinks:
   kafka_sink:
     type: kafka
     properties:
-      topic: TRAFFIC-SKETCH-METRIC
+      topic: {{ kafka_sink_topic }}
       kafka.bootstrap.servers: {{ kafka_sink_servers }}
       kafka.retries: 0
       kafka.linger.ms: 10
@@ -86,7 +85,7 @@ sinks:
   clickhouse_sink:
     type: clickhouse
     properties:
-      host: {{ clickhouse_servers }}
+      host: {{ clickhouse_sink_host }}
       table: tsg_galaxy_v3.traffic_sketch_metric_local
       batch.size: 100000
       batch.interval: 30s
@@ -97,7 +96,7 @@ sinks:
 application:
 
   env: # [object] Environment Variables
-    name: etl_traffic_sketch_metric # [string] Job Name
+    name: {{ job_name }}
     shade.identifier: aes
     pipeline:
       object-reuse: true # [boolean] Object Reuse, default is false
