@@ -43,6 +43,17 @@ processing_pipelines:
         parameters:
           value_expression: "recv_time == null ? kafka_recv_time : recv_time"
 
+      - function: DOMAIN
+        lookup_fields: [ http_host, ssl_sni, dtls_sni, quic_sni ]
+        output_fields: [ cn_server_domain ]
+        parameters:
+          option: FIRST_SIGNIFICANT_SUBDOMAIN
+
+      - function: EVAL
+        output_fields: [ server_domain ]
+        parameters:
+          value_expression: "server_domain == null ? cn_server_domain : server_domain"
+
       - function: EVAL
         output_fields: [ domain ]
         parameters:
