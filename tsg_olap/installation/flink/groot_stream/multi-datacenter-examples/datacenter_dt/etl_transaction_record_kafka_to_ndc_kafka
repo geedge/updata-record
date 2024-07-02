@@ -77,12 +77,6 @@ processing_pipelines:
       parameters:
         value_expression: recv_time
 
-    - function: DOMAIN
-      lookup_fields: [http_host, ssl_sni, dtls_sni, quic_sni]
-      output_fields: [server_domain]
-      parameters:
-        option: FIRST_SIGNIFICANT_SUBDOMAIN
-
     - function: BASE64_DECODE_TO_STRING
       output_fields: [mail_subject]
       parameters:

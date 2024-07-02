@@ -14,6 +14,8 @@ com.geedgenetworks.core.udf.cn.IpZoneLookup
 com.geedgenetworks.core.udf.cn.VpnLookup
 com.geedgenetworks.core.udf.cn.AnonymityLookup
 com.geedgenetworks.core.udf.cn.IocLookup
-com.geedgenetworks.core.udf.cn.UserDefineTagLookup
 com.geedgenetworks.core.udf.cn.FieldsMerge
 com.geedgenetworks.core.udf.cn.ArrayElementsPrepend
+com.geedgenetworks.core.udf.cn.IntelligenceIndicatorLookup
+com.geedgenetworks.core.udf.SnowflakeId
+com.geedgenetworks.core.udf.UnixTimestampConverter

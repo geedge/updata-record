@@ -2,8 +2,8 @@ sources:
   kafka_source:
     type: kafka
     properties:
-      topic: {{ kafka_source_topic }}
-      kafka.bootstrap.servers: {{ kafka_source_bootstrap_servers }}
+      topic: VOIP-CONVERSATION-RECORD
+      kafka.bootstrap.servers: {{ kafka_source_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
@@ -107,8 +107,8 @@ sinks:
   kafka_sink:
     type: kafka
     properties:
-      topic: {{ kafka_sink_topic }}
-      kafka.bootstrap.servers: { { kafka_sink_bootstrap_servers } }
+      topic: VOIP-CONVERSATION-RECORD
+      kafka.bootstrap.servers: {{ kafka_sink_servers }}
       kafka.retries: 0
       kafka.linger.ms: 10
       kafka.request.timeout.ms: 30000
@@ -127,7 +127,7 @@ sinks:
     type: clickhouse
     properties:
       host: {{ clickhouse_sink_host }}
-      table: tsg_galaxy_v3.proxy_event_local
+      table: tsg_galaxy_v3.voip_record_local
       batch.size: 100000
       batch.interval: 30s
       connection.user: e54c9568586180eede1506eecf3574e9
@@ -141,12 +141,4 @@ application:
     shade.identifier: aes
     pipeline:
       object-reuse: true
-  topology:
-  - name: kafka_source
-    downstream: [etl_processor]
-  - name: etl_processor
-    downstream: [clickhouse_sink]
-  - name: clickhouse_sink
-    downstream: []
-
-
+  {{ topology }}

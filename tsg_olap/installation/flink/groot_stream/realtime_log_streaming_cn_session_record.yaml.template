@@ -383,5 +383,3 @@ application:
       downstream: [ kafka_sink ]
     - name: kafka_sink
       downstream: [ ]
-
-

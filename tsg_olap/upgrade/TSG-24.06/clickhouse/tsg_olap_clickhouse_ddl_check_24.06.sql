@@ -16,6 +16,7 @@ SELECT recv_time, log_id, decoded_as, session_id, start_timestamp_ms, end_timest
 FROM tsg_galaxy_v3.voip_record where recv_time >= toUnixTimestamp('2030-01-01 00:00:00') AND recv_time <toUnixTimestamp('2030-01-01 00:00:01');
 SELECT log_id, recv_time, vsys_id, timestamp_us, job_id, sled_ip, device_group, traffic_link_id, source_ip, source_port, destination_ip, destination_port, packet, packet_length, measurements
 FROM tsg_galaxy_v3.datapath_telemetry_record where recv_time >= toUnixTimestamp('2030-01-01 00:00:00') AND recv_time <toUnixTimestamp('2030-01-01 00:00:01');
-
+SELECT log_id, recv_time, vsys_id, device_id, device_group, data_center, direction, ip_protocol, client_ip, server_ip, internal_ip, external_ip, client_country, server_country, client_asn, server_asn, server_fqdn, server_domain, app, app_category, c2s_ttl, s2c_ttl, c2s_link_id, s2c_link_id, sessions, bytes, sent_bytes, received_bytes, pkts, sent_pkts, received_pkts, asymmetric_c2s_flows, asymmetric_s2c_flows, c2s_fragments, s2c_fragments, c2s_tcp_lost_bytes, s2c_tcp_lost_bytes, c2s_tcp_retransmitted_pkts, s2c_tcp_retransmitted_pkts
+FROM tsg_galaxy_v3.traffic_sketch_metric where recv_time >= toUnixTimestamp('2030-01-01 00:00:00') AND recv_time <toUnixTimestamp('2030-01-01 00:00:01');
 
     

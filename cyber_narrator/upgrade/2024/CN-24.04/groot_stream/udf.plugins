@@ -19,3 +19,4 @@ com.geedgenetworks.core.udf.cn.ArrayElementsPrepend
 com.geedgenetworks.core.udf.cn.IntelligenceIndicatorLookup
 com.geedgenetworks.core.udf.SnowflakeId
 com.geedgenetworks.core.udf.UnixTimestampConverter
+com.geedgenetworks.core.udf.Domain

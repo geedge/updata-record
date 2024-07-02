@@ -3208,9 +3208,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.datapath_telemetry_record_local on clus
     device_group String,
     traffic_link_id Int32,
     source_ip String,
-    source_port Int32,
+    source_port Nullable(Int32),
     destination_ip String,
-    destination_port Int32,
+    destination_port Nullable(Int32),
     packet String,
     packet_length Int32,
     measurements String
@@ -3229,9 +3229,9 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.datapath_telemetry_record on cluster ck
     device_group String,
     traffic_link_id Int32,
     source_ip String,
-    source_port Int32,
+    source_port Nullable(Int32),
     destination_ip String,
-    destination_port Int32,
+    destination_port Nullable(Int32),
     packet String,
     packet_length Int32,
     measurements String

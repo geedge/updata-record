@@ -2,28 +2,46 @@ sources:
   kafka_source:
     type: kafka
     properties:
-      topic: {{ kafka_source_topic }}
-      kafka.bootstrap.servers: {{ kafka_source_bootstrap_servers }}
+      topic: PROXY-EVENT
+      kafka.bootstrap.servers: "{{ kafka_source_servers }}"
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
       kafka.security.protocol: SASL_PLAINTEXT
       kafka.sasl.mechanism: PLAIN
       kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
-      kafka.group.id: {{ kafka_source_group_id }}
+      kafka.group.id: etl_proxy_event_kafka_to_ndc_kafka
       kafka.auto.offset.reset: latest
       format: json
-      json.ignore.parse.errors: false
 
 processing_pipelines:
-  etl_processor:
+  etl_processor: # [object] Processing Pipeline
     type: com.geedgenetworks.core.processor.projection.ProjectionProcessorImpl
-    functions:
+    remove_fields:
+    output_fields:
+    properties:
+      key: value
+    functions: # [array of object] Function List
+
+    - function: ASN_LOOKUP
+      lookup_fields: [server_ip]
+      output_fields: [server_asn]
+      parameters:
+        option: IP_TO_ASN
+        kb_name: tsg_ip_asn
+
+    - function: ASN_LOOKUP
+      lookup_fields: [client_ip]
+      output_fields: [client_asn]
+      parameters:
+        option: IP_TO_ASN
+        kb_name: tsg_ip_asn
+
     - function: SNOWFLAKE_ID
       lookup_fields: ['']
       output_fields: [log_id]
       parameters:
-        data_center_id_num: {{ data_center_id_num }}
+        data_center_id_num: 1
 
     - function: JSON_EXTRACT
       lookup_fields: [device_tag]
@@ -39,6 +57,11 @@ processing_pipelines:
       parameters:
         value_expression: $.tags[?(@.tag=='device_group')][0].value
 
+    - function: CURRENT_UNIX_TIMESTAMP
+      output_fields: [processing_time]
+      parameters:
+        precision: seconds
+
     - function: UNIX_TIMESTAMP_CONVERTER
       lookup_fields: [__timestamp]
       output_fields: [recv_time]
@@ -50,11 +73,6 @@ processing_pipelines:
       parameters:
         value_expression: recv_time
 
-    - function: DOMAIN
-      lookup_fields: [http_host, ssl_sni, dtls_sni, quic_sni]
-      output_fields: [server_domain]
-      parameters:
-        option: FIRST_SIGNIFICANT_SUBDOMAIN
 
     - function: BASE64_DECODE_TO_STRING
       output_fields: [mail_subject]
@@ -98,17 +116,12 @@ processing_pipelines:
       parameters:
         path: [props.hos.path, props.hos.bucket.name.traffic_file, packet_capture_file]
 
-    - function: CURRENT_UNIX_TIMESTAMP
-      output_fields: [ processing_time ]
-      parameters:
-        precision: seconds
-
 sinks:
   kafka_sink:
-    type: kafka
+    type : kafka
     properties:
-      topic: {{ kafka_sink_topic }}
-      kafka.bootstrap.servers: { { kafka_sink_bootstrap_servers } }
+      topic: PROXY-EVENT-PROCESSED
+      kafka.bootstrap.servers: "{{ kafka_sink_servers }}"
       kafka.retries: 0
       kafka.linger.ms: 10
       kafka.request.timeout.ms: 30000
@@ -119,34 +132,21 @@ sinks:
       kafka.security.protocol: SASL_PLAINTEXT
       kafka.sasl.mechanism: PLAIN
       kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
-      format: json
-      json.ignore.parse.errors: false
-      log.failures.only: true
+      format: json   
 
-  clickhouse_sink:
-    type: clickhouse
-    properties:
-      host: {{ clickhouse_sink_host }}
-      table: tsg_galaxy_v3.session_record_local
-      batch.size: 100000
-      batch.interval: 30s
-      connection.user: e54c9568586180eede1506eecf3574e9
-      connection.password: 86cf0e2ffba3f541a6c6761313e5cc7e
-      connection.connect_timeout: 30
-      connection.query_timeout: 300
 
 application:
-  env:
-    name: {{ job_name }}
+
+  env: # [object] Environment Variables
+    name: etl_proxy_event_kafka_to_ndc_kafka # [string] Job Name
     shade.identifier: aes
     pipeline:
-      object-reuse: true
+      object-reuse: true # [boolean] Object Reuse, default is false
   topology:
   - name: kafka_source
     downstream: [etl_processor]
   - name: etl_processor
-    downstream: [clickhouse_sink]
-  - name: clickhouse_sink
-    downstream: []
+    downstream: [kafka_sink]
+  - name: kafka_sink
 
 
