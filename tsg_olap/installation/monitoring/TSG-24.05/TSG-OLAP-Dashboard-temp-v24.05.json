@@ -116600,7 +116600,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.79",
+				"y":"9.38",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -116657,7 +116657,7 @@
 						},
 						"remark":"The Hadoop Yarn ResourceManager nodes memory Utilization.",
 						"x":"0.0",
-						"y":"2.0",
+						"y":"3.0",
 						"elements":[
 							{
 								"expression":"sum by(asset) (Hadoop_ResourceManager_MemHeapUsedM{module=~\".*Yarn-ResourceManager\",project=\"$Project\"}/Hadoop_ResourceManager_MemHeapMaxM{module=~\".*Yarn-ResourceManager\",project=\"$Project\"})",
@@ -116726,7 +116726,7 @@
 						},
 						"remark":"The Hadoop Yarn ResourceManager nodes CPU Utilization.",
 						"x":"4.0",
-						"y":"2.0",
+						"y":"3.0",
 						"elements":[
 							{
 								"expression":"sum by (asset)(java_lang_OperatingSystem_ProcessCpuLoad{module=~\".*Yarn-ResourceManager\",project=\"$Project\"})",
@@ -116795,7 +116795,7 @@
 						},
 						"remark":"The Hadoop Yarn NodeManager nodes CPU Utilization.",
 						"x":"4.0",
-						"y":"4.0",
+						"y":"5.0",
 						"elements":[
 							{
 								"expression":"sum by(asset) (java_lang_OperatingSystem_ProcessCpuLoad{module=~\".*Yarn-NodeManager\",project=\"$Project\"})",
@@ -116864,7 +116864,7 @@
 						},
 						"remark":"The Hadoop Yarn NodeManager nodes memory Utilization.",
 						"x":"0.0",
-						"y":"4.0",
+						"y":"5.0",
 						"elements":[
 							{
 								"expression":"sum by (asset)(Hadoop_NodeManager_MemHeapUsedM{module=~\".*Yarn-NodeManager\",project=\"$Project\"}/Hadoop_NodeManager_MemHeapMaxM{module=~\".*Yarn-NodeManager\",project=\"$Project\"})",
@@ -116933,7 +116933,7 @@
 						},
 						"remark":"The average RPC call time of the NodeManager.",
 						"x":"0.0",
-						"y":"6.0",
+						"y":"7.0",
 						"elements":[
 							{
 								"expression":"sum by(asset)(Hadoop_NodeManager_RpcProcessingTimeAvgTime{module=~\".*Yarn-NodeManager\",project=\"$Project\",name=\"RpcActivityForPort9923\"})",
@@ -117028,7 +117028,7 @@
 						},
 						"remark":"Number of GC times of the ResourceManager node",
 						"x":"8.0",
-						"y":"0.0",
+						"y":"3.0",
 						"elements":[
 							{
 								"expression":"sum by(asset,name) (irate(java_lang_GarbageCollector_CollectionCount{module=~\".*Yarn-ResourceManager\",project=\"$Project\",name=~\"PS MarkSweep|PS Scavenge\"}[5m]))",
@@ -117123,7 +117123,7 @@
 						},
 						"remark":"Number of GC times of the NodeManager node",
 						"x":"8.0",
-						"y":"2.0",
+						"y":"5.0",
 						"elements":[
 							{
 								"expression":"sum by(asset,name) (irate(java_lang_GarbageCollector_CollectionCount{module=~\".*Yarn-NodeManager\",project=\"$Project\",name=~\"PS MarkSweep|PS Scavenge\"}[5m]))",
@@ -117218,7 +117218,7 @@
 						},
 						"remark":"ResourceManager GC duration",
 						"x":"4.0",
-						"y":"6.0",
+						"y":"7.0",
 						"elements":[
 							{
 								"expression":"sum by(asset,name) (irate(java_lang_GarbageCollector_CollectionTime{module=~\".*Yarn-ResourceManager\",project=\"$Project\",name=~\"PS MarkSweep|PS Scavenge\"}[5m]))",
@@ -117313,7 +117313,7 @@
 						},
 						"remark":"ResourceManager GC duration",
 						"x":"8.0",
-						"y":"4.0",
+						"y":"7.0",
 						"elements":[
 							{
 								"expression":"sum by(asset,name) (irate(java_lang_GarbageCollector_CollectionTime{module=~\".*Yarn-NodeManager\",project=\"$Project\",name=~\"PS MarkSweep|PS Scavenge\"}[5m]))",
@@ -117480,7 +117480,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.4",
+				"y":"5.19",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -117945,7 +117945,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"10.59",
+				"y":"22.77",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -118260,12 +118260,12 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"10.19",
+				"y":"18.58",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
 					{
-						"name":"Requests/sec",
+						"name":"Failed Fetch Requests/sec",
 						"span":"4.0",
 						"height":"2.0",
 						"type":"Line chart",
@@ -118274,7 +118274,7 @@
 						"param":{
 							"rightYAxis":{
 								"elementNames":[
-									"B"
+									"A"
 								],
 								"unit":2,
 								"style":"line",
@@ -118344,20 +118344,10 @@
 						"y":"2.0",
 						"elements":[
 							{
-								"expression":"sum by(asset) (kafka_server_socket_server_metrics_request_rate{module=~\".*Kafka\",project=\"$Project\"})",
+								"expression":"sum by(asset) (kafka_server_BrokerTopicMetrics_OneMinuteRate{name=\"FailedFetchRequestsPerSec\",topic=\"\",module=~\".*Kafka\",project=\"$Project\"})",
 								"legend":"{{asset}}",
 								"name":"A",
 								"orderNum":0,
-								"id":107329,
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum by(asset) (kafka_server_BrokerTopicMetrics_OneMinuteRate{name=\"FailedFetchRequestsPerSec\",topic=\"\",module=~\".*Kafka\",project=\"$Project\"})",
-								"legend":"{{asset}}",
-								"name":"B",
-								"orderNum":1,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -118770,6 +118760,98 @@
 							}
 						],
 						"datasource":"metrics"
+					},
+					{
+						"name":"Server Socket Requests/sec",
+						"span":"4.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"short",
+						"weight":82,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[
+									"A"
+								],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":false,
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"legend":{
+								"values":[
+									"avg",
+									"last",
+									"max"
+								],
+								"placement":"bottom"
+							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"thresholds":[],
+							"enable":{
+								"rightYAxis":true,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":true
+							},
+							"style":"line",
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"zero"
+						},
+						"remark":"Number of (producer|consumer|follower) requests per second in each Data Center.",
+						"x":"0.0",
+						"y":"0.0",
+						"elements":[
+							{
+								"expression":"sum by(asset) (kafka_server_socket_server_metrics_request_rate{module=~\".*Kafka\",project=\"$Project\"})",
+								"legend":"{{asset}}",
+								"name":"A",
+								"orderNum":0,
+								"id":"",
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
 					}
 				]
 			},
@@ -118830,7 +118912,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"10.98",
+				"y":"26.96",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -119159,7 +119241,7 @@
 							"nullType":"zero"
 						},
 						"remark":"The CPU usage in each asset.",
-						"x":"4.0",
+						"x":"0.0",
 						"y":"5.0",
 						"elements":[
 							{
@@ -119295,7 +119377,7 @@
 							"nullType":"zero"
 						},
 						"remark":"The memory usage in each asset.  Runs Historical and MiddleManager processes, which executes ingestion workloads and stores all queryable data.",
-						"x":"0.0",
+						"x":"4.0",
 						"y":"5.0",
 						"elements":[
 							{
@@ -119595,7 +119677,7 @@
 						},
 						"remark":"The percent of the process's temporary cache data on disk",
 						"x":"0.0",
-						"y":"999.0",
+						"y":"7.0",
 						"elements":[
 							{
 								"expression":"sum by (asset) (historical_segment_used_percent{service=\"historical\"}) ",
@@ -119669,7 +119751,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"12.17",
+				"y":"43.35",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -120563,7 +120645,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"11.78",
+				"y":"42.35",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -121751,7 +121833,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"11.38",
+				"y":"36.15",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -127012,109 +127094,6 @@
 							}
 						],
 						"datasource":"metrics"
-					},
-					{
-						"name":"Log Insert Rate Message/sec",
-						"span":"6.0",
-						"height":"2.0",
-						"type":"Line chart",
-						"unit":"short",
-						"weight":4,
-						"param":{
-							"rightYAxis":{
-								"elementNames":[],
-								"unit":2,
-								"style":"line",
-								"label":""
-							},
-							"stack":0,
-							"color":{
-								"mode":"palette",
-								"paletteColors":[
-									"#3685FF",
-									"#00DCA2",
-									"#00BFD0",
-									"#954Eff",
-									"#FFCB01",
-									"#f65A96",
-									"#FF9094",
-									"#00CCF5",
-									"#FF8BEA",
-									"#4D7693",
-									"#72577C",
-									"#99D750",
-									"#DD8270",
-									"#C475EE",
-									"#7E83FB",
-									"#7EB090",
-									"#CF6684",
-									"#4E55FF",
-									"#FF8D00",
-									"#FF5200"
-								]
-							},
-							"visibility":{
-								"result":"",
-								"varName":"",
-								"varValue":"",
-								"operator":""
-							},
-							"legend":{
-								"values":[],
-								"show":true,
-								"placement":"bottom"
-							},
-							"showHeader":1,
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
-							},
-							"link":"",
-							"thresholds":[
-								{
-									"color":"#4ee8d8",
-									"id":"3b77ccc"
-								}
-							],
-							"thresholdShow":true,
-							"enable":{
-								"rightYAxis":false,
-								"thresholds":false,
-								"visibility":false,
-								"legend":true,
-								"tooltip":true,
-								"valueMapping":false
-							},
-							"valueMapping":[],
-							"dataLink":[],
-							"nullType":"null"
-						},
-						"remark":"",
-						"x":"6.0",
-						"y":"0.0",
-						"elements":[
-							{
-								"expression":"sum by (table) (rate(clickhouse_table_parts_rows{database=\"tsg_galaxy_v3\",project=\"TSG-OLAP\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Total",
-								"name":"A",
-								"orderNum":0,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"session_record_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"session_record_local",
-								"name":"B",
-								"orderNum":1,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							}
-						],
-						"datasource":"metrics"
 					}
 				]
 			},
@@ -127456,99 +127435,6 @@
 							}
 						],
 						"datasource":"metrics"
-					},
-					{
-						"name":"Log Inserted Bytes/sec",
-						"span":"6.0",
-						"height":"2.0",
-						"type":"Line chart",
-						"unit":"bytes/sec(IEC)",
-						"weight":9,
-						"param":{
-							"rightYAxis":{
-								"elementNames":[],
-								"unit":2,
-								"style":"line",
-								"label":""
-							},
-							"stack":0,
-							"color":{
-								"mode":"palette",
-								"paletteColors":[
-									"#3685FF",
-									"#00DCA2",
-									"#00BFD0",
-									"#954Eff",
-									"#FFCB01",
-									"#f65A96",
-									"#FF9094",
-									"#00CCF5",
-									"#FF8BEA",
-									"#4D7693",
-									"#72577C",
-									"#99D750",
-									"#DD8270",
-									"#C475EE",
-									"#7E83FB",
-									"#7EB090",
-									"#CF6684",
-									"#4E55FF",
-									"#FF8D00",
-									"#FF5200"
-								]
-							},
-							"visibility":{
-								"result":"",
-								"varName":"",
-								"varValue":"",
-								"operator":""
-							},
-							"legend":{
-								"values":[],
-								"show":true,
-								"placement":"bottom"
-							},
-							"showHeader":1,
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
-							},
-							"link":"",
-							"thresholds":[
-								{
-									"color":"#fc25c3",
-									"id":"46c0245"
-								}
-							],
-							"thresholdShow":true,
-							"enable":{
-								"rightYAxis":false,
-								"thresholds":false,
-								"visibility":false,
-								"legend":true,
-								"tooltip":true,
-								"valueMapping":false
-							},
-							"valueMapping":[],
-							"dataLink":[],
-							"nullType":"null"
-						},
-						"remark":"Collecting and processing Traffic Records with inserted byte rate",
-						"x":"6.0",
-						"y":"0.0",
-						"elements":[
-							{
-								"expression":"sum (irate(clickhouse_inserted_bytes_total{project=\"TSG-OLAP\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"ClickHouse",
-								"name":"A",
-								"orderNum":0,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							}
-						],
-						"datasource":"metrics"
 					}
 				]
 			},
@@ -127671,7 +127557,7 @@
 							"thresholds":[
 								{
 									"color":"#2ce059",
-									"id":"ecf360"
+									"id":"daad4cf"
 								}
 							],
 							"thresholdShow":true,
@@ -127712,20 +127598,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"session_record_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Insert",
-								"name":"C",
-								"orderNum":2,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Sink",
 								"name":"D",
-								"orderNum":3,
+								"orderNum":2,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -128407,7 +128283,7 @@
 							"thresholds":[
 								{
 									"color":"#ed0eaa",
-									"id":"69766c16"
+									"id":"56503a58"
 								}
 							],
 							"thresholdShow":true,
@@ -128448,20 +128324,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"transaction_record_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Insert",
-								"name":"C",
-								"orderNum":2,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Sink",
 								"name":"D",
-								"orderNum":3,
+								"orderNum":2,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -128857,7 +128723,7 @@
 							"thresholds":[
 								{
 									"color":"#2a16ff",
-									"id":"03585a9"
+									"id":"96ef601"
 								}
 							],
 							"thresholdShow":true,
@@ -128898,20 +128764,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"proxy_event_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Insert",
-								"name":"C",
-								"orderNum":2,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Sink",
 								"name":"D",
-								"orderNum":3,
+								"orderNum":2,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -129332,160 +129188,6 @@
 				]
 			},
 			{
-				"name":"Archived Security Events",
-				"span":"12.0",
-				"height":"1.0",
-				"type":"Group",
-				"unit":"short",
-				"weight":25,
-				"param":{
-					"thresholds":[],
-					"visibility":{
-						"result":"show",
-						"varName":"",
-						"varValue":"",
-						"operator":"equal"
-					},
-					"color":{
-						"mode":"palette",
-						"paletteColors":[
-							"#3685FF",
-							"#00DCA2",
-							"#00BFD0",
-							"#954Eff",
-							"#FFCB01",
-							"#f65A96",
-							"#FF9094",
-							"#00CCF5",
-							"#FF8BEA",
-							"#4D7693",
-							"#72577C",
-							"#99D750",
-							"#DD8270",
-							"#C475EE",
-							"#7E83FB",
-							"#7EB090",
-							"#CF6684",
-							"#4E55FF",
-							"#FF8D00",
-							"#FF5200"
-						]
-					},
-					"enable":{
-						"visibility":false,
-						"repeat":false
-					},
-					"showHeader":1,
-					"repeat":{
-						"variable":""
-					},
-					"link":"",
-					"valueMapping":[],
-					"dataLink":[],
-					"collapse":true
-				},
-				"remark":"",
-				"x":"0.0",
-				"y":"11.57",
-				"elements":[],
-				"datasource":"misc",
-				"children":[
-					{
-						"name":"Log Processing Message/sec",
-						"span":"6.0",
-						"height":"2.0",
-						"type":"Line chart",
-						"unit":"short",
-						"weight":26,
-						"param":{
-							"rightYAxis":{
-								"elementNames":[],
-								"unit":2,
-								"style":"line",
-								"label":""
-							},
-							"stack":0,
-							"color":{
-								"mode":"palette",
-								"paletteColors":[
-									"#3685FF",
-									"#00DCA2",
-									"#00BFD0",
-									"#954Eff",
-									"#FFCB01",
-									"#f65A96",
-									"#FF9094",
-									"#00CCF5",
-									"#FF8BEA",
-									"#4D7693",
-									"#72577C",
-									"#99D750",
-									"#DD8270",
-									"#C475EE",
-									"#7E83FB",
-									"#7EB090",
-									"#CF6684",
-									"#4E55FF",
-									"#FF8D00",
-									"#FF5200"
-								]
-							},
-							"visibility":{
-								"result":"",
-								"varName":"",
-								"varValue":"",
-								"operator":""
-							},
-							"legend":{
-								"values":[],
-								"show":true,
-								"placement":"bottom"
-							},
-							"showHeader":1,
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
-							},
-							"link":"",
-							"thresholds":[
-								{
-									"color":"#f75bef",
-									"id":"6afccd5f"
-								}
-							],
-							"thresholdShow":true,
-							"enable":{
-								"rightYAxis":false,
-								"thresholds":false,
-								"visibility":false,
-								"legend":true,
-								"tooltip":true,
-								"valueMapping":false
-							},
-							"valueMapping":[],
-							"dataLink":[],
-							"nullType":"null"
-						},
-						"remark":"",
-						"x":"0.0",
-						"y":"0.0",
-						"elements":[
-							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"session_record_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Inserts",
-								"name":"A",
-								"orderNum":0,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							}
-						],
-						"datasource":"metrics"
-					}
-				]
-			},
-			{
 				"name":"DoS Events",
 				"span":"12.0",
 				"height":"1.0",
@@ -129604,7 +129306,7 @@
 							"thresholds":[
 								{
 									"color":"#6936aa",
-									"id":"5e497c26"
+									"id":"24d73f8"
 								}
 							],
 							"thresholdShow":true,
@@ -129645,20 +129347,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"dos_event_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Insert",
-								"name":"C",
-								"orderNum":2,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Sink",
 								"name":"D",
-								"orderNum":3,
+								"orderNum":2,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -130197,7 +129889,7 @@
 							"thresholds":[
 								{
 									"color":"#c02bdb",
-									"id":"08a521"
+									"id":"637ac576"
 								}
 							],
 							"thresholdShow":true,
@@ -130248,20 +129940,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"voip_record_local\",datacenter=\"$DataCenter\"}[5m]))",
-								"legend":"Transform",
-								"name":"D",
-								"orderNum":3,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Sink",
 								"name":"E",
-								"orderNum":4,
+								"orderNum":3,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -133833,7 +133515,7 @@
 						},
 						"remark":"",
 						"x":"6.0",
-						"y":"2.0",
+						"y":"0.0",
 						"elements":[
 							{
 								"expression":"sum(kafka_server_BrokerTopicMetrics_OneMinuteRate{name=\"MessagesInPerSec\",topic=~\"TRAFFIC-FILE-STREAM-RECORD|TROUBLESHOOTING-FILE-STREAM-RECORD\",datacenter!=\"$DataCenter\"})",
@@ -133867,109 +133549,6 @@
 							}
 						],
 						"datasource":"metrics"
-					},
-					{
-						"name":"Log Insert Rate Message/sec",
-						"span":"6.0",
-						"height":"2.0",
-						"type":"Line chart",
-						"unit":"short",
-						"weight":4,
-						"param":{
-							"rightYAxis":{
-								"elementNames":[],
-								"unit":2,
-								"style":"line",
-								"label":""
-							},
-							"stack":0,
-							"color":{
-								"mode":"palette",
-								"paletteColors":[
-									"#3685FF",
-									"#00DCA2",
-									"#00BFD0",
-									"#954Eff",
-									"#FFCB01",
-									"#f65A96",
-									"#FF9094",
-									"#00CCF5",
-									"#FF8BEA",
-									"#4D7693",
-									"#72577C",
-									"#99D750",
-									"#DD8270",
-									"#C475EE",
-									"#7E83FB",
-									"#7EB090",
-									"#CF6684",
-									"#4E55FF",
-									"#FF8D00",
-									"#FF5200"
-								]
-							},
-							"visibility":{
-								"result":"",
-								"varName":"",
-								"varValue":"",
-								"operator":""
-							},
-							"legend":{
-								"values":[],
-								"show":true,
-								"placement":"bottom"
-							},
-							"showHeader":1,
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
-							},
-							"link":"",
-							"thresholds":[
-								{
-									"color":"#4ee8d8",
-									"id":"343e7e25"
-								}
-							],
-							"thresholdShow":true,
-							"enable":{
-								"rightYAxis":false,
-								"thresholds":false,
-								"visibility":false,
-								"legend":true,
-								"tooltip":true,
-								"valueMapping":false
-							},
-							"valueMapping":[],
-							"dataLink":[],
-							"nullType":"zero"
-						},
-						"remark":"",
-						"x":"6.0",
-						"y":"0.0",
-						"elements":[
-							{
-								"expression":"sum by (table) (rate(clickhouse_table_parts_rows{database=\"tsg_galaxy_v3\",project=\"TSG-OLAP\"}[5m]))",
-								"legend":"Total-{{table}}",
-								"name":"A",
-								"orderNum":0,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"session_record_local\"}[5m]))",
-								"legend":"session_record_local",
-								"name":"B",
-								"orderNum":1,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							}
-						],
-						"datasource":"metrics"
 					}
 				]
 			},
@@ -133979,7 +133558,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":5,
+				"weight":4,
 				"param":{
 					"visibility":{
 						"result":"show",
@@ -133999,7 +133578,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.37",
+				"y":"5.19",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -134009,7 +133588,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes/sec(IEC)",
-						"weight":6,
+						"weight":5,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -134112,7 +133691,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes/sec(IEC)",
-						"weight":7,
+						"weight":6,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -134215,7 +133794,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes/sec(IEC)",
-						"weight":8,
+						"weight":7,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -134287,7 +133866,7 @@
 						},
 						"remark":"",
 						"x":"6.0",
-						"y":"2.0",
+						"y":"0.0",
 						"elements":[
 							{
 								"expression":"sum(kafka_server_BrokerTopicMetrics_OneMinuteRate{name=\"BytesInPerSec\",topic=\"TRAFFIC-FILE-STREAM-RECORD|TROUBLESHOOTING-FILE-STREAM-RECORD\",project=\"TSG-OLAP\",datacenter!=\"$DataCenter\"})",
@@ -134313,11 +133892,104 @@
 						"datasource":"metrics"
 					},
 					{
-						"name":"Log Inserted Bytes/sec",
+						"name":"Kafka Quotas Produce Bytes/sec",
 						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
-						"unit":"bytes/sec(IEC)",
+						"unit":"short",
+						"weight":8,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":0,
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"legend":{
+								"values":[],
+								"show":true,
+								"placement":"bottom"
+							},
+							"showHeader":1,
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"link":"",
+							"thresholds":[
+								{
+									"color":"#7f9600",
+									"id":"4e8b9a"
+								}
+							],
+							"thresholdShow":true,
+							"enable":{
+								"rightYAxis":false,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":false
+							},
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"null"
+						},
+						"remark":"",
+						"x":"6.0",
+						"y":"2.0",
+						"elements":[
+							{
+								"expression":"sum by (user, client_id) (kafka_server_Produce_byte_rate{datacenter!=\"$DataCenter\"})",
+								"legend":"",
+								"name":"A",
+								"orderNum":0,
+								"id":"",
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
+					},
+					{
+						"name":"Kafka Quotas Fetch Bytes/sec",
+						"span":"6.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"short",
 						"weight":9,
 						"param":{
 							"rightYAxis":{
@@ -134371,8 +134043,8 @@
 							"link":"",
 							"thresholds":[
 								{
-									"color":"#fc25c3",
-									"id":"764cc5b"
+									"color":"#7f9600",
+									"id":"84b343b"
 								}
 							],
 							"thresholdShow":true,
@@ -134386,15 +134058,15 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"zero"
+							"nullType":"null"
 						},
-						"remark":"Collecting and processing Traffic Records with inserted byte rate",
-						"x":"6.0",
-						"y":"0.0",
+						"remark":"",
+						"x":"0.0",
+						"y":"4.0",
 						"elements":[
 							{
-								"expression":"sum (irate(clickhouse_inserted_bytes_total{project=\"TSG-OLAP\"}[5m]))",
-								"legend":"ClickHouse ",
+								"expression":"sum by (user, client_id) (kafka_server_Fetch_byte_rate{datacenter!=\"$DataCenter\"})",
+								"legend":"",
 								"name":"A",
 								"orderNum":0,
 								"id":"",
@@ -134462,7 +134134,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.74",
+				"y":"11.38",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -134526,7 +134198,7 @@
 							"thresholds":[
 								{
 									"color":"#2ce059",
-									"id":"9938534"
+									"id":"3bff091"
 								}
 							],
 							"thresholdShow":true,
@@ -134567,8 +134239,8 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"session_record_local\"}[5m]))",
-								"legend":"Insert",
+								"expression":"sum(\n  rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=~\"etl_session_record_kafka_to_clickhouse|session_record_processed_kafka_to_clickhouse\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"legend":"Sink",
 								"name":"C",
 								"orderNum":2,
 								"id":"",
@@ -134577,7 +134249,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"    sum(\n      rate(\n        flink_taskmanager_job_task_operator_internal_metrics_dropped_events{datacenter=\"$DataCenter\",job_name=\"etl_session_record_kafka_to_clickhouse|session_record_processed_kafka_to_clickhouse\"}[5m]\n      )\n    )",
+								"expression":"    sum(\n      rate(\n        flink_taskmanager_job_task_operator_internal_metrics_dropped_events{datacenter=\"$DataCenter\",job_name=~\"etl_session_record_kafka_to_clickhouse|session_record_processed_kafka_to_clickhouse\"}[5m]\n      )\n    )",
 								"legend":"Dropped",
 								"name":"D",
 								"orderNum":3,
@@ -134587,7 +134259,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=\"etl_session_record_kafka_to_clickhouse |session_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=~\"etl_session_record_kafka_to_clickhouse |session_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Error",
 								"name":"E",
 								"orderNum":4,
@@ -134659,7 +134331,7 @@
 							"thresholds":[
 								{
 									"color":"#ed0eaa",
-									"id":"63b98f6c"
+									"id":"1d4f518"
 								}
 							],
 							"thresholdShow":true,
@@ -134700,8 +134372,8 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"transaction_record_local\"}[5m]))",
-								"legend":"Insert",
+								"expression":"sum(\n  rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=~\"etl_transaction_record_kafka_to_clickhouse|transaction_record_processed_kafka_to_clickhouse\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"legend":"Sink",
 								"name":"C",
 								"orderNum":2,
 								"id":"",
@@ -134710,7 +134382,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=\"etl_transaction_record_kafka_to_clickhouse|transaction_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=~\"etl_transaction_record_kafka_to_clickhouse|transaction_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Dropped",
 								"name":"D",
 								"orderNum":3,
@@ -134720,7 +134392,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=\"etl_transaction_record_kafka_to_clickhouse|transaction_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=~\"etl_transaction_record_kafka_to_clickhouse|transaction_record_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Error",
 								"name":"E",
 								"orderNum":4,
@@ -134792,7 +134464,7 @@
 							"thresholds":[
 								{
 									"color":"#2a16ff",
-									"id":"2ae9e70"
+									"id":"712c74"
 								}
 							],
 							"thresholdShow":true,
@@ -134833,8 +134505,8 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"proxy_event_local\"}[5m]))",
-								"legend":"Insert",
+								"expression":"sum(\n  rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=~\"etl_proxy_event_kafka_to_clickhouse|proxy_event_processed_kafka_to_clickhouse\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"legend":"Sink",
 								"name":"C",
 								"orderNum":2,
 								"id":"",
@@ -134843,7 +134515,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=\"etl_proxy_event_kafka_to_clickhouse|proxy_event_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=~\"etl_proxy_event_kafka_to_clickhouse|proxy_event_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Dropped",
 								"name":"D",
 								"orderNum":3,
@@ -134853,7 +134525,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=\"etl_proxy_event_kafka_to_clickhouse|proxy_event_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=~\"etl_proxy_event_kafka_to_clickhouse|proxy_event_processed_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Error",
 								"name":"E",
 								"orderNum":4,
@@ -134866,7 +134538,7 @@
 						"datasource":"metrics"
 					},
 					{
-						"name":"DoS Event Rate Message/sec",
+						"name":"DoS Event Message/sec",
 						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
@@ -134925,7 +134597,7 @@
 							"thresholds":[
 								{
 									"color":"#6936aa",
-									"id":"78e95d0f"
+									"id":"10312c1"
 								}
 							],
 							"thresholdShow":true,
@@ -134966,8 +134638,8 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"dos_event_local\"}[5m]))",
-								"legend":"Insert",
+								"expression":"sum(\n  rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_event_kafka_to_clickhouse\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"legend":"Sink",
 								"name":"C",
 								"orderNum":2,
 								"id":"",
@@ -135058,7 +134730,7 @@
 							"thresholds":[
 								{
 									"color":"#c02bdb",
-									"id":"5fdb2bcc"
+									"id":"1ba4a14"
 								}
 							],
 							"thresholdShow":true,
@@ -135109,8 +134781,8 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(rate(clickhouse_table_parts_rows{table=\"voip_record_local\"}[5m]))",
-								"legend":"Insert",
+								"expression":"sum(\n  rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=~\"correlation_sip_rtp_session|etl_voip_conversation_record_kafka_to_clickhouse\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"legend":"Sink",
 								"name":"D",
 								"orderNum":3,
 								"id":"",
@@ -135119,7 +134791,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=\"correlation_sip_rtp_session|etl_voip_conversation_record_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_dropped_events{job_name=~\"correlation_sip_rtp_session|etl_voip_conversation_record_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Dropped",
 								"name":"E",
 								"orderNum":4,
@@ -135129,174 +134801,10 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=\"correlation_sip_rtp_session|etl_voip_conversation_record_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_error_events{job_name=~\"correlation_sip_rtp_session|etl_voip_conversation_record_kafka_to_clickhouse\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
 								"legend":"Error",
 								"name":"F",
 								"orderNum":5,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							}
-						],
-						"datasource":"metrics"
-					}
-				]
-			},
-			{
-				"name":"Archived Logs",
-				"span":"12.0",
-				"height":"1.0",
-				"type":"Group",
-				"unit":"short",
-				"weight":16,
-				"param":{
-					"thresholds":[],
-					"visibility":{
-						"result":"show",
-						"varName":"",
-						"varValue":"",
-						"operator":"equal"
-					},
-					"color":{
-						"mode":"palette",
-						"paletteColors":[
-							"#3685FF",
-							"#00DCA2",
-							"#00BFD0",
-							"#954Eff",
-							"#FFCB01",
-							"#f65A96",
-							"#FF9094",
-							"#00CCF5",
-							"#FF8BEA",
-							"#4D7693",
-							"#72577C",
-							"#99D750",
-							"#DD8270",
-							"#C475EE",
-							"#7E83FB",
-							"#7EB090",
-							"#CF6684",
-							"#4E55FF",
-							"#FF8D00",
-							"#FF5200"
-						]
-					},
-					"enable":{
-						"visibility":false,
-						"repeat":false
-					},
-					"showHeader":1,
-					"repeat":{
-						"variable":""
-					},
-					"link":"",
-					"valueMapping":[],
-					"dataLink":[],
-					"collapse":true
-				},
-				"remark":"",
-				"x":"0.0",
-				"y":"14.84",
-				"elements":[],
-				"datasource":"misc",
-				"children":[
-					{
-						"name":"Archived Logs Insert Rate Message/sec",
-						"span":"6.0",
-						"height":"2.0",
-						"type":"Line chart",
-						"unit":"short",
-						"weight":17,
-						"param":{
-							"rightYAxis":{
-								"elementNames":[],
-								"unit":2,
-								"style":"line",
-								"label":""
-							},
-							"stack":0,
-							"color":{
-								"mode":"palette",
-								"paletteColors":[
-									"#3685FF",
-									"#00DCA2",
-									"#00BFD0",
-									"#954Eff",
-									"#FFCB01",
-									"#f65A96",
-									"#FF9094",
-									"#00CCF5",
-									"#FF8BEA",
-									"#4D7693",
-									"#72577C",
-									"#99D750",
-									"#DD8270",
-									"#C475EE",
-									"#7E83FB",
-									"#7EB090",
-									"#CF6684",
-									"#4E55FF",
-									"#FF8D00",
-									"#FF5200"
-								]
-							},
-							"visibility":{
-								"result":"",
-								"varName":"",
-								"varValue":"",
-								"operator":""
-							},
-							"legend":{
-								"values":[],
-								"show":true,
-								"placement":"bottom"
-							},
-							"showHeader":1,
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
-							},
-							"link":"",
-							"thresholds":[
-								{
-									"color":"#f75bef",
-									"id":"778b38a"
-								}
-							],
-							"thresholdShow":true,
-							"enable":{
-								"rightYAxis":false,
-								"thresholds":false,
-								"visibility":false,
-								"legend":true,
-								"tooltip":true,
-								"valueMapping":false
-							},
-							"valueMapping":[],
-							"dataLink":[],
-							"nullType":"zero"
-						},
-						"remark":"",
-						"x":"0.0",
-						"y":"0.0",
-						"elements":[
-							{
-								"expression":"sum by(datacenter)(rate(clickhouse_table_parts_rows{table=\"security_event_local\"}[5m]))",
-								"legend":"{{datacenter}} Seucrity Events",
-								"name":"A",
-								"orderNum":0,
-								"id":"",
-								"state":1,
-								"type":"expert",
-								"queryType":1
-							},
-							{
-								"expression":"sum by(datacenter)(rate(clickhouse_table_parts_rows{table=\"monitor_event_local\"}[5m]))",
-								"legend":"{{datacenter}} Monitor Events",
-								"name":"B",
-								"orderNum":1,
 								"id":"",
 								"state":1,
 								"type":"expert",
@@ -135313,7 +134821,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":18,
+				"weight":17,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -135362,7 +134870,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"2.47",
+				"y":"17.77",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -135372,7 +134880,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":19,
+						"weight":18,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135479,7 +134987,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":20,
+						"weight":19,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135586,7 +135094,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes/sec(IEC)",
-						"weight":21,
+						"weight":20,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135689,7 +135197,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":22,
+						"weight":21,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135792,7 +135300,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":23,
+						"weight":22,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135885,7 +135393,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":24,
+						"weight":23,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -135978,7 +135486,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":25,
+						"weight":24,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136131,7 +135639,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0-100)",
-						"weight":26,
+						"weight":25,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136224,7 +135732,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"none",
-						"weight":27,
+						"weight":26,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136347,7 +135855,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":28,
+						"weight":27,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136464,7 +135972,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":29,
+						"weight":28,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136607,7 +136115,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":30,
+						"weight":29,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136665,7 +136173,7 @@
 							"thresholds":[
 								{
 									"color":"#42a6d1",
-									"id":"99eae8c"
+									"id":"53945c3"
 								}
 							],
 							"thresholdShow":true,
@@ -136706,7 +136214,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum by(job_name,job_id)(flink_taskmanager_job_task_operator_KafkaConsumer_records_lag_max{task_name=\"Source:_TRAFFIC_FILE_STREAM_RECORD____Map:_Parse_Message_Pack____Filter:_Map____Timestamps_Watermarks\"})",
+								"expression":"sum by(job_name)(flink_taskmanager_job_task_operator_KafkaConsumer_records_lag_max{task_name=\"Source:_TRAFFIC_FILE_STREAM_RECORD____Map:_Parse_Message_Pack____Filter:_Map____Timestamps_Watermarks\"})",
 								"legend":"Lag",
 								"name":"C",
 								"orderNum":2,
@@ -136726,7 +136234,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":31,
+				"weight":30,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -136775,7 +136283,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"2.1",
+				"y":"17.58",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -136785,7 +136293,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":32,
+						"weight":31,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136881,7 +136389,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":33,
+						"weight":32,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -136984,7 +136492,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":34,
+						"weight":33,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -137087,7 +136595,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":35,
+						"weight":34,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -137190,7 +136698,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":36,
+						"weight":35,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -137293,7 +136801,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":37,
+						"weight":36,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -137396,7 +136904,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":38,
+						"weight":37,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -137468,7 +136976,7 @@
 						},
 						"remark":"",
 						"x":"6.0",
-						"y":"8.0",
+						"y":"6.0",
 						"elements":[
 							{
 								"expression":"sum(kafka_server_BrokerTopicMetrics_OneMinuteRate{name=\"MessagesInPerSec\",topic=~\"TRAFFIC-TOP-DESTINATION-IP-METRIC\",project=\"TSG-OLAP\",datacenter=\"$DataCenter\"})",
@@ -137581,7 +137089,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"4.0",
+				"y":"5.0",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -137950,7 +137458,7 @@
 						"datasource":"metrics"
 					},
 					{
-						"name":"NIC RX Drops",
+						"name":"NIC RX Drops (missed)",
 						"span":"3.0",
 						"height":"2.0",
 						"type":"Line chart",
@@ -138009,7 +137517,7 @@
 							"thresholds":[
 								{
 									"color":"#fcb3f2",
-									"id":"133f1c9f"
+									"id":"427cef70"
 								}
 							],
 							"thresholdShow":true,
@@ -138118,7 +137626,7 @@
 							"nullType":"zero"
 						},
 						"remark":"",
-						"x":"6.0",
+						"x":"9.0",
 						"y":"2.0",
 						"elements":[
 							{
@@ -138210,8 +137718,8 @@
 							"nullType":"zero"
 						},
 						"remark":"",
-						"x":"9.0",
-						"y":"2.0",
+						"x":"3.0",
+						"y":"4.0",
 						"elements":[
 							{
 								"expression":"sum(irate(rx_bits_total{asset=\"{{asset.name}}\",service=\"packet-io-engine\"}[5m])) by (app)",
@@ -138311,7 +137819,7 @@
 							"nullType":"zero"
 						},
 						"remark":"",
-						"x":"0.0",
+						"x":"6.0",
 						"y":"4.0",
 						"elements":[
 							{
@@ -138412,7 +137920,7 @@
 							"nullType":"zero"
 						},
 						"remark":"",
-						"x":"3.0",
+						"x":"9.0",
 						"y":"4.0",
 						"elements":[
 							{
@@ -138453,6 +137961,285 @@
 							}
 						],
 						"datasource":"metrics"
+					},
+					{
+						"name":"NIC RX Drops (nobuf)",
+						"span":"3.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"packets/sec(IEC)",
+						"weight":12,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":0,
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"legend":{
+								"values":[],
+								"show":true,
+								"placement":"bottom"
+							},
+							"showHeader":1,
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"thresholds":[
+								{
+									"color":"#fcb3f2",
+									"id":"6f18b2b1"
+								}
+							],
+							"thresholdShow":true,
+							"enable":{
+								"rightYAxis":false,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":false
+							},
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"zero"
+						},
+						"remark":"",
+						"x":"6.0",
+						"y":"2.0",
+						"elements":[
+							{
+								"expression":"sum(irate(phy_rx_nobuf_total{ asset=\"{{asset.name}}\",dev!~\"virtio_dign_(.*)\"}[5m])) by (dev)",
+								"legend":"{{dev}}",
+								"name":"A",
+								"orderNum":0,
+								"id":"",
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
+					},
+					{
+						"name":"NIC TX Errors",
+						"span":"3.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"packets/sec(IEC)",
+						"weight":13,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":0,
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"legend":{
+								"values":[],
+								"show":true,
+								"placement":"bottom"
+							},
+							"showHeader":1,
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"thresholds":[
+								{
+									"color":"#fcb3f2",
+									"id":"64f5f65"
+								}
+							],
+							"thresholdShow":true,
+							"enable":{
+								"rightYAxis":false,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":false
+							},
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"zero"
+						},
+						"remark":"",
+						"x":"0.0",
+						"y":"4.0",
+						"elements":[
+							{
+								"expression":"sum(irate(phy_tx_error_total{ asset=\"{{asset.name}}\",dev!~\"virtio_dign_(.*)\"}[5m])) by(dev)",
+								"legend":"{{dev}}",
+								"name":"B",
+								"orderNum":0,
+								"id":"",
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
+					},
+					{
+						"name":"Traffic (Imbalance Analysis)",
+						"span":"3.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"packets/sec(IEC)",
+						"weight":14,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":0,
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"legend":{
+								"values":[],
+								"show":true,
+								"placement":"bottom"
+							},
+							"showHeader":1,
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"thresholds":[
+								{
+									"color":"#ed10c4",
+									"id":"42330a2"
+								}
+							],
+							"thresholdShow":true,
+							"enable":{
+								"rightYAxis":false,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":false
+							},
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"zero"
+						},
+						"remark":"",
+						"x":"0.0",
+						"y":"6.0",
+						"elements":[
+							{
+								"expression":"stddev(irate(rx_pkts_per_stream{asset=\"{{asset.name}}\", device=~\"nf(.*)\"}[2m])) by (app)",
+								"legend":"{{app}}",
+								"name":"A",
+								"orderNum":0,
+								"id":"",
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
 					}
 				]
 			},
@@ -138462,7 +138249,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":12,
+				"weight":15,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -138511,7 +138298,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"4.34",
+				"y":"13.23",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -138521,7 +138308,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0.0-1.0)",
-						"weight":13,
+						"weight":16,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -138585,7 +138372,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes(IEC)",
-						"weight":14,
+						"weight":17,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -138649,7 +138436,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":15,
+						"weight":18,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -138750,7 +138537,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":16,
+						"weight":19,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -138851,7 +138638,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":17,
+						"weight":20,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -138952,7 +138739,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":18,
+						"weight":21,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139053,7 +138840,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":19,
+						"weight":22,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139154,7 +138941,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":20,
+						"weight":23,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139275,7 +139062,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":21,
+						"weight":24,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139396,7 +139183,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":22,
+						"weight":25,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139497,7 +139284,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":23,
+						"weight":26,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139598,7 +139385,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":24,
+						"weight":27,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139699,7 +139486,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":25,
+						"weight":28,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139791,7 +139578,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":26,
+						"weight":29,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139883,7 +139670,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":27,
+						"weight":30,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -139975,7 +139762,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":28,
+						"weight":31,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140067,7 +139854,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":29,
+						"weight":32,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140178,7 +139965,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":30,
+						"weight":33,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140242,7 +140029,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":31,
+						"weight":34,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140343,7 +140130,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":32,
+						"weight":35,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140444,7 +140231,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":33,
+						"weight":36,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140545,7 +140332,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":34,
+						"weight":37,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140658,7 +140445,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":35,
+						"weight":38,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140771,7 +140558,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":36,
+						"weight":39,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -140886,7 +140673,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":37,
+				"weight":41,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -140935,7 +140722,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"16.68",
+				"y":"27.47",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -140945,7 +140732,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0.0-1.0)",
-						"weight":38,
+						"weight":42,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141048,7 +140835,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes(IEC)",
-						"weight":39,
+						"weight":43,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141151,7 +140938,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":40,
+						"weight":44,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141254,7 +141041,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":41,
+						"weight":45,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141347,7 +141134,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":42,
+						"weight":46,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141450,7 +141237,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":43,
+						"weight":47,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141543,7 +141330,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":44,
+						"weight":48,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141646,7 +141433,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":45,
+						"weight":49,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141739,7 +141526,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":46,
+						"weight":50,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141842,7 +141629,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":47,
+						"weight":51,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -141945,7 +141732,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":48,
+						"weight":52,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142058,7 +141845,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":49,
+						"weight":53,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142171,7 +141958,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":50,
+						"weight":54,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142264,7 +142051,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":51,
+						"weight":55,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142357,7 +142144,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":52,
+						"weight":56,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142450,7 +142237,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":53,
+						"weight":57,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142623,7 +142410,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":54,
+						"weight":58,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142736,7 +142523,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":55,
+						"weight":59,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -142841,7 +142628,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":56,
+				"weight":61,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -142890,7 +142677,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"27.36",
+				"y":"27.94",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -142900,7 +142687,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":57,
+						"weight":62,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143003,7 +142790,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":58,
+						"weight":63,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143106,7 +142893,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":59,
+						"weight":64,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143209,7 +142996,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes/sec(SI)",
-						"weight":60,
+						"weight":65,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143322,7 +143109,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":61,
+						"weight":66,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143435,7 +143222,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":62,
+						"weight":67,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143538,7 +143325,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":63,
+						"weight":68,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143651,7 +143438,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":64,
+						"weight":69,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143764,7 +143551,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":65,
+						"weight":70,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -143877,7 +143664,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"us",
-						"weight":66,
+						"weight":71,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144020,7 +143807,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0.0-1.0)",
-						"weight":67,
+						"weight":72,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144123,7 +143910,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes(IEC)",
-						"weight":68,
+						"weight":73,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144228,7 +144015,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":69,
+				"weight":75,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -144277,7 +144064,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"27.02",
+				"y":"27.7",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -144287,7 +144074,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0.0-1.0)",
-						"weight":70,
+						"weight":76,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144390,7 +144177,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes(IEC)",
-						"weight":71,
+						"weight":77,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144493,7 +144280,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":72,
+						"weight":78,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144596,7 +144383,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":73,
+						"weight":79,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144699,7 +144486,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":74,
+						"weight":80,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144792,7 +144579,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":75,
+						"weight":81,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144895,7 +144682,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":76,
+						"weight":82,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -144988,7 +144775,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":77,
+						"weight":83,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145081,7 +144868,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":78,
+						"weight":84,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145174,7 +144961,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":79,
+						"weight":85,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145277,7 +145064,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":80,
+						"weight":86,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145370,7 +145157,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":81,
+						"weight":87,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145473,7 +145260,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"packets/sec(IEC)",
-						"weight":82,
+						"weight":88,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145566,7 +145353,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":83,
+						"weight":89,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -145669,7 +145456,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bits/sec(SI)",
-						"weight":84,
+						"weight":90,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -148959,7 +148746,7 @@
 							"thresholds":[
 								{
 									"color":"#ea38be",
-									"id":"422406f"
+									"id":"3ade7c1"
 								}
 							],
 							"thresholdShow":true,
@@ -148979,7 +148766,7 @@
 						"y":"0.0",
 						"elements":[
 							{
-								"expression":"sum(rate(phy_rx_missed_total{service=\"packet-io-engine\"}[2m])) + sum(rate(phy_rx_nobuf_total{service=\"packet-io-engine\"}[2m]))",
+								"expression":"sum(irate(phy_rx_missed_total{service=\"packet-io-engine\"}[2m])) + sum(irate(phy_rx_nobuf_total{service=\"packet-io-engine\"}[2m]))",
 								"legend":"Drops (by NICs)",
 								"name":"A",
 								"orderNum":0,
@@ -149445,7 +149232,7 @@
 							"thresholds":[
 								{
 									"color":"#52e5c5",
-									"id":"a6cbdf4"
+									"id":"dca405c"
 								}
 							],
 							"thresholdShow":true,
@@ -149466,7 +149253,7 @@
 						"y":"0.0",
 						"elements":[
 							{
-								"expression":"sum(rate(phy_rx_missed_total{service=\"packet-io-engine\"}[2m])) by (datacenter) + sum(rate(phy_rx_nobuf_total{service=\"packet-io-engine\"}[2m])) by (datacenter)",
+								"expression":"sum(irate(phy_rx_missed_total{service=\"packet-io-engine\"}[2m])) by (datacenter) + sum(irate(phy_rx_nobuf_total{service=\"packet-io-engine\"}[2m])) by (datacenter)",
 								"legend":"{{datacenter}}",
 								"name":"A",
 								"orderNum":0,
