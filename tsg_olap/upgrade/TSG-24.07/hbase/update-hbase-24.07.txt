@@ -1,0 +1,24 @@
+alter 'traffic_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_time_traffic_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_filename_traffic_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_partfile_traffic_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+
+alter 'troubleshooting_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_time_troubleshooting_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_filename_troubleshooting_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+alter 'index_partfile_troubleshooting_file_bucket',{METADATA => {'REGION_MEMSTORE_REPLICATION' => 'false', 'hbase.region.replica.wait.for.primary.flush' => 'false','SPLIT_ENABLED' => 'false',}}
+
+alter 'knowledge_base_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_time_knowledge_base_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_filename_knowledge_base_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_partfile_knowledge_base_bucket',{DURABILITY =>'SYNC_WAL'}
+
+alter 'report_snapshot_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_time_report_snapshot_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_filename_report_snapshot_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_partfile_report_snapshot_bucket',{DURABILITY =>'SYNC_WAL'}
+
+alter 'assessment_file_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_time_assessment_file_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_filename_assessment_file_bucket',{DURABILITY =>'SYNC_WAL'}
+alter 'index_partfile_assessment_file_bucket',{DURABILITY =>'SYNC_WAL'}
