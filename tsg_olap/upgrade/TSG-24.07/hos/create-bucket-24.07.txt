@@ -1,0 +1,5 @@
+curl -X PUT http://192.168.44.67:9098/hos/traffc_file_bucket -H 'token:c21f969b5f03d33d43e04f8f136e7682' -H 'x-hos-region-count:64*hbase服务器数'
+curl -X PUT http://192.168.44.67:9098/hos/troubleshooting_file_bucket -H 'token:c21f969b5f03d33d43e04f8f136e7682' -H 'x-hos-region-count:16'
+curl -X PUT http://192.168.44.67:9098/hos/knowledge_base_bucket -H 'token:c21f969b5f03d33d43e04f8f136e7682' -H 'x-hos-region-count:16' -H 'x-hos-wal:open'
+curl -X PUT http://192.168.44.67:9098/hos/report_snapshot_bucket -H 'token:c21f969b5f03d33d43e04f8f136e7682' -H 'x-hos-region-count:16' -H 'x-hos-wal:open'
+curl -X PUT http://192.168.44.67:9098/hos/assessment_file_bucket -H 'token:c21f969b5f03d33d43e04f8f136e7682' -H 'x-hos-region-count:16' -H 'x-hos-wal:open' 
