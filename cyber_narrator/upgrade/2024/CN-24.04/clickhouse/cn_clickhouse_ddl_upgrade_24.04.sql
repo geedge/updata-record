@@ -299,8 +299,7 @@ GROUP BY
     port;
 
 
-CREATE TABLE cyber_narrator_galaxy.metric_tag_local
-(
+CREATE TABLE cyber_narrator_galaxy.metric_tag_local ON CLUSTER ck_cluster (
     tag String,
     stat_time Int64,
     ip_sketch String,

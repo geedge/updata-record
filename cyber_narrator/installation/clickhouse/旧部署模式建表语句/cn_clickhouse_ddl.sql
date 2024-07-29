@@ -1269,8 +1269,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_subscriber_app ON CLUSTE
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_subscriber_app_local', rand());
 
 
-CREATE TABLE cyber_narrator_galaxy.metric_tag_local
-(
+CREATE TABLE cyber_narrator_galaxy.metric_tag_local ON CLUSTER ck_cluster (
     tag String,
     stat_time Int64,
     ip_sketch String,
