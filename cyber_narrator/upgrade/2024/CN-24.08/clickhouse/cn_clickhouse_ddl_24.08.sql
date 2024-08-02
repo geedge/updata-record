@@ -1662,3 +1662,41 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.match_unordered_sequence ON CLU
     event_name String,
     severity Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'match_unordered_sequence_local', rand());
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_event_local ON CLUSTER ck_cluster(
+    event_id UInt64, 
+    match_ids SimpleAggregateFunction(anyLast, String),
+    key_fields SimpleAggregateFunction(anyLast, String),
+    key_values SimpleAggregateFunction(anyLast, String),
+    rule_id SimpleAggregateFunction(anyLast, Int64),
+    rule_version SimpleAggregateFunction(anyLast, String),
+    rule_type SimpleAggregateFunction(anyLast, Int8),
+    is_builtin SimpleAggregateFunction(anyLast, Int8),
+    event_type SimpleAggregateFunction(anyLast, String),
+    event_name SimpleAggregateFunction(anyLast, String),
+    start_time SimpleAggregateFunction(min, Int64),
+    end_time SimpleAggregateFunction(max, Int64),
+    duration_s SimpleAggregateFunction(max, Int64),
+    status SimpleAggregateFunction(max, Int8)
+) 
+ENGINE=AggregatingMergeTree ORDER BY event_id;
+
+CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_event ON CLUSTER ck_cluster(
+    event_id UInt64, 
+    match_ids SimpleAggregateFunction(anyLast, String),
+    key_fields SimpleAggregateFunction(anyLast, String),
+    key_values SimpleAggregateFunction(anyLast, String),
+    rule_id SimpleAggregateFunction(anyLast, Int64),
+    rule_version SimpleAggregateFunction(anyLast, String),
+    rule_type SimpleAggregateFunction(anyLast, Int8),
+    is_builtin SimpleAggregateFunction(anyLast, Int8),
+    event_type SimpleAggregateFunction(anyLast, String),
+    event_name SimpleAggregateFunction(anyLast, String),
+    start_time SimpleAggregateFunction(min, Int64),
+    end_time SimpleAggregateFunction(max, Int64),
+    duration_s SimpleAggregateFunction(max, Int64),
+    status SimpleAggregateFunction(max, Int8)
+)
+ENGINE = Distributed('ck_cluster',
+ 'cyber_narrator_galaxy',
+ 'cn_event_local',
+ rand());

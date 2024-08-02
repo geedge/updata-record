@@ -64,3 +64,5 @@ SELECT key_fields, key_values, event_info, start_time, end_time, match_id, rule_
 FROM cyber_narrator_galaxy.match_sequence where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
 SELECT key_fields, key_values, event_info, start_time, end_time, match_id, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, severity
 FROM cyber_narrator_galaxy.match_unordered_sequence where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
+SELECT event_id, match_ids, key_fields, key_values, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, start_time, end_time, duration_s, status
+FROM cyber_narrator_galaxy.cn_event where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
