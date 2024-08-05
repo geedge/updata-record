@@ -26,12 +26,12 @@ usage() {
   echo "  -s --startTime 起始时间。时间是UTC时间，格式为yyyyMMdd、yyyy-MM-dd、yyyyMMddHHmmss，默认是前一天的时间。"
   echo "  -e --endTime 结束时间。时间是UTC时间，格式为yyyyMMdd、yyyy-MM-dd、yyyyMMddHHmmss，默认是当前时间。"
   echo "  -c --count 评估的日志数量，默认为1000，最大值为100000。"
-  echo "  -l --logType 评估指定日志的文件，不指定该参数则评估所有日志，支持评估多种日志，使用逗号隔开，例如session_record,security_event。支持的日志有security_event、proxy_event、session_record、voip_record、assessment_event、transaction_record、troubleshooting。"
-  echo "  -f --fileType 指定文件的类型，不指定该参数则为所有类型，例如pcap。目前类型有：mail、http、pcap、other。目前只有session_record（mail、http、pcap）、security_event（mail、http、pcap）、transaction_record（mail、http）包含多种类型，其他日志省略该参数即可。"
+  echo "  -d --dataCenter 评估的数据中心，可指定多个，使用逗号隔开，不指定为所有数据中心。只有security_event、monitor_event、proxy_event、session_record、voip_record支持选择数据中心"
+  echo "  -l --logType 评估指定日志的文件，不指定该参数则评估所有日志，支持评估多种日志，使用逗号隔开，例如session_record,security_event。支持的日志有security_event、monitor_event、proxy_event、session_record、voip_record、assessment_event、transaction_record、troubleshooting。"
+  echo "  -f --fileType 指定文件的类型，不指定该参数则为所有类型，例如pcap。目前类型有：mail、http、pcap、other。目前只有session_record（mail、http、pcap）、security_event（mail、http、pcap）、monitor_event（mail、http、pcap）、transaction_record（mail、http）包含多种类型，其他日志省略该参数即可。"
   echo "  -t --threads 线程数，默认为1，最大值为10。"
   echo "combiner options:"
-  echo "  -j --job 要验证的任务，有traffic、troubleshooting、all，all为都验证，默认为all。"
-  echo "  -p --prefix 文件名前缀，防止多次执行文件名重复，不可省略。"
+  echo "  -j --job 要验证的任务，有traffic、troubleshooting，都验证指定为traffic,troubleshooting，不指定该参数默认为traffic。（24.05已删除troubleshooting任务）"
 }
 
 if [ $# -eq 0 ]; then
@@ -39,7 +39,7 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
-version="1.2"
+version="1.3"
 operation=$1
 bucket=""
 directory=""
@@ -51,7 +51,8 @@ count=1000
 threads=1
 logType=""
 fileType=""
-jobName="all"
+dataCenter=""
+jobName="traffic"
 jar="galaxy-hos-util-"$version".jar"
 
 shift
@@ -65,7 +66,11 @@ while getopts ":h:b:d:k:p:s:e:c:t:l:f:j:" opt; do
       bucket=$OPTARG
       ;;
     d)
-      directory=$OPTARG
+      if [ "$operation" == "check" ]; then
+        dataCenter=$OPTARG
+      else
+        directory=$OPTARG
+      fi
       ;;
     k)
       keys=$OPTARG
@@ -122,11 +127,11 @@ java -jar $jar upload $bucket $directory threadNum=$threads
 }
 
 check() {
-java -jar $jar check logType=$logType fileType=$fileType maxLogs=$count timeRange=$startTime/$endTime threadNum=$threads
+java -jar $jar check dataCenter=$dataCenter logType=$logType fileType=$fileType maxLogs=$count timeRange=$startTime/$endTime threadNum=$threads
 }
 
 combiner() {
-java -jar $jar combiner $jobName $prefix
+java -jar $jar combiner $jobName
 }
 
 if [ "$operation" = "download" ];then

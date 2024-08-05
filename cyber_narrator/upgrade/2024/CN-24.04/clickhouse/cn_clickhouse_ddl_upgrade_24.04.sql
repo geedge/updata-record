@@ -2,7 +2,6 @@ set distributed_ddl_task_timeout = 180;
 
 ALTER table cyber_narrator_galaxy.location_subscriber_local on cluster ck_cluster add column IF NOT EXISTS data_source String after third_location;
 ALTER table cyber_narrator_galaxy.location_subscriber on cluster ck_cluster add column IF NOT EXISTS data_source String after third_location;
-ALTER table cyber_narrator_galaxy.location_subscriber on cluster ck_query add column IF NOT EXISTS data_source String after third_location;
 
 drop view IF EXISTS cyber_narrator_galaxy.cn_entity_relation_view ON CLUSTER ck_cluster;
 drop view IF EXISTS cyber_narrator_galaxy.cn_ip_dynamic_attribute_view ON CLUSTER ck_cluster;
@@ -10,11 +9,8 @@ drop view IF EXISTS cyber_narrator_galaxy.cn_entity_relation_view_metric ON CLUS
 drop view IF EXISTS cyber_narrator_galaxy.cn_ip_dynamic_attribute_view_metric ON CLUSTER ck_cluster;
 
 drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.cn_entity_relation on cluster ck_query;
 drop table IF EXISTS cyber_narrator_galaxy.metric_relation on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_relation on cluster ck_query;
 drop table IF EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute on cluster ck_cluster;
-drop table IF EXISTS cyber_narrator_galaxy.metric_ip_dynamic_attribute on cluster ck_query;
 
 
 RENAME TABLE cyber_narrator_galaxy.cn_entity_relation_local TO cyber_narrator_galaxy.session_relation_domain_ip_app_local ON CLUSTER ck_cluster;
@@ -60,19 +56,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_subscriber_app
  update_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'session_relation_subscriber_app_local', rand());
 
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_subscriber_app ON CLUSTER ck_query (
- app_name String,
- subscriber_id String,
- imei String,
- imsi String,
- phone_number String,
- apn String,
- app_category String,
- app_subcategory String,
- create_time Int64,
- update_time Int64
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'session_relation_subscriber_app_local', rand());
-
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_subscriber_app_local ON CLUSTER ck_cluster (
  app_name String,
@@ -98,41 +81,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_subscriber
  stat_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_session_relation_subscriber_app_local', rand());
 
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_subscriber_app ON CLUSTER ck_query (
- app_name String,
- subscriber_id String,
- imei String,
- imsi String,
- phone_number String,
- apn String,
- app_category String,
- app_subcategory String,
- stat_time Int64
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_session_relation_subscriber_app_local', rand());
 
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_domain_ip_app on cluster ck_query
-(
-    app_name String,
-    domain String,
-    ip String,
-    ip_country_region String,
-    ip_super_admin_area String,
-    ip_admin_area String,
-    ip_asn String,
-    ip_isp String,
-    domain_category_name String,
-    domain_category_group String,
-    app_category String,
-    app_subcategory String,
-    entity_tags Array(String),
-    create_time Int64,
-    update_time Int64
-)
-ENGINE = Distributed('ck_cluster',
- 'cyber_narrator_galaxy',
- 'session_relation_domain_ip_app_local',
- rand());
 
  CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_domain_ip_app on cluster ck_cluster
 (
@@ -174,22 +123,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_domain_ip_
  stat_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_session_relation_domain_ip_app_local', rand());
 
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_domain_ip_app ON CLUSTER ck_query (
- app_name String,
- domain String,
- ip String,
- ip_country_region String,
- ip_super_admin_area String,
- ip_admin_area String,
- ip_asn String,
- ip_isp String,
- domain_category_name String,
- domain_category_group String,
- app_category String,
- app_subcategory String,
- entity_tags Array(String),
- stat_time Int64
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_session_relation_domain_ip_app_local', rand());
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_cn_ip_dynamic_attribute ON CLUSTER ck_cluster (
  ip String,
@@ -198,12 +131,6 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_cn_ip_dynamic_attribute ON 
  stat_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_cn_ip_dynamic_attribute_local', rand());
 
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_cn_ip_dynamic_attribute ON CLUSTER ck_query (
- ip String,
- l7_protocol String,
- port Int64,
- stat_time Int64
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_cn_ip_dynamic_attribute_local', rand());
 
 
 CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.session_relation_domain_ip_app_view_metric on cluster ck_cluster 
@@ -299,8 +226,7 @@ GROUP BY
     port;
 
 
-CREATE TABLE cyber_narrator_galaxy.metric_tag_local
-(
+CREATE TABLE cyber_narrator_galaxy.metric_tag_local ON CLUSTER ck_cluster (
     tag String,
     stat_time Int64,
     ip_sketch String,
@@ -313,15 +239,6 @@ PARTITION BY toYYYYMMDD(toDate(stat_time))
 ORDER BY (stat_time, tag);
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_tag ON CLUSTER ck_cluster (
-    tag String,
-    stat_time Int64,
-    ip_sketch String,
-    domain_sketch String,
-    ip_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(ip_sketch),
-    domain_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(domain_sketch)
-) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_tag_local', rand());
-
-CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_tag ON CLUSTER ck_query (
     tag String,
     stat_time Int64,
     ip_sketch String,
