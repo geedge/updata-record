@@ -1,6 +1,6 @@
 [
 	{
-		"name":"[24.05] OLAP Component Status Template",
+		"name":"OLAP Component Status Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -124,19 +124,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"80",
-									"color":"#d64f40",
-									"id":"4a4faa2b",
-									"value":80
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -146,16 +163,25 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"80",
+									"color":"#d64f40",
+									"id":"a85bb03",
+									"value":80
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -194,19 +220,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"100",
-									"color":"#d64f40",
-									"id":"d690d63",
-									"value":100
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -217,16 +260,25 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"100",
+									"color":"#d64f40",
+									"id":"62fbf61",
+									"value":100
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -308,7 +360,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -355,34 +407,60 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"100000",
-									"color":"#d64f40",
-									"id":"32d9b8b",
-									"value":100000
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"100000",
+									"color":"#d64f40",
+									"id":"58f8e1ad",
+									"value":100000
+								}
+							],
 							"enable":{
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -463,7 +541,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -554,7 +632,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -664,18 +742,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"color":"#C4162AFF",
-									"id":"74e960f",
-									"value":0.8
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -684,16 +780,24 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"color":"#C4162AFF",
+									"id":"884bf8a",
+									"value":0.8
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -732,19 +836,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"0.7",
-									"color":"#d64f40",
-									"id":"24d5201a",
-									"value":0.8
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -753,16 +874,25 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"0.7",
+									"color":"#d64f40",
+									"id":"68f1c6c2",
+									"value":0.8
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -801,19 +931,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"0.7",
-									"color":"#d64f40",
-									"id":"2aefe71f",
-									"value":0.8
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -822,16 +969,25 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"0.7",
+									"color":"#d64f40",
+									"id":"a927eeb",
+									"value":0.8
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -870,19 +1026,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"val":"0.7",
-									"color":"#d64f40",
-									"id":"861cdc1",
-									"value":0.8
-								}
-							],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -891,16 +1064,25 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"val":"0.7",
+									"color":"#d64f40",
+									"id":"2022c819",
+									"value":0.8
+								}
+							],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -945,6 +1127,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[
 									"avg",
@@ -957,12 +1164,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#7f4ee8",
-									"id":"83df9f"
+									"id":"b6ef207"
 								}
 							],
 							"thresholdShow":true,
@@ -970,6 +1177,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -1051,12 +1259,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#bd00f2",
-									"id":"79b38bc5"
+									"id":"da71837"
 								}
 							],
 							"thresholdShow":true,
@@ -1146,12 +1354,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#bd00f2",
-									"id":"5914f097"
+									"id":"2781ca5"
 								}
 							],
 							"thresholdShow":true,
@@ -1241,12 +1449,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#bd00f2",
-									"id":"52d63244"
+									"id":"40f9b83"
 								}
 							],
 							"thresholdShow":true,
@@ -1336,12 +1544,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#bd00f2",
-									"id":"25d8cf84"
+									"id":"393c4a57"
 								}
 							],
 							"thresholdShow":true,
@@ -2009,12 +2217,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -2024,16 +2256,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -2072,12 +2306,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -2087,16 +2345,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -2135,12 +2395,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -2150,16 +2434,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -2198,12 +2484,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -2213,16 +2523,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -2460,7 +2772,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -2551,7 +2863,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -2757,12 +3069,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -2773,16 +3109,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -3858,7 +4196,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -3948,7 +4286,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -4038,7 +4376,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -4123,7 +4461,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -4170,12 +4508,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -4185,16 +4547,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -4233,12 +4597,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -4248,16 +4636,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -4296,12 +4686,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -4310,16 +4724,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -4358,18 +4774,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[
-								{
-									"color":"#7dd1ed",
-									"id":"3367fad4"
-								}
-							],
-							"thresholdShow":true,
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -4379,16 +4813,24 @@
 								"show":true,
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"color":"#7dd1ed",
+									"id":"2ab3239d"
+								}
+							],
+							"thresholdShow":true,
 							"enable":{
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"valueMapping":[],
 							"dataLink":[],
@@ -4515,12 +4957,36 @@
 								"label":""
 							},
 							"stack":false,
-							"thresholds":[],
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
+							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
 							},
 							"legend":{
 								"values":[
@@ -4530,16 +4996,18 @@
 								],
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[],
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":true
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"style":"line",
 							"valueMapping":[],
@@ -4855,6 +5323,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"show":true,
@@ -4864,12 +5357,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#0c4dff",
-									"id":"2403cb83"
+									"id":"1978b85f"
 								}
 							],
 							"thresholdShow":true,
@@ -4877,6 +5370,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -4921,6 +5415,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"show":true,
@@ -4930,12 +5449,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#0c4dff",
-									"id":"15f3d50d"
+									"id":"266c1168"
 								}
 							],
 							"thresholdShow":true,
@@ -4943,6 +5462,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -5147,6 +5667,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"show":true,
@@ -5156,12 +5701,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#0c4dff",
-									"id":"2180e951"
+									"id":"3c37e86"
 								}
 							],
 							"thresholdShow":true,
@@ -5169,6 +5714,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -5923,35 +6469,61 @@
 								"label":""
 							},
 							"stack":0,
-							"thresholds":[
-								{
-									"color":"#C4162AFF",
-									"id":"c5e0577",
-									"value":80
-								}
-							],
-							"thresholdShow":true,
 							"visibility":{
 								"result":"",
 								"varName":"",
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"show":true,
 								"placement":"bottom"
 							},
+							"link":"",
+							"tooltip":{
+								"mode":"all",
+								"sort":"desc"
+							},
+							"thresholds":[
+								{
+									"color":"#C4162AFF",
+									"id":"a0c3ac9",
+									"value":80
+								}
+							],
+							"thresholdShow":true,
 							"enable":{
 								"thresholds":true,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
-							},
-							"link":"",
-							"tooltip":{
-								"mode":"all",
-								"sort":"none"
 							},
 							"valueMapping":[],
 							"dataLink":[],
@@ -6199,6 +6771,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[
 									"avg",
@@ -6211,12 +6808,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#1c1984",
-									"id":"1b84559"
+									"id":"d62e843"
 								}
 							],
 							"thresholdShow":true,
@@ -6224,6 +6821,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -6334,6 +6932,31 @@
 								"varValue":"",
 								"operator":""
 							},
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
 							"legend":{
 								"values":[],
 								"show":true,
@@ -6343,12 +6966,12 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[
 								{
 									"color":"#1c1984",
-									"id":"055ee01"
+									"id":"b43381d"
 								}
 							],
 							"thresholdShow":true,
@@ -6356,6 +6979,7 @@
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
+								"tooltip":true,
 								"valueMapping":false
 							},
 							"valueMapping":[],
@@ -6454,7 +7078,7 @@
 		"children":[]
 	},
 	{
-		"name":"[24.05] OLAP Service Status Template",
+		"name":"OLAP Service Status Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -7871,7 +8495,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8111,7 +8735,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8351,7 +8975,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8440,7 +9064,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8529,7 +9153,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8814,7 +9438,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -8992,7 +9616,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -9080,14 +9704,14 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
 								"thresholds":false,
 								"visibility":false,
 								"legend":true,
-								"tooltip":false,
+								"tooltip":true,
 								"valueMapping":true
 							},
 							"style":"line",
@@ -9780,7 +10404,7 @@
 							"link":"",
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"thresholds":[],
 							"enable":{
@@ -10669,7 +11293,7 @@
 		"children":[]
 	},
 	{
-		"name":"[24.05]Data Transporter Data Flow  Template",
+		"name":"Data Transporter Data Flow  Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -10791,13 +11415,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#6339a3",
-									"id":"13aecc92"
+									"id":"7715ee9"
 								}
 							],
 							"thresholdShow":true,
@@ -10924,13 +11548,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#b6a6ed",
-									"id":"a154cbb"
+									"id":"6f07e8bf"
 								}
 							],
 							"thresholdShow":true,
@@ -11107,13 +11731,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#4ff9a7",
-									"id":"3f7e3f6f"
+									"id":"d57e4c9"
 								}
 							],
 							"thresholdShow":true,
@@ -11628,7 +12252,7 @@
 							"thresholds":[
 								{
 									"color":"#2ce059",
-									"id":"daad4cf"
+									"id":"22e472c9"
 								}
 							],
 							"thresholdShow":true,
@@ -11669,7 +12293,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )  or vector(0) )+ sum(rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_session_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)\n)",
 								"legend":"Sink",
 								"name":"D",
 								"orderNum":2,
@@ -12354,7 +12978,7 @@
 							"thresholds":[
 								{
 									"color":"#ed0eaa",
-									"id":"56503a58"
+									"id":"2027e85c"
 								}
 							],
 							"thresholdShow":true,
@@ -12395,7 +13019,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0) )+ sum(rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_transaction_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n   ) or vector(0)\n)",
 								"legend":"Sink",
 								"name":"D",
 								"orderNum":2,
@@ -12794,7 +13418,7 @@
 							"thresholds":[
 								{
 									"color":"#2a16ff",
-									"id":"96ef601"
+									"id":"7dd05d48"
 								}
 							],
 							"thresholdShow":true,
@@ -12835,7 +13459,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)) + sum(rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"etl_proxy_event_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)\n)",
 								"legend":"Sink",
 								"name":"D",
 								"orderNum":2,
@@ -13377,7 +14001,7 @@
 							"thresholds":[
 								{
 									"color":"#6936aa",
-									"id":"24d73f8"
+									"id":"1ed16a0e"
 								}
 							],
 							"thresholdShow":true,
@@ -13418,7 +14042,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)) + sum(rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"dos_sketch_record_kafka_to_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)\n)",
 								"legend":"Sink",
 								"name":"D",
 								"orderNum":2,
@@ -13960,7 +14584,7 @@
 							"thresholds":[
 								{
 									"color":"#c02bdb",
-									"id":"637ac576"
+									"id":"6e96ebc8"
 								}
 							],
 							"thresholdShow":true,
@@ -14011,7 +14635,7 @@
 								"queryType":1
 							},
 							{
-								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  )+ rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  )\n)",
+								"expression":"sum(\n  rate(\nflink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_kafka_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0) )+ sum(rate(   flink_taskmanager_job_task_operator_internal_metrics_out_events{job_name=\"voip_record_kafka_to_ndc_kafka\",operator_name=\"Sink:_clickhouse_sink\",datacenter=\"$DataCenter\"}[5m]\n  ) or vector(0)\n)",
 								"legend":"Sink",
 								"name":"E",
 								"orderNum":3,
@@ -17204,13 +17828,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#ce8c08",
-									"id":"73e60706"
+									"id":"75eb411"
 								}
 							],
 							"thresholdShow":true,
@@ -17224,7 +17848,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"6.0",
@@ -17307,13 +17931,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#4740ce",
-									"id":"d02e4ed"
+									"id":"a2df341"
 								}
 							],
 							"thresholdShow":true,
@@ -17327,7 +17951,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"0.0",
@@ -17400,13 +18024,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#ef2162",
-									"id":"e462ff9"
+									"id":"7c5d0cbb"
 								}
 							],
 							"thresholdShow":true,
@@ -17420,7 +18044,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"0.0",
@@ -17480,10 +18104,10 @@
 								]
 							},
 							"visibility":{
-								"result":"show",
+								"result":"",
 								"varName":"",
 								"varValue":"",
-								"operator":"equal"
+								"operator":""
 							},
 							"legend":{
 								"values":[],
@@ -17493,13 +18117,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#4740ce",
-									"id":"2a8ecbc"
+									"id":"23e8cec"
 								}
 							],
 							"thresholdShow":true,
@@ -17513,7 +18137,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"0.0",
@@ -17537,7 +18161,7 @@
 						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
-						"unit":"short",
+						"unit":"bytes/sec(IEC)",
 						"weight":60,
 						"param":{
 							"rightYAxis":{
@@ -17586,13 +18210,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#3c11f9",
-									"id":"aa3f158"
+									"id":"222bd78"
 								}
 							],
 							"thresholdShow":true,
@@ -17606,7 +18230,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"6.0",
@@ -17689,13 +18313,13 @@
 							"showHeader":1,
 							"tooltip":{
 								"mode":"all",
-								"sort":"none"
+								"sort":"desc"
 							},
 							"link":"",
 							"thresholds":[
 								{
 									"color":"#ce8c08",
-									"id":"375ad3e9"
+									"id":"243de81a"
 								}
 							],
 							"thresholdShow":true,
@@ -17709,7 +18333,7 @@
 							},
 							"valueMapping":[],
 							"dataLink":[],
-							"nullType":"null"
+							"nullType":"zero"
 						},
 						"remark":"",
 						"x":"6.0",
@@ -17744,7 +18368,7 @@
 		"children":[]
 	},
 	{
-		"name":"[24.05] TSG OLAP Data Flow Template",
+		"name":"TSG OLAP Data Flow Template",
 		"type":"template",
 		"varType":0,
 		"param":{
