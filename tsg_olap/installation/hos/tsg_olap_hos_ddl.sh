@@ -1,0 +1,5 @@
+curl -X PUT http://{{ vrrp_instance.oss.virtual_ipaddress }}:9098/hos/traffc_file_bucket -H 'token:{{ hos_token }}' -H 'x-hos-region-count:64*hbase服务器数'
+curl -X PUT http://{{ vrrp_instance.oss.virtual_ipaddress }}:9098/hos/troubleshooting_file_bucket -H 'token:{{ hos_token }}' -H 'x-hos-region-count:16'
+curl -X PUT http://{{ vrrp_instance.oss.virtual_ipaddress }}:9098/hos/knowledge_base_bucket -H 'token:{{ hos_token }}' -H 'x-hos-region-count:16' -H 'x-hos-wal:open'
+curl -X PUT http://{{ vrrp_instance.oss.virtual_ipaddress }}:9098/hos/report_snapshot_bucket -H 'token:{{ hos_token }}' -H 'x-hos-region-count:16' -H 'x-hos-wal:open'
+curl -X PUT http://{{ vrrp_instance.oss.virtual_ipaddress }}:9098/hos/assessment_file_bucket -H 'token:{{ hos_token }}' -H 'x-hos-region-count:16' -H 'x-hos-wal:open'
