@@ -8,12 +8,13 @@ sources:
     properties:
       topic: TRANSACTION-RECORD
       kafka.bootstrap.servers: "{{ kafka_source_servers }}"
+      kafka.client.id: TRANSACTION-RECORD
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
       kafka.security.protocol: SASL_PLAINTEXT
       kafka.sasl.mechanism: PLAIN
-      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
+      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a80bea937958aaa485c2acc2b475603495a23eb59f055e037c0b186acb22886bd0275ca91f1633441d9943e7962942252
       kafka.group.id: etl_transaction_record_kafka_to_ndc_kafka
       kafka.auto.offset.reset: latest
       format: json
@@ -121,10 +122,11 @@ processing_pipelines:
 
 sinks:
   kafka_sink:
-    type : kafka
+    type: kafka
     properties:
       topic: TRANSACTION-RECORD-PROCESSED
       kafka.bootstrap.servers: "{{ kafka_sink_servers }}"
+      kafka.client.id: TRANSACTION-RECORD-PROCESSED
       kafka.retries: 0
       kafka.linger.ms: 10
       kafka.request.timeout.ms: 30000
@@ -134,7 +136,7 @@ sinks:
       kafka.compression.type: snappy
       kafka.security.protocol: SASL_PLAINTEXT
       kafka.sasl.mechanism: PLAIN
-      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
+      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a80bea937958aaa485c2acc2b475603495a23eb59f055e037c0b186acb22886bd0275ca91f1633441d9943e7962942252
       format: json   
 
 

@@ -5,6 +5,7 @@ flink.job.name=agg_traffic_file_chunk_combine
 source.kafka.broker=192.168.44.12:9092
 source.kafka.topic=TRAFFIC-FILE-STREAM-RECORD
 source.kafka.group.id=test
+source.kafka.client.id=TRAFFIC-FILE-STREAM-RECORD
 #earliest从头开始 latest最新
 source.kafka.auto.offset.reset=latest
 source.kafka.session.timeout.ms=60000
@@ -14,7 +15,7 @@ source.kafka.max.poll.records=1000
 source.kafka.max.partition.fetch.bytes=31457280
 source.kafka.enable.auto.commit=true
 #kafka SASL验证用户名
-source.kafka.user=admin
+source.kafka.user=olap
 #kafka SASL及SSL验证密码
 source.kafka.pin=galaxy2019
 #SSL需要

@@ -1,27 +1,3 @@
-# 敏感配置信息加密
-
-  AES encryption support encrypt/decrypt the following parameters:
-
-- username
-- password
-- auth
-- connection.user
-- connection.password
-- kafka.sasl.jaas.config
-- kafka.ssl.keystore.password
-- kafka.ssl.truststore.password
-- kafka.ssl.key.password
-
-## Encrypt/Decrypt 举例
-
-- 使用Encrypt命令对配置文件的明文敏感信息转换为密文
-
-    `${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --encrypt `
-
-- 使用Decrypt命令，将配置加密的信息转换为明文
-
-    `${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --decrypt `
-
 # 配置模版举例
 
 ## session_record.yaml.j2 （会话日志ETL场景）
