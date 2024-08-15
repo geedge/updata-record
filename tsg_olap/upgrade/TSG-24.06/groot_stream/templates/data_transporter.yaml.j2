@@ -19,7 +19,7 @@ sinks:
     type: kafka
     properties:
       topic: {{ kafka_sink_topic }}
-      kafka.bootstrap.servers: { { kafka_sink_servers } }
+      kafka.bootstrap.servers: {{ kafka_sink_servers }}
       kafka.retries: 0
       kafka.linger.ms: 10
       kafka.request.timeout.ms: 30000
@@ -35,7 +35,7 @@ sinks:
   clickhouse_sink:
     type: clickhouse
     properties:
-      host: {{ clickhouse_servers }}
+      host: {{ clickhouse_sink_host }}
       table: tsg_galaxy_v3.traffic_sketch_metric_local
       batch.size: 100000
       batch.interval: 30s
@@ -48,7 +48,6 @@ application:
     shade.identifier: aes
     pipeline:
       object-reuse: true
-  topology:
   {{ topology }}
 
 

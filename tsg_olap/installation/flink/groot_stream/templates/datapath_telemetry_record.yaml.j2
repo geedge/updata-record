@@ -2,7 +2,7 @@ sources:
   kafka_source:
     type: kafka
     properties:
-      topic: DATAPATH-TELEMETRY-RECORD
+      topic: {{ kafka_source_topic }}
       kafka.bootstrap.servers: {{ kafka_source_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
@@ -37,7 +37,7 @@ sinks:
   kafka_sink:
     type: kafka
     properties:
-      topic: DATAPATH-TELEMETRY-RECORD
+      topic: {{ kafka_sink_topic }}
       kafka.bootstrap.servers: {{ kafka_sink_servers }}
       kafka.retries: 0
       kafka.linger.ms: 10
@@ -71,7 +71,6 @@ application:
     shade.identifier: aes
     pipeline:
       object-reuse: true
-  topology:
   {{ topology }}
 
 

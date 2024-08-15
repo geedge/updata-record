@@ -2,7 +2,7 @@ sources:
   kafka_source:
     type: kafka
     properties:
-      topic: VOIP-CONVERSATION-RECORD
+      topic: {{ kafka_source_topic }}
       kafka.bootstrap.servers: {{ kafka_source_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
@@ -49,12 +49,6 @@ processing_pipelines:
       output_fields: [ingestion_time]
       parameters:
         value_expression: recv_time
-
-    - function: DOMAIN
-      lookup_fields: [http_host, ssl_sni, dtls_sni, quic_sni]
-      output_fields: [server_domain]
-      parameters:
-        option: FIRST_SIGNIFICANT_SUBDOMAIN
 
     - function: BASE64_DECODE_TO_STRING
       output_fields: [mail_subject]
@@ -107,7 +101,7 @@ sinks:
   kafka_sink:
     type: kafka
     properties:
-      topic: VOIP-CONVERSATION-RECORD
+      topic: {{ kafka_sink_topic }}
       kafka.bootstrap.servers: {{ kafka_sink_servers }}
       kafka.retries: 0
       kafka.linger.ms: 10
