@@ -13,11 +13,14 @@
 - kafka.ssl.key.password
 
 ## Encrypt/Decrypt 举例
-- 使用Encrypt命令对配置文件的明文敏感信息转换为密文
-        - ${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --encrypt 
-- 使用Decrypt命令，将配置加密的信息转换为明文
-        - ${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --decrypt 
 
+- 使用Encrypt命令对配置文件的明文敏感信息转换为密文
+
+    `${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --encrypt `
+
+- 使用Decrypt命令，将配置加密的信息转换为明文
+
+    `${GROOTSTREAM_HOME}/bin/start.sh -c config/xx.yaml --decrypt `
 
 # 配置模版举例
 
