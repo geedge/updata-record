@@ -1,6 +1,6 @@
 [
 	{
-		"name":"OLAP Component Status Template",
+		"name":"[24.07] OLAP Component Status Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -7078,7 +7078,7 @@
 		"children":[]
 	},
 	{
-		"name":"OLAP Service Status Template",
+		"name":"[24.07] OLAP Service Status Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -7843,7 +7843,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.34",
+				"y":"1.37",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -8252,7 +8252,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"1.68",
+				"y":"1.74",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -8586,7 +8586,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"2.02",
+				"y":"2.1",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -8914,7 +8914,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"2.7",
+				"y":"10.84",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -8992,7 +8992,7 @@
 						},
 						"remark":"The number of put objects per second",
 						"x":"0.0",
-						"y":"5.0",
+						"y":"4.0",
 						"elements":[
 							{
 								"expression":"sum by (asset)(irate(http_server_requests_seconds_count{method=\"PUT\",uri=\"/hos/{bucket}/**\",project=\"$Project\"}[5m]))",
@@ -9170,7 +9170,7 @@
 						},
 						"remark":"The number of Download File requests per second",
 						"x":"6.0",
-						"y":"5.0",
+						"y":"4.0",
 						"elements":[
 							{
 								"expression":"sum by (asset)(irate(http_server_requests_seconds_count{method=\"GET\",uri=\"/hos/{bucket}/**\",project=\"$Project\"}[5m]))",
@@ -9258,7 +9258,7 @@
 						},
 						"remark":"Collecting and processing files with incoming byte rate in each asset",
 						"x":"6.0",
-						"y":"8.0",
+						"y":"6.0",
 						"elements":[
 							{
 								"expression":"irate(dashInfo{severity=\"fileBytes\",module=~\".*Galaxy-hos-service\",project=\"$Project\"}[5m])",
@@ -9346,7 +9346,7 @@
 						},
 						"remark":"The number of put requests per second with size distribution",
 						"x":"0.0",
-						"y":"14.0",
+						"y":"10.0",
 						"elements":[
 							{
 								"expression":"sum(irate(dashInfo{severity=\"smallFileCount\",module=~\".*Galaxy-hos-service\",project=\"$Project\"}[5m]))",
@@ -9721,7 +9721,7 @@
 						},
 						"remark":"The number of files uploaded per second",
 						"x":"0.0",
-						"y":"8.0",
+						"y":"6.0",
 						"elements":[
 							{
 								"expression":"sum by(datacenter)(irate(dashInfo{severity=\"fileCount\",module=~\".*Galaxy-hos-service\",project=\"$Project\"}[5m]))",
@@ -9809,7 +9809,7 @@
 						},
 						"remark":"The number of ttl deleted files per second.",
 						"x":"6.0",
-						"y":"14.0",
+						"y":"10.0",
 						"elements":[
 							{
 								"expression":"sum by(datacenter)(irate(dashInfo{severity=\"ttlDeleteFileCount\",module=~\".*Galaxy-hos-service\",project=\"$Project\"}[5m]))",
@@ -9907,7 +9907,7 @@
 						},
 						"remark":"The number of files for bucket uploaded per second",
 						"x":"0.0",
-						"y":"11.0",
+						"y":"8.0",
 						"elements":[
 							{
 								"expression":"sum by(parent)(irate(Hadoop_HBase_metric_putCount{namespace=\"default\",type=\"index\",indextype=\"time\",project=\"$Project\"}[5m]))",
@@ -9995,7 +9995,7 @@
 						},
 						"remark":"The number of put requests for bucket per second",
 						"x":"6.0",
-						"y":"11.0",
+						"y":"8.0",
 						"elements":[
 							{
 								"expression":"sum by(table)(irate(Hadoop_HBase_metric_putCount{namespace=\"default\",type=\"data\",project=\"$Project\"}[5m]))",
@@ -10069,7 +10069,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"2.36",
+				"y":"2.47",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -10421,7 +10421,7 @@
 						},
 						"remark":"The memory usage in each asset",
 						"x":"0.0",
-						"y":"3.0",
+						"y":"4.0",
 						"elements":[
 							{
 								"expression":"sum by(asset) (jvm_memory_used_bytes{module=~\".*Galaxy-job-admin\",project=\"$Project\"}) / sum by(asset) (jvm_memory_max_bytes{module=~\".*Galaxy-job-admin\",project=\"$Project\"})",
@@ -10598,7 +10598,7 @@
 						},
 						"remark":"The CPU usage in each asset",
 						"x":"6.0",
-						"y":"3.0",
+						"y":"2.0",
 						"elements":[
 							{
 								"expression":"system_cpu_usage{module=~\".*Galaxy-job-admin\",project=\"$Project\"}",
@@ -10615,7 +10615,7 @@
 					},
 					{
 						"name":"Job Executor Memory Used",
-						"span":"4.0",
+						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"bytes(IEC)",
@@ -10686,7 +10686,7 @@
 						},
 						"remark":"The memory usage in each asset",
 						"x":"0.0",
-						"y":"5.0",
+						"y":"6.0",
 						"elements":[
 							{
 								"expression":"sum(jvm_memory_used_bytes{module=~\".*Galaxy-job-executor\",project=\"$Project\"})by(asset)",
@@ -10703,7 +10703,7 @@
 					},
 					{
 						"name":"Job Executor Error Log",
-						"span":"4.0",
+						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
@@ -10773,8 +10773,8 @@
 							"nullType":"connected"
 						},
 						"remark":"The number of failed logs per second in each asset",
-						"x":"8.0",
-						"y":"5.0",
+						"x":"6.0",
+						"y":"4.0",
 						"elements":[
 							{
 								"expression":"increase(logback_events_total{module=~\".*Galaxy-job-executor\",level=\"error\",project=\"$Project\"} [5m])",
@@ -10791,7 +10791,7 @@
 					},
 					{
 						"name":"Job Executor CPU Usage",
-						"span":"4.0",
+						"span":"6.0",
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"percent(0.0-1.0)",
@@ -10862,8 +10862,8 @@
 							"nullType":"zero"
 						},
 						"remark":"The CPU usage in each asset",
-						"x":"4.0",
-						"y":"5.0",
+						"x":"6.0",
+						"y":"6.0",
 						"elements":[
 							{
 								"expression":"system_cpu_usage{module=~\".*Galaxy-job-executor\",project=\"$Project\"}",
@@ -10871,6 +10871,101 @@
 								"name":"A",
 								"orderNum":0,
 								"id":108780,
+								"state":1,
+								"type":"expert",
+								"queryType":1
+							}
+						],
+						"datasource":"metrics"
+					},
+					{
+						"name":"Job Delete Old Log",
+						"span":"6.0",
+						"height":"2.0",
+						"type":"Line chart",
+						"unit":"short",
+						"weight":43,
+						"param":{
+							"rightYAxis":{
+								"elementNames":[],
+								"unit":2,
+								"style":"line",
+								"label":""
+							},
+							"stack":0,
+							"color":{
+								"mode":"palette",
+								"paletteColors":[
+									"#3685FF",
+									"#00DCA2",
+									"#00BFD0",
+									"#954Eff",
+									"#FFCB01",
+									"#f65A96",
+									"#FF9094",
+									"#00CCF5",
+									"#FF8BEA",
+									"#4D7693",
+									"#72577C",
+									"#99D750",
+									"#DD8270",
+									"#C475EE",
+									"#7E83FB",
+									"#7EB090",
+									"#CF6684",
+									"#4E55FF",
+									"#FF8D00",
+									"#FF5200"
+								]
+							},
+							"visibility":{
+								"result":"",
+								"varName":"",
+								"varValue":"",
+								"operator":""
+							},
+							"legend":{
+								"values":[
+									"avg"
+								],
+								"show":true,
+								"placement":"bottom"
+							},
+							"showHeader":1,
+							"tooltip":{
+								"mode":"all",
+								"sort":"none"
+							},
+							"link":"",
+							"thresholds":[
+								{
+									"color":"#18ba46",
+									"id":"111475eb"
+								}
+							],
+							"thresholdShow":true,
+							"enable":{
+								"rightYAxis":false,
+								"thresholds":false,
+								"visibility":false,
+								"legend":true,
+								"tooltip":true,
+								"valueMapping":false
+							},
+							"valueMapping":[],
+							"dataLink":[],
+							"nullType":"null"
+						},
+						"remark":"When the disk is fully loaded, the deletion log is triggered",
+						"x":"0.0",
+						"y":"2.0",
+						"elements":[
+							{
+								"expression":"sum by (log_type)(increase(delete_old_log_total{module=\"Galaxy-job-executor\"}[10m]))",
+								"legend":"{{log_type}}",
+								"name":"A",
+								"orderNum":0,
+								"id":"",
 								"state":1,
 								"type":"expert",
 								"queryType":1
@@ -10886,7 +10981,7 @@
 				"height":"1.0",
 				"type":"Group",
 				"unit":"short",
-				"weight":43,
+				"weight":44,
 				"param":{
 					"thresholds":[],
 					"visibility":{
@@ -10937,7 +11032,7 @@
 				},
 				"remark":"",
 				"x":"0.0",
-				"y":"3.04",
+				"y":"23.21",
 				"elements":[],
 				"datasource":"misc",
 				"children":[
@@ -10947,7 +11042,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"none",
-						"weight":44,
+						"weight":45,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -11038,7 +11133,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":45,
+						"weight":46,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -11123,7 +11218,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"short",
-						"weight":46,
+						"weight":47,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -11208,7 +11303,7 @@
 						"height":"2.0",
 						"type":"Line chart",
 						"unit":"seconds(s)",
-						"weight":47,
+						"weight":48,
 						"param":{
 							"rightYAxis":{
 								"elementNames":[],
@@ -11293,7 +11388,7 @@
 		"children":[]
 	},
 	{
-		"name":"Data Transporter Data Flow  Template",
+		"name":"[24.07] Data Transporter Data Flow  Template",
 		"type":"template",
 		"varType":0,
 		"param":{
@@ -18368,7 +18463,7 @@
 		"children":[]
 	},
 	{
-		"name":"TSG OLAP Data Flow Template",
+		"name":"[24.07] TSG OLAP Data Flow Template",
 		"type":"template",
 		"varType":0,
 		"param":{
