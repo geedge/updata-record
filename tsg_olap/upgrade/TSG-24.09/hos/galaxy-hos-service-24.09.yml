@@ -1,0 +1,97 @@
+#服务端口
+server:
+  port: 8186
+  max-http-header-size: 20MB
+  tomcat:
+    max-threads: 400
+#tomcat缓存大小，单位KB系统默认10M，配置10g
+tomcat:
+  cacheMaxSize: 1000000
+#hbase参数
+hbase:
+  zookeeperQuorum: 192.168.44.11:2181,192.168.44.14:2181,192.168.44.15:2181
+  zookeeperPort: 2181
+  zookeeperNodeParent: /hbase
+  clientRetriesNumber: 9
+  rpcTimeout: 100000
+  connectPool: 10
+  clientWriteBuffer: 10485760
+  clientKeyValueMaxsize: 1073741824
+  mobThreshold: 10485760
+  #part的最大数量
+  maxParts: 100000
+  #每次获取的part数
+  getPartBatch: 10
+  #hbase索引表前缀，前缀为以下的都为索引表
+  timeIndexTablePrefix: index_time_
+  filenameIndexTablePrefix: index_filename_
+  partFileIndexTablePrefix: index_partfile_
+  systemBucketMeta: system:bucket_meta
+  #创建表的分区数
+  regionCount: 16
+  filenameHead: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
+  partHead: 0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f
+  #获取文件大小的目录
+  dataPath: /hbase
+  #hadoop集群namenode节点，单机为单个ip，集群为ip1,ip2
+  hadoopNameNodes: 192.168.44.10,192.168.44.11
+  #副本数，单机为1，集群为2
+  hadoopReplication: 2
+  #hadoop端口
+  hadoopPort: 9000
+  hadoopUser: root
+  hadoopNameServices: ns1
+  hadoopNameNodesNs1: nn1,nn2
+  asyncPut: 0
+#是否打开验证，0打开，打开需要使用S3身份验证或者token访问服务
+auth:
+  open: 0
+  #http访问使用的token
+  token: ENC(vknRT6U4I739rLIha9CvojM+4uFyXZLEYpO2HZayLnRak1HPW0K2yZ3vnQBA2foo)
+  #s3验证
+  s3:
+    accesskey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+    secretkey: ENC(FUQDvVP+zqCiwHQhXcRvbw==)
+hos:
+  #文件大小阈值
+  maxFileSize: 5073741800
+  #大文件阈值
+  uploadThreshold: 104857600
+  #长连接超时时间
+  keepAliveTimeout: 60000
+  #批量删除对象的最大数量
+  deleteMultipleNumber: 1000
+  #获取对象列表等操作的最大值
+  maxResultLimit: 100000
+  #分块上传的最大分块数
+  maxPartNumber: 10000
+  #追加上传的最大次数
+  maxAppendNumber: 100000
+  #是否快速上传
+  isQuickUpload: 0
+  #是否快速下载文件，1打开，hbase内存小于20G的集群设为0
+  isQuickDownloadFile: 0
+  #用户白名单（hbase的namespace），获取存储配额
+  users: default
+  #是否打开限流,0:关闭，1:打开
+  openRateLimiter: 0
+  #限流每秒请求数
+  rateLimiterQps: 20000
+#设置上传文件大小的最大值
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5GB
+      max-request-size: 5GB
+#Prometheus参数
+  application:
+    name: HosServiceApplication
+#Prometheus参数
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
