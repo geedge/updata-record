@@ -42,9 +42,11 @@ application:
     shade.identifier: aes
     pipeline:
       object-reuse: true # [boolean] Object Reuse, default is false
-  topology:
-  - name: kafka_source
-    downstream: [clickhouse_sink]
-  - name: clickhouse_sink
+  {{ topology }}
+
+#  topology:
+#  - name: kafka_source
+#    downstream: [clickhouse_sink]
+#  - name: clickhouse_sink
 
 
