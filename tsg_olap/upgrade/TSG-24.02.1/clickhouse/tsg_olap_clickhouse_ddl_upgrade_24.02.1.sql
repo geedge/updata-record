@@ -1,5 +1,3 @@
-set distributed_ddl_task_timeout = 180;
-
 -- 基础字段tunnels重命名为encapsulation
 drop view if exists tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster;
 drop view if exists tsg_galaxy_v3.monitor_event_materialized_view on cluster ck_cluster;
