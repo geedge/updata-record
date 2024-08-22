@@ -85,6 +85,27 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS direction String after address_type;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS direction String after address_type;
 
+-- TSG-22310 clickhouse相关表SIP协议新增sip_bye_reason字段
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+
+ALTER table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.transaction_record on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
+
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -283,6 +304,7 @@ TO tsg_galaxy_v3.security_event_local
     sip_responder_sdp_content String,
     sip_duration_s Nullable(Int32),
     sip_bye String,
+    sip_bye_reason String,
     rtp_payload_type_c2s Nullable(Int32),
     rtp_payload_type_s2c Nullable(Int32),
     rtp_pcap_path String,
@@ -513,6 +535,7 @@ SELECT
     sip_responder_sdp_content,
     sip_duration_s,
     sip_bye,
+    sip_bye_reason,
     rtp_payload_type_c2s,
     rtp_payload_type_s2c,
     rtp_pcap_path,
@@ -748,6 +771,7 @@ TO tsg_galaxy_v3.monitor_event_local
     sip_responder_sdp_content String,
     sip_duration_s Nullable(Int32),
     sip_bye String,
+    sip_bye_reason String,
     rtp_payload_type_c2s Nullable(Int32),
     rtp_payload_type_s2c Nullable(Int32),
     rtp_pcap_path String,
@@ -978,6 +1002,7 @@ SELECT
     sip_responder_sdp_content,
     sip_duration_s,
     sip_bye,
+    sip_bye_reason,
     rtp_payload_type_c2s,
     rtp_payload_type_s2c,
     rtp_pcap_path,
