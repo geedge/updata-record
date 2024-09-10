@@ -58,7 +58,7 @@ FROM cyber_narrator_galaxy.session_record_cn where recv_time >= toUnixTimestamp(
 
 SELECT indicator_fields, indicator_values, match_num, reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, server_latitude, domain, app, match_time, match_id, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, severity 
 FROM cyber_narrator_galaxy.match_indicator where match_time >= toUnixTimestamp('2030-01-01 00:00:00') AND match_time <toUnixTimestamp('2030-01-01 00:00:01');
-SELECT key_fields, key_values, threshold_num, records_num, reset, start_time, end_time, match_id, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, severity 
+SELECT key_fields, key_values, threshold_value, metric_value, unit, reset, start_time, end_time, match_id, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, severity 
 FROM cyber_narrator_galaxy.match_threshold where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
 SELECT key_fields, key_values, event_info, start_time, end_time, match_id, rule_id, rule_version, rule_type, is_builtin, event_type, event_name, severity 
 FROM cyber_narrator_galaxy.match_sequence where start_time >= toUnixTimestamp('2030-01-01 00:00:00') AND start_time <toUnixTimestamp('2030-01-01 00:00:01');
