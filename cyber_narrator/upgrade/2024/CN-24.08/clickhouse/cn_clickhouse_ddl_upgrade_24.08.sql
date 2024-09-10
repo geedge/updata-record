@@ -1,3 +1,5 @@
+set distributed_ddl_task_timeout = 180;
+
 CREATE TABLE cyber_narrator_galaxy.match_indicator_local ON CLUSTER ck_cluster (
     indicator_fields String,
     indicator_values String,
@@ -217,4 +219,8 @@ ENGINE = Distributed('ck_cluster',
  rand());
  
  
- 
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
