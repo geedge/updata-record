@@ -16,7 +16,7 @@ sources:
       format: json
 
 processing_pipelines:
-  pre_etl_processor: # [object] Processing Pipeline
+  etl_processor: # [object] Processing Pipeline
     type: projection
     remove_fields:
     output_fields:
@@ -26,72 +26,7 @@ processing_pipelines:
         output_fields: [ recv_time ]
         parameters:
           precision: seconds
-          interval: 300     
-
-  aggregate_processor:
-    type: aggregate
-    group_by_fields: [vsys_id,device_id,device_group,data_center,ip_protocol,direction,client_ip,server_ip,server_domain,app,recv_time]
-    window_type: tumbling_processing_time  # tumbling_event_time,sliding_processing_time,sliding_event_time
-    window_size: 300
-    functions:
-      - function: NUMBER_SUM
-        lookup_fields: [ sessions ]
-      - function: NUMBER_SUM
-        lookup_fields: [ bytes ]
-      - function: NUMBER_SUM
-        lookup_fields: [ sent_bytes ]
-      - function: NUMBER_SUM
-        lookup_fields: [ received_bytes ]
-      - function: NUMBER_SUM
-        lookup_fields: [ pkts ]
-      - function: NUMBER_SUM
-        lookup_fields: [ sent_pkts ]
-      - function: NUMBER_SUM
-        lookup_fields: [ received_pkts ]
-      - function: NUMBER_SUM
-        lookup_fields: [ asymmetric_c2s_flows ]
-      - function: NUMBER_SUM
-        lookup_fields: [ asymmetric_s2c_flows ]
-      - function: NUMBER_SUM
-        lookup_fields: [ c2s_fragments ]
-      - function: NUMBER_SUM
-        lookup_fields: [ s2c_fragments ]
-      - function: NUMBER_SUM
-        lookup_fields: [ c2s_tcp_lost_bytes ]
-      - function: NUMBER_SUM
-        lookup_fields: [ s2c_tcp_lost_bytes ]
-      - function: NUMBER_SUM
-        lookup_fields: [ c2s_tcp_retransmitted_pkts ]
-      - function: NUMBER_SUM
-        lookup_fields: [ s2c_tcp_retransmitted_pkts ]
-      - function: FIRST_VALUE
-        lookup_fields: [ client_country ]
-      - function: FIRST_VALUE
-        lookup_fields: [ server_country ]
-      - function: FIRST_VALUE
-        lookup_fields: [ client_asn ]
-      - function: FIRST_VALUE
-        lookup_fields: [ server_asn ]
-      - function: FIRST_VALUE
-        lookup_fields: [ server_fqdn ]
-      - function: FIRST_VALUE
-        lookup_fields: [ app_category ]
-      - function: FIRST_VALUE
-        lookup_fields: [ c2s_ttl ]
-      - function: FIRST_VALUE
-        lookup_fields: [ s2c_ttl ]
-      - function: FIRST_VALUE
-        lookup_fields: [ c2s_link_id ]
-      - function: FIRST_VALUE
-        lookup_fields: [ s2c_link_id ]
-
-
-
-  post_etl_processor: # [object] Processing Pipeline
-    type: projection
-    remove_fields:
-    output_fields:
-    functions: # [array of object] Function List
+          interval: 60
       - function: EVAL
         output_fields: [ internal_ip ]
         parameters:
@@ -100,7 +35,6 @@ processing_pipelines:
         output_fields: [ external_ip ]
         parameters:
           value_expression:  'direction=Outbound? server_ip : client_ip'
-
       - function: SNOWFLAKE_ID
         lookup_fields: [ '' ]
         output_fields: [ log_id ]
@@ -129,14 +63,9 @@ application:
     pipeline:
       object-reuse: true # [boolean] Object Reuse, default is false
   topology:
-  topology:
   - name: kafka_source
-    downstream: [pre_etl_processor]
-  - name: pre_etl_processor
-    downstream: [aggregate_processor]
-  - name: aggregate_processor
-    downstream: [post_etl_processor]
-  - name: post_etl_processor
+    downstream: [etl_processor]
+  - name: etl_processor
     downstream: [clickhouse_sink]
   - name: clickhouse_sink
 

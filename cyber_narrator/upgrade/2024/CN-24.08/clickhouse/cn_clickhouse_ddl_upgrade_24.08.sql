@@ -1,3 +1,5 @@
+set distributed_ddl_task_timeout = 180;
+
 CREATE TABLE cyber_narrator_galaxy.match_indicator_local ON CLUSTER ck_cluster (
     indicator_fields String,
     indicator_values String,
@@ -65,9 +67,10 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.match_indicator ON CLUSTER ck_c
 CREATE TABLE cyber_narrator_galaxy.match_threshold_local ON CLUSTER ck_cluster (
     key_fields String,
     key_values String,
-    threshold_num Int64,
-    records_num Int64,
-    reset Int64,
+    threshold_value Float32,
+    metric_value Float32,
+    unit Int64 DEFAULT 1,
+	reset Int64,
     start_time Int64,
     end_time Int64,
     match_id UInt64,
@@ -86,8 +89,9 @@ ORDER BY (match_id, start_time);
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.match_threshold ON CLUSTER ck_cluster (
     key_fields String,
     key_values String,
-    threshold_num Int64,
-    records_num Int64,
+    threshold_value Float32,
+    metric_value Float32,
+	unit Int64 DEFAULT 1,
     reset Int64,
     start_time Int64,
     end_time Int64,
@@ -184,6 +188,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_event_local ON CLUSTER ck_cl
     is_builtin SimpleAggregateFunction(anyLast, Int8),
     event_type SimpleAggregateFunction(anyLast, String),
     event_name SimpleAggregateFunction(anyLast, String),
+    reset SimpleAggregateFunction(anyLast, Int64),
     start_time SimpleAggregateFunction(min, Int64),
     end_time SimpleAggregateFunction(max, Int64),
     duration_s SimpleAggregateFunction(max, Int64),
@@ -202,6 +207,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.cn_event ON CLUSTER ck_cluster(
     is_builtin SimpleAggregateFunction(anyLast, Int8),
     event_type SimpleAggregateFunction(anyLast, String),
     event_name SimpleAggregateFunction(anyLast, String),
+    reset SimpleAggregateFunction(anyLast, Int64),
     start_time SimpleAggregateFunction(min, Int64),
     end_time SimpleAggregateFunction(max, Int64),
     duration_s SimpleAggregateFunction(max, Int64),
@@ -211,3 +217,10 @@ ENGINE = Distributed('ck_cluster',
  'cyber_narrator_galaxy',
  'cn_event_local',
  rand());
+ 
+ 
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;

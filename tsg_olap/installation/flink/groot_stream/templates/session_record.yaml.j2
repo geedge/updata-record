@@ -144,3 +144,10 @@ application:
     pipeline:
       object-reuse: true
   {{ topology }}
+
+#  topology:
+#   - name: kafka_source
+#     downstream: [etl_processor]
+#   - name: etl_processor
+#     downstream: [clickhouse_sink]
+#   - name: clickhouse_sink

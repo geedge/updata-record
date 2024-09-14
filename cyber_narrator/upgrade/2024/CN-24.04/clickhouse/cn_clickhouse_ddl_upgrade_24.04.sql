@@ -246,3 +246,10 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.metric_tag ON CLUSTER ck_cluste
     ip_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(ip_sketch),
     domain_sketch_agg_state AggregateFunction(uniqTheta,String) MATERIALIZED base64Decode(domain_sketch)
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'metric_tag_local', rand());
+
+
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_type Int64 after apn;
+
+ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
+ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
