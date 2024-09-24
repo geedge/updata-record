@@ -22,6 +22,85 @@ ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT
 ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS ssl_ja4s_fingerprint String after ssl_ja4_fingerprint;
 ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS ssl_ja4s_fingerprint String after ssl_ja4_fingerprint;
 
+-- TSG-22690 Clickhouse新增xx_rule_uuid_list字段
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS security_rule_uuid_list Array(String) after security_rule_list;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS monitor_rule_uuid_list Array(String) after monitor_rule_list;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS shaping_rule_uuid_list Array(String) after shaping_rule_list;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS proxy_rule_uuid_list Array(String) after proxy_rule_list;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS statistics_rule_uuid_list Array(String) after statistics_rule_list;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
+
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -54,12 +133,18 @@ TO tsg_galaxy_v3.security_event_local
     c2s_ttl Nullable(Int32),
     s2c_ttl Nullable(Int32),
     security_rule_list Array(Int64),
+    security_rule_uuid_list Array(String),
     security_action String,
     monitor_rule_list Array(Int64),
+    monitor_rule_uuid_list Array(String),
     shaping_rule_list Array(Int64),
+    shaping_rule_uuid_list Array(String),
     proxy_rule_list Array(Int64),
+    proxy_rule_uuid_list Array(String),
     statistics_rule_list Array(Int64),
+    statistics_rule_uuid_list Array(String),
     sc_rule_list Array(Int64),
+    sc_rule_uuid_list Array(String),
     sc_rsp_raw Array(Int64),
     sc_rsp_decrypted Array(Int64),
     proxy_action String,
@@ -302,12 +387,18 @@ SELECT
     c2s_ttl,
     s2c_ttl,
     security_rule_list,
+    security_rule_uuid_list,
     security_action,
     monitor_rule_list,
+    monitor_rule_uuid_list,
     shaping_rule_list,
+    shaping_rule_uuid_list,
     proxy_rule_list,
+    proxy_rule_uuid_list,
     statistics_rule_list,
+    statistics_rule_uuid_list,
     sc_rule_list,
+    sc_rule_uuid_list,
     sc_rsp_raw,
     sc_rsp_decrypted,
     proxy_action,
@@ -521,7 +612,7 @@ SELECT
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
-WHERE empty(security_rule_list) = 0
+WHERE empty(security_rule_uuid_list) = 0
 ;
 
 -- tsg_galaxy_v3.monitor_event_materialized_view
@@ -555,12 +646,18 @@ TO tsg_galaxy_v3.monitor_event_local
     c2s_ttl Nullable(Int32),
     s2c_ttl Nullable(Int32),
     security_rule_list Array(Int64),
+    security_rule_uuid_list Array(String),
     security_action String,
     monitor_rule_list Array(Int64),
+    monitor_rule_uuid_list Array(String),
     shaping_rule_list Array(Int64),
+    shaping_rule_uuid_list Array(String),
     proxy_rule_list Array(Int64),
+    proxy_rule_uuid_list Array(String),
     statistics_rule_list Array(Int64),
+    statistics_rule_uuid_list Array(String),
     sc_rule_list Array(Int64),
+    sc_rule_uuid_list Array(String),
     sc_rsp_raw Array(Int64),
     sc_rsp_decrypted Array(Int64),
     proxy_action String,
@@ -803,12 +900,18 @@ SELECT
     c2s_ttl,
     s2c_ttl,
     security_rule_list,
+    security_rule_uuid_list,
     security_action,
     monitor_rule_list,
+    monitor_rule_uuid_list,
     shaping_rule_list,
+    shaping_rule_uuid_list,
     proxy_rule_list,
+    proxy_rule_uuid_list,
     statistics_rule_list,
+    statistics_rule_uuid_list,
     sc_rule_list,
+    sc_rule_uuid_list,
     sc_rsp_raw,
     sc_rsp_decrypted,
     proxy_action,
@@ -1022,6 +1125,6 @@ SELECT
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
-WHERE empty(monitor_rule_list) = 0
+WHERE empty(monitor_rule_uuid_list) = 0
 ;
 
