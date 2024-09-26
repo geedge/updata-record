@@ -102,6 +102,17 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
 
 
+-- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，删除字段profile_id
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
+
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster 
+drop column IF EXISTS profile_id
+;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster 
+drop column IF EXISTS profile_id
+;
+
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
 TO tsg_galaxy_v3.security_event_local
