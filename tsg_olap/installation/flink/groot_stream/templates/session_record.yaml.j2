@@ -73,31 +73,31 @@ processing_pipelines:
       lookup_fields: [rtp_pcap_path]
       output_fields: [rtp_pcap_path]
       parameters:
-        path: [props.hos.path, props.hos.bucket.name.traffic_file, rtp_pcap_path]
+        path: [props.hos.path, props.hos.bucket.name.rtp_file, rtp_pcap_path]
 
     - function: PATH_COMBINE
       lookup_fields: [http_request_body]
       output_fields: [http_request_body]
       parameters:
-        path: [props.hos.path, props.hos.bucket.name.traffic_file, http_request_body]
+        path: [props.hos.path, props.hos.bucket.name.http_file, http_request_body]
 
     - function: PATH_COMBINE
       lookup_fields: [http_response_body]
       output_fields: [http_response_body]
       parameters:
-        path: [props.hos.path, props.hos.bucket.name.traffic_file, http_response_body]
+        path: [props.hos.path, props.hos.bucket.name.http_file, http_response_body]
 
     - function: PATH_COMBINE
       lookup_fields: [mail_eml_file]
       output_fields: [mail_eml_file]
       parameters:
-        path: [props.hos.path, props.hos.bucket.name.traffic_file, mail_eml_file]
+        path: [props.hos.path, props.hos.bucket.name.eml_file, mail_eml_file]
 
     - function: PATH_COMBINE
       lookup_fields: [packet_capture_file]
       output_fields: [packet_capture_file]
       parameters:
-        path: [props.hos.path, props.hos.bucket.name.traffic_file, packet_capture_file]
+        path: [props.hos.path, props.hos.bucket.name.policy_capture_file, packet_capture_file]
 
     - function: CURRENT_UNIX_TIMESTAMP
       output_fields: [ processing_time ]
@@ -143,11 +143,9 @@ application:
     shade.identifier: aes
     pipeline:
       object-reuse: true
+    properties:
+      hos.bucket.name.rtp_file: traffic_rtp_file_bucket
+      hos.bucket.name.http_file: traffic_http_file_bucket
+      hos.bucket.name.eml_file: traffic_eml_file_bucket
+      hos.bucket.name.policy_capture_file: traffic_policy_capture_file_bucket
   {{ topology }}
-
-#  topology:
-#   - name: kafka_source
-#     downstream: [etl_processor]
-#   - name: etl_processor
-#     downstream: [clickhouse_sink]
-#   - name: clickhouse_sink

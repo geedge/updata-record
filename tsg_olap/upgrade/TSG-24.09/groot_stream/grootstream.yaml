@@ -1,0 +1,4 @@
+grootstream:
+  properties:
+    hos.path: http://192.168.44.12:9098/hos
+    scheduler.knowledge_base.update.interval.minutes: 5
