@@ -104,6 +104,27 @@ ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS sip_bye_reason String after sip_bye;
 ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS sip_bye_reason String after sip_bye;
 
+-- TSG-22714 Clickhouse增加公共字段mobile_identify
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_query add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_query add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_query add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_query add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_query add column IF NOT EXISTS mobile_identify String after apn;
+
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -164,6 +185,7 @@ TO tsg_galaxy_v3.security_event_local
     imsi String,
     phone_number String,
     apn String,
+    mobile_identify String,
     server_ip String,
     server_port Int32,
     server_os_desc String,
@@ -395,6 +417,7 @@ SELECT
     imsi,
     phone_number,
     apn,
+    mobile_identify,
     server_ip,
     server_port,
     server_os_desc,
@@ -631,6 +654,7 @@ TO tsg_galaxy_v3.monitor_event_local
     imsi String,
     phone_number String,
     apn String,
+    mobile_identify String,
     server_ip String,
     server_port Int32,
     server_os_desc String,
@@ -862,6 +886,7 @@ SELECT
     imsi,
     phone_number,
     apn,
+    mobile_identify,
     server_ip,
     server_port,
     server_os_desc,
