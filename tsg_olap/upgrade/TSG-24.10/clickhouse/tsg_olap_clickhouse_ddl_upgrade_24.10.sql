@@ -113,6 +113,20 @@ ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster
 drop column IF EXISTS profile_id
 ;
 
+-- TSG-22714 Clickhouse增加公共字段mobile_identify
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
+
+
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
 TO tsg_galaxy_v3.security_event_local
@@ -185,6 +199,7 @@ TO tsg_galaxy_v3.security_event_local
     imsi String,
     phone_number String,
     apn String,
+    mobile_identify String,
     server_ip String,
     server_ip_tags Array(String),
     server_port Int32,
@@ -439,6 +454,7 @@ SELECT
     imsi,
     phone_number,
     apn,
+    mobile_identify,
     server_ip,
     server_ip_tags,
     server_port,
@@ -698,6 +714,7 @@ TO tsg_galaxy_v3.monitor_event_local
     imsi String,
     phone_number String,
     apn String,
+    mobile_identify String,
     server_ip String,
     server_ip_tags Array(String),
     server_port Int32,
@@ -952,6 +969,7 @@ SELECT
     imsi,
     phone_number,
     apn,
+    mobile_identify,
     server_ip,
     server_ip_tags,
     server_port,
