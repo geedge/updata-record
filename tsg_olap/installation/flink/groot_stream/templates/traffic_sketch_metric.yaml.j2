@@ -30,11 +30,11 @@ processing_pipelines:
       - function: EVAL
         output_fields: [ internal_ip ]
         parameters:
-          value_expression:  'direction=Outbound? client_ip : server_ip'
+          value_expression:  "(direction == 'Outbound')? client_ip : server_ip"
       - function: EVAL
         output_fields: [ external_ip ]
         parameters:
-          value_expression:  'direction=Outbound? server_ip : client_ip'
+          value_expression:  "(direction == 'Outbound')? server_ip : client_ip"
       - function: SNOWFLAKE_ID
         lookup_fields: [ '' ]
         output_fields: [ log_id ]
