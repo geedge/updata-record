@@ -339,6 +339,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -598,6 +599,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -855,6 +857,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -1113,6 +1116,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -1370,6 +1374,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -1628,6 +1633,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -2139,6 +2145,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -2314,6 +2321,7 @@ out_dest_mac String,
 encapsulation String,
 dup_traffic_flag Nullable(Int32),
 tunnel_id_list Array(Int64),
+tunnel_uuid_list Array(String),
 tunnel_endpoint_a_desc String,
 tunnel_endpoint_b_desc String
 )
@@ -2574,6 +2582,7 @@ TO tsg_galaxy_v3.security_event_local
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
     tunnel_id_list Array(Int64),
+    tunnel_uuid_list Array(String),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -2829,6 +2838,7 @@ SELECT
     encapsulation,
     dup_traffic_flag,
     tunnel_id_list,
+    tunnel_uuid_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
@@ -3089,6 +3099,7 @@ TO tsg_galaxy_v3.monitor_event_local
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
     tunnel_id_list Array(Int64),
+    tunnel_uuid_list Array(String),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -3344,6 +3355,7 @@ SELECT
     encapsulation,
     dup_traffic_flag,
     tunnel_id_list,
+    tunnel_uuid_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local

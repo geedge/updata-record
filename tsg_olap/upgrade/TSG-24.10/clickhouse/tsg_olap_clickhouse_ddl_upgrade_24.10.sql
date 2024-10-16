@@ -101,6 +101,17 @@ ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT 
 ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
 
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 
 -- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，删除字段profile_id
 ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
@@ -381,6 +392,7 @@ TO tsg_galaxy_v3.security_event_local
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
     tunnel_id_list Array(Int64),
+    tunnel_uuid_list Array(String),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -636,6 +648,7 @@ SELECT
     encapsulation,
     dup_traffic_flag,
     tunnel_id_list,
+    tunnel_uuid_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
@@ -896,6 +909,7 @@ TO tsg_galaxy_v3.monitor_event_local
     encapsulation String,
     dup_traffic_flag Nullable(Int32),
     tunnel_id_list Array(Int64),
+    tunnel_uuid_list Array(String),
     tunnel_endpoint_a_desc String,
     tunnel_endpoint_b_desc String
 ) 
@@ -1151,6 +1165,7 @@ SELECT
     encapsulation,
     dup_traffic_flag,
     tunnel_id_list,
+    tunnel_uuid_list,
     tunnel_endpoint_a_desc,
     tunnel_endpoint_b_desc
 FROM tsg_galaxy_v3.session_record_local
