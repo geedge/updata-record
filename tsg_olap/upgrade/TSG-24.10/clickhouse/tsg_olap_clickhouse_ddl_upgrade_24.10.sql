@@ -1,6 +1,9 @@
 drop view if exists tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster;
 drop view if exists tsg_galaxy_v3.monitor_event_materialized_view on cluster ck_cluster;
 
+
+
+
 -- TSG-22675 clickhouse新增SSL协议字段
 
 ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS ssl_ja4_fingerprint String after ssl_ja3s_hash;
@@ -113,15 +116,7 @@ ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT 
 ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 
--- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，删除字段profile_id
-ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
-ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
 
-ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster 
-drop column IF EXISTS profile_id
-;
-ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster 
-drop column IF EXISTS profile_id
 ;
 
 -- TSG-22714 Clickhouse增加公共字段mobile_identify
@@ -1171,4 +1166,20 @@ SELECT
 FROM tsg_galaxy_v3.session_record_local
 WHERE empty(monitor_rule_uuid_list) = 0
 ;
+-- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，source_country,source_ip 删除字段profile_id,修改*_rate字段类型
+
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster drop column IF EXISTS profile_id;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster drop column IF EXISTS profile_id
+
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
+ 
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS source_country String after conditions;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS source_country String after conditions;
+
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS source_ip String after conditions;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS source_ip String after conditions;
+
+ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster modify column IF EXISTS session_rate Float64 , modify column IF EXISTS packet_rate Float64 ,modify column IF EXISTS bit_rate Float64 ;
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster modify column IF EXISTS session_rate Float64 , modify column IF EXISTS packet_rate Float64 ,modify column IF EXISTS bit_rate Float64 ;
 

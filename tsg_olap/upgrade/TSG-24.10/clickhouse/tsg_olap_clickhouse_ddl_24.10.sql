@@ -11,16 +11,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event_local on cluster ck_cluster (
     attack_type String,
     severity String,
     conditions String,
+    source_ip String,
+    source_country String,
     destination_ip String,
     destination_country String,
     source_ip_list String,
     source_country_list String,
     sessions Int64,
-    session_rate Int64,
+    session_rate Float64,
     packets Int64,
-    packet_rate Int64,
+    packet_rate Float64,
     bytes Int64,
-    bit_rate Int64
+    bit_rate Float64
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(toDate(recv_time))
@@ -37,16 +39,18 @@ CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.dos_event on cluster ck_cluster (
     attack_type String,
     severity String,
     conditions String,
+    source_ip String,
+    source_country String,
     destination_ip String,
     destination_country String,
     source_ip_list String,
     source_country_list String,
     sessions Int64,
-    session_rate Int64,
+    session_rate Float64,
     packets Int64,
-    packet_rate Int64,
+    packet_rate Float64,
     bytes Int64,
-    bit_rate Int64
+    bit_rate Float64
 )
 ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,dos_event_local,rand());
 
