@@ -2,7 +2,7 @@ config_namespace: "prod"
   
 # Name of the data center
 data_center_name: xxg
-data_center_id_num: 2
+data_center_id_num: 1
 
 galaxy_qgw_service:
   # Running memory of the Galaxy-qgw-service.
@@ -87,7 +87,12 @@ default_init:
 flink:
   app-protocol-stat-traffic-merge:
     agg_app_protocol_traffic:
-      env: "{{ default_init.flink.env }}"
+      env:
+        parallelism: 1
+        taskmanager.memory.process.size: 2048m
+        taskmanager.memory.jvm-metaspace.size: 256m
+        taskmanager.numberOfTaskSlots: 1
+        taskmanager.memory.framework.off-heap.size: 512m
       config:
         template: agg_app_protocol_traffic
 
@@ -96,19 +101,47 @@ flink:
       env: "{{ default_init.flink.env }}"
       config:
         template: detection_dos_attack
-
+#---------------------------------------------file chunk
   file-chunk-combiner:
-    agg_traffic_file_chunk_combine:
+    agg_traffic_eml_file_chunk_combiner:
       env: "{{ default_init.flink.env }}"
       config:
-        template: agg_traffic_file_chunk_combine
+        template: agg_traffic_file_chunk_combiner
+        kafka_source_topic: TRAFFIC-EML-FILE-STREAM-RECORD
+        hos_sink_bucket: traffic_eml_file_bucket
+        combiner_window_parallelism: 1
+        hos_sink_parallelism: 1
+    agg_traffic_http_file_chunk_combiner:
+      env: "{{ default_init.flink.env }}"
+      config:
+        template: agg_traffic_file_chunk_combiner
+        kafka_source_topic: TRAFFIC-HTTP-FILE-STREAM-RECORD
+        hos_sink_bucket: traffic_http_file_bucket
+        combiner_window_parallelism: 1
+        hos_sink_parallelism: 1
+    agg_traffic_policy_capture_file_chunk_combiner:
+      env: "{{ default_init.flink.env }}"
+      config:
+        template: agg_traffic_file_chunk_combiner
+        kafka_source_topic: TRAFFIC-POLICY-CAPTURE-FILE-STREAM-RECORD
+        hos_sink_bucket: traffic_policy_capture_file_bucket
+        combiner_window_parallelism: 1
+        hos_sink_parallelism: 1
+    agg_traffic_rtp_file_chunk_combiner:
+      env: "{{ default_init.flink.env }}"
+      config:
+        template: agg_traffic_file_chunk_combiner
+        kafka_source_topic: TRAFFIC-RTP-FILE-STREAM-RECORD
+        hos_sink_bucket: traffic_rtp_file_bucket
+        combiner_window_parallelism: 1
+        hos_sink_parallelism: 1
 
   sip-rtp-correlation:
     correlation_sip_rtp_session:
       env: "{{ default_init.flink.env }}"
       config:
         template: correlation_sip_rtp_session
-
+#---------------------------------------------------------------grootstream
   groot-stream:
     dos_event_kafka_to_clickhouse:
       env: "{{ default_init.flink.env }}"
