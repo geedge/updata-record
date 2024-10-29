@@ -1169,7 +1169,7 @@ WHERE empty(monitor_rule_uuid_list) = 0
 -- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，source_country,source_ip 删除字段profile_id,修改*_rate字段类型
 
 ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster drop column IF EXISTS profile_id;
-ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster drop column IF EXISTS profile_id
+ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster drop column IF EXISTS profile_id;
 
 ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
 ALTER table tsg_galaxy_v3.dos_event on cluster ck_cluster add column IF NOT EXISTS rule_uuid String after rule_id;
