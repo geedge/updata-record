@@ -1,0 +1,230 @@
+sources:
+  kafka_source:
+    type: kafka
+    watermark_timestamp: ingestion_time
+    watermark_timestamp_unit: ms
+    watermark_lag: 1
+    properties: # [object] Source Properties
+      topic: SUBSCRIBER-LOCATION-MAPPING
+      kafka.bootstrap.servers: {{ tsg_olap_kafka_servers }}
+      kafka.session.timeout.ms: 60000
+      kafka.max.poll.records: 3000
+      kafka.max.partition.fetch.bytes: 31457280
+      kafka.security.protocol: SASL_PLAINTEXT
+      kafka.sasl.mechanism: PLAIN
+      kafka.sasl.jaas.config: 454f65ea6eef1256e3067104f82730e737b68959560966b811e7ff364116b03124917eb2b0f3596f14733aa29ebad9352644ce1a5c85991c6f01ba8a5e8f177a7ff0b2d3889a424249967b3870b50993d9644f239f0de82cdb13bdb502959e16afadffa49ef1e1d2b9c9b5113e619817
+      kafka.group.id: sd_kafka_to_cn_clickhouse
+      kafka.auto.offset.reset: latest
+      format: json
+
+processing_pipelines:
+  session_record_processor:
+    type: projection
+    remove_fields:
+    output_fields:
+    functions:
+      - function: EVAL
+        output_fields: [ imsi ]
+        parameters:
+          value_expression: "subscriber_id"
+
+      - function: JSON_EXTRACT
+        lookup_fields: [ e_cgi ]
+        output_fields: [ mcc ]
+        parameters:
+          value_expression: $.mcc
+
+      - function: EVAL
+        output_fields: [ imei ]
+        parameters:
+          value_expression: "mei"
+
+      - function: JSON_EXTRACT
+        lookup_fields: [ e_cgi ]
+        output_fields: [ mnc ]
+        parameters:
+          value_expression: $.mnc
+
+      - function: JSON_EXTRACT
+        lookup_fields: [ e_cgi ]
+        output_fields: [ eci ]
+        parameters:
+          value_expression: $.eci
+
+      - function: EVAL
+        output_fields: [ cell_id ]
+        parameters:
+          value_expression: "mcc + '-' + mnc + '-' + str(long(eci) >> 8) + '-' + str(long(eci) & 0xFF)"
+
+      - function: EVAL
+        output_fields: [ cell_type ]
+        parameters:
+          value_expression: "1"
+
+      - function: BASE_STATION_LOOKUP
+        lookup_fields: [ cell_id ]
+        output_fields: [ subscriber_longitude,subscriber_latitude ]
+        parameters:
+          kb_name: base_station_location
+
+      - function: H3_CELL_LOOKUP
+        lookup_fields: [ subscriber_longitude,subscriber_latitude ]
+        output_fields: [ first_location ]
+        parameters:
+          resolution: 9
+
+      - function: H3_CELL_LOOKUP
+        lookup_fields: [ subscriber_longitude,subscriber_latitude ]
+        output_fields: [ second_location ]
+        parameters:
+          resolution: 8
+
+      - function: H3_CELL_LOOKUP
+        lookup_fields: [ subscriber_longitude,subscriber_latitude ]
+        output_fields: [ third_location ]
+        parameters:
+          resolution: 7
+
+      - function: EVAL
+        output_fields: [ data_source ]
+        parameters:
+          value_expression: "'SD'"
+
+      - function: CN_INTELLIGENCE_INDICATOR_LOOKUP
+        lookup_fields: [ subscriber_id ]
+        output_fields: [ subscriber_tags ]
+        parameters:
+          kb_name: cn_intelligence_indicator
+          option: SUBSCRIBER_TO_TAG
+
+      - function: CN_ARRAY_ELEMENTS_PREPEND
+        lookup_fields: [ subscriber_tags ]
+        output_fields: [ subscriber_tags ]
+        parameters:
+          prefix: subscriber.
+
+      - function: GENERATE_STRING_ARRAY
+        lookup_fields: [ subscriber_tags ]
+        output_fields: [ entity_tags ]
+
+  aggregate_processor:
+    type: aggregate
+    group_by_fields: [ subscriber_id ]
+    window_type: sliding_event_time
+    window_size: 60
+    window_slide: 60
+    window_timestamp_field: stat_time
+    functions:
+      - function: LAST_VALUE
+        lookup_fields: [ imei ]
+        output_fields: [ imei ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ imsi ]
+        output_fields: [ imsi ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ msisdn ]
+        output_fields: [ phone_number ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ apn ]
+        output_fields: [ apn ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ cell_id ]
+        output_fields: [ cell_id ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ cell_type ]
+        output_fields: [ cell_type ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ subscriber_longitude ]
+        output_fields: [ subscriber_longitude ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ subscriber_latitude ]
+        output_fields: [ subscriber_latitude ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ first_location ]
+        output_fields: [ first_location ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ second_location ]
+        output_fields: [ second_location ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ third_location ]
+        output_fields: [ third_location ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ data_source ]
+        output_fields: [ data_source ]
+
+      - function: LAST_VALUE
+        lookup_fields: [ subscriber_tags ]
+        output_fields: [ subscriber_tags ]
+
+  time_processor:
+    type: com.geedgenetworks.core.processor.projection.ProjectionProcessorImpl
+    remove_fields:
+    output_fields:
+    functions:
+      - function: EVAL
+        output_fields: [ stat_time ]
+        parameters:
+          value_expression: "stat_time / 1000"
+
+postprocessing_pipelines:
+  remove_field_processor:
+    type: projection
+    output_fields: [ subscriber_id,stat_time,imsi,imei,phone_number,apn,cell_id,cell_type,subscriber_longitude,subscriber_latitude,first_location,second_location,third_location,data_source,subscriber_tags ]
+
+sinks:
+  cn_location_clickhouse_sink:
+    type: clickhouse
+    properties:
+      host: {{ cn_olap_clickhouse_servers }}
+      table: cyber_narrator_galaxy.location_subscriber_local
+      batch.size: 100000
+      batch.interval: 30s
+      connection.user: e54c9568586180eede1506eecf3574e9
+      connection.password: 86cf0e2ffba3f541a6c6761313e5cc7e
+      connection.connect_timeout: 30
+      connection.query_timeout: 300
+
+  cn_relation_clickhouse_sink:
+    type: clickhouse
+    properties:
+      host: {{ cn_olap_clickhouse_servers }}
+      table: cyber_narrator_galaxy.raw_session_relation_subscriber_app_local
+      batch.size: 100000
+      batch.interval: 30s
+      connection.user: e54c9568586180eede1506eecf3574e9
+      connection.password: 86cf0e2ffba3f541a6c6761313e5cc7e
+      connection.connect_timeout: 30
+      connection.query_timeout: 300
+
+application:
+  env:
+    name: etl_sd_kafka_to_cn_clickhouse
+    shade.identifier: aes
+    pipeline:
+      object-reuse: true
+  topology:
+    - name: kafka_source
+      downstream: [ session_record_processor ]
+    - name: session_record_processor
+      downstream: [ aggregate_processor ]
+    - name: aggregate_processor
+      downstream: [ time_processor ]
+    - name: time_processor
+      downstream: [ remove_field_processor ]
+    - name: remove_field_processor
+      downstream: [ cn_location_clickhouse_sink,cn_relation_clickhouse_sink ]
+    - name: cn_location_clickhouse_sink
+      downstream: [ ]
+    - name: cn_relation_clickhouse_sink
+      downstream: [ ]
