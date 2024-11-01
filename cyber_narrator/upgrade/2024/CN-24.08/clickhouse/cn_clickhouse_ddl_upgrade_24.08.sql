@@ -224,3 +224,57 @@ ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add 
 
 ALTER table cyber_narrator_galaxy.location_subscriber_local ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
 ALTER table cyber_narrator_galaxy.location_subscriber ON CLUSTER ck_cluster add column IF NOT EXISTS cell_id String after apn;
+
+
+ALTER table cyber_narrator_galaxy.session_relation_subscriber_app_local ON CLUSTER ck_cluster add column IF NOT EXISTS entity_tags Array(String) after app_subcategory;
+ALTER table cyber_narrator_galaxy.session_relation_subscriber_app ON CLUSTER ck_cluster add column IF NOT EXISTS entity_tags Array(String) after app_subcategory;
+
+ALTER table cyber_narrator_galaxy.raw_session_relation_subscriber_app_local ON CLUSTER ck_cluster add column IF NOT EXISTS entity_tags Array(String) after app_subcategory;
+ALTER table cyber_narrator_galaxy.raw_session_relation_subscriber_app ON CLUSTER ck_cluster add column IF NOT EXISTS entity_tags Array(String) after app_subcategory;
+
+ALTER table cyber_narrator_galaxy.session_relation_subscriber_app_local on cluster ck_cluster MODIFY 
+ TTL toDateTime(update_time) + toIntervalSecond(2592000),
+ toDateTime(update_time) + toIntervalSecond(1) GROUP BY subscriber_id,
+ app_name SET create_time = min(create_time),
+ update_time = max(update_time),
+ imei = anyLast(imei),
+ imsi = anyLast(imsi),
+ phone_number = anyLast(phone_number),
+ apn = anyLast(apn),
+ app_category = anyLast(app_category),
+ app_subcategory = anyLast(app_subcategory),
+entity_tags = groupUniqArrayArray(entity_tags);
+
+DROP VIEW IF EXISTS cyber_narrator_galaxy.session_relation_subscriber_app_view_metric on cluster ck_cluster;
+
+CREATE MATERIALIZED VIEW if not exists cyber_narrator_galaxy.session_relation_subscriber_app_view_metric on cluster ck_cluster 
+TO cyber_narrator_galaxy.session_relation_subscriber_app_local
+(
+    app_name String,
+    subscriber_id String,
+    imei String,
+    imsi String,
+    phone_number String,
+    apn String,
+    app_category String,
+    app_subcategory String,
+    entity_tags Array(String),
+    create_time Int64,
+    update_time Int64
+) AS
+SELECT
+    app_name AS app_name,
+    subscriber_id AS subscriber_id,
+    anyLast(imei) AS imei,
+    anyLast(imsi) AS imsi,
+    anyLast(phone_number) AS phone_number,
+    anyLast(apn) AS apn,
+    anyLast(app_category) AS app_category,
+    anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(entity_tags) AS entity_tags,
+    min(c1.stat_time) AS create_time,
+    max(c1.stat_time) AS update_time
+FROM cyber_narrator_galaxy.raw_session_relation_subscriber_app_local AS c1
+GROUP BY
+    subscriber_id,
+    app_name;   

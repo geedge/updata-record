@@ -1210,6 +1210,7 @@ ENGINE = Distributed('ck_cluster',
  apn String,
  app_category String,
  app_subcategory String,
+ entity_tags Array(String),
  create_time Int64,
  update_time Int64
 ) ENGINE = MergeTree
@@ -1224,7 +1225,8 @@ ENGINE = Distributed('ck_cluster',
  phone_number = anyLast(phone_number),
  apn = anyLast(apn),
  app_category = anyLast(app_category),
- app_subcategory = anyLast(app_subcategory);
+ app_subcategory = anyLast(app_subcategory),
+ entity_tags = groupUniqArrayArray(entity_tags);
 
 CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_subscriber_app ON CLUSTER ck_cluster (
  app_name String,
@@ -1235,6 +1237,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.session_relation_subscriber_app
  apn String,
  app_category String,
  app_subcategory String,
+ entity_tags Array(String),
  create_time Int64,
  update_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'session_relation_subscriber_app_local', rand());
@@ -1249,6 +1252,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_subscriber
  apn String,
  app_category String,
  app_subcategory String,
+ entity_tags Array(String),
  stat_time Int64
 ) ENGINE = MergeTree PARTITION BY toYYYYMMDD(toDate(stat_time)) ORDER BY (stat_time) SETTINGS index_granularity = 8192;
 
@@ -1261,6 +1265,7 @@ CREATE TABLE IF NOT EXISTS cyber_narrator_galaxy.raw_session_relation_subscriber
  apn String,
  app_category String,
  app_subcategory String,
+ entity_tags Array(String),
  stat_time Int64
 ) ENGINE = Distributed('ck_cluster', 'cyber_narrator_galaxy', 'raw_session_relation_subscriber_app_local', rand());
 
@@ -1451,6 +1456,7 @@ TO cyber_narrator_galaxy.session_relation_subscriber_app_local
     apn String,
     app_category String,
     app_subcategory String,
+    entity_tags Array(String),
     create_time Int64,
     update_time Int64
 ) AS
@@ -1463,6 +1469,7 @@ SELECT
     anyLast(apn) AS apn,
     anyLast(app_category) AS app_category,
     anyLast(app_subcategory) AS app_subcategory,
+    groupUniqArrayArray(entity_tags) AS entity_tags,
     min(c1.stat_time) AS create_time,
     max(c1.stat_time) AS update_time
 FROM cyber_narrator_galaxy.raw_session_relation_subscriber_app_local AS c1
