@@ -1,0 +1,3031 @@
+job:
+  name: cn-detection
+  active-pipeline:
+    #    - console-all-indicators
+    #    - console-thresholds
+    #    - console-all-sequences
+    #    - console-all-unordered-sequences
+    - ck-all-indicators
+    - ck-all-thresholds
+    - ck-all-sequences
+    - ck-all-unordered-sequences
+    - kafka-all-indicators
+    - kafka-all-thresholds
+    - kafka-all-sequences
+    - kafka-all-unordered-sequences
+
+source:
+  - name: session-records
+    type: kafka
+    option:
+      topic: SESSION-RECORD-CN
+      properties:
+        bootstrap.servers: localhost:9092 # Config For Example
+        group.id: cn-detection
+    format: json
+    schema:
+      ## General
+      - name: recv_time
+        data-type: INT NOT NULL
+      - name: log_id
+        data-type: BIGINT NOT NULL
+      - name: flags
+        data-type: BIGINT
+      - name: start_timestamp_ms
+        data-type: BIGINT NOT NULL
+      # ======= Row Time Start =======
+      - name: recv_timestamp
+        for: TO_TIMESTAMP_LTZ(recv_time, 0)
+        watermark: recv_timestamp - INTERVAL '5' MINUTE
+      # ======= Row Time End =======
+      - name: end_timestamp_ms
+        data-type: BIGINT NOT NULL
+      - name: duration_ms
+        data-type: INT NOT NULL
+      - name: decoded_as
+        data-type: STRING NOT NULL
+      - name: client_ip
+        data-type: STRING NOT NULL
+      - name: server_ip
+        data-type: STRING NOT NULL
+      - name: client_port
+        data-type: INT NOT NULL
+      - name: server_port
+        data-type: INT NOT NULL
+      - name: app
+        data-type: STRING
+      - name: app_transition
+        data-type: STRING
+      - name: decoded_path
+        data-type: STRING
+      - name: ip_protocol
+        data-type: STRING
+      - name: l7_protocol
+        data-type: STRING
+      - name: out_link_id
+        data-type: INT
+      - name: in_link_id
+        data-type: INT
+      - name: subscriber_id
+        data-type: STRING
+      - name: imei
+        data-type: STRING
+      - name: imsi
+        data-type: STRING
+      - name: phone_number
+        data-type: STRING
+      - name: apn
+        data-type: STRING
+      ## Http Attributes
+      - name: http_host
+        data-type: STRING
+      - name: http_url
+        data-type: STRING
+      - name: http_cookie
+        data-type: STRING
+      - name: http_referer
+        data-type: STRING
+      - name: http_user_agent
+        data-type: STRING
+      - name: http_request_line
+        data-type: STRING
+      - name: http_response_line
+        data-type: STRING
+      - name: http_status_code
+        data-type: INT
+      ## SSL Attributes
+      - name: ssl_version
+        data-type: STRING
+      - name: ssl_sni
+        data-type: STRING
+      - name: ssl_san
+        data-type: STRING
+      - name: ssl_ja3_hash
+        data-type: STRING
+      - name: ssl_ja3s_hash
+        data-type: STRING
+      - name: ssl_cert_issuer
+        data-type: STRING
+      - name: ssl_cert_subject
+        data-type: STRING
+      ## DNS Attributes
+      - name: dns_qr
+        data-type: INT
+      - name: dns_opcode
+        data-type: INT
+      - name: dns_aa
+        data-type: INT
+      - name: dns_rcode
+        data-type: INT
+      - name: dns_qname
+        data-type: STRING
+      - name: dns_qtype
+        data-type: INT
+      - name: dns_qclass
+        data-type: INT
+      - name: dns_sub
+        data-type: INT
+      - name: dns_rr
+        data-type: STRING
+      ## SSH Attributes
+      - name: ssh_version
+        data-type: STRING
+      - name: ssh_auth_success
+        data-type: STRING
+      - name: ssh_client_version
+        data-type: STRING
+      - name: ssh_server_version
+        data-type: STRING
+      - name: ssh_cipher_alg
+        data-type: STRING
+      - name: ssh_mac_alg
+        data-type: STRING
+      - name: ssh_compression_alg
+        data-type: STRING
+      - name: ssh_kex_alg
+        data-type: STRING
+      - name: ssh_host_key_alg
+        data-type: STRING
+      - name: ssh_host_key
+        data-type: STRING
+      - name: ssh_hassh
+        data-type: STRING
+      ## Stratum Attributes
+      - name: stratum_cryptocurrency
+        data-type: STRING
+      - name: stratum_mining_pools
+        data-type: STRING
+      - name: stratum_mining_program
+        data-type: STRING
+      - name: stratum_mining_subscribe
+        data-type: STRING
+      ## Knowledge
+      - name: out_link_direction
+        data-type: STRING
+      - name: in_link_direction
+        data-type: STRING
+      - name: domain
+        data-type: STRING
+      - name: domain_sld
+        data-type: STRING
+      - name: domain_category_name
+        data-type: STRING
+      - name: domain_category_group
+        data-type: STRING
+      - name: domain_reputation_level
+        data-type: STRING
+      - name: domain_icp_company_name
+        data-type: STRING
+      - name: domain_whois_org
+        data-type: STRING
+      - name: domain_tags
+        data-type: ARRAY<STRING>
+      - name: client_zone
+        data-type: STRING
+      - name: client_country_region
+        data-type: STRING
+      - name: client_super_admin_area
+        data-type: STRING
+      - name: client_admin_area
+        data-type: STRING
+      - name: client_longitude
+        data-type: DOUBLE
+      - name: client_latitude
+        data-type: DOUBLE
+      - name: client_isp
+        data-type: STRING
+      - name: client_asn
+        data-type: STRING
+      - name: client_ip_tags
+        data-type: ARRAY<STRING>
+      - name: server_zone
+        data-type: STRING
+      - name: server_country_region
+        data-type: STRING
+      - name: server_super_admin_area
+        data-type: STRING
+      - name: server_admin_area
+        data-type: STRING
+      - name: server_longitude
+        data-type: DOUBLE
+      - name: server_latitude
+        data-type: DOUBLE
+      - name: server_isp
+        data-type: STRING
+      - name: server_asn
+        data-type: STRING
+      - name: server_ip_tags
+        data-type: ARRAY<STRING>
+      - name: app_category
+        data-type: STRING
+      - name: app_subcategory
+        data-type: STRING
+      - name: app_company
+        data-type: STRING
+      - name: app_company_category
+        data-type: STRING
+      - name: app_tags
+        data-type: ARRAY<STRING>
+      ## Metrics
+      - name: subscriber_longitude
+        data-type: INT
+      - name: subscriber_latitude
+        data-type: INT
+      - name: mail_account
+        data-type: INT
+      - name: wx_account
+        data-type: INT
+      - name: device_infomation
+        data-type: INT
+      - name: sent_pkts
+        data-type: INT
+      - name: sent_bytes
+        data-type: INT
+      - name: received_pkts
+        data-type: INT
+      - name: received_bytes
+        data-type: INT
+      - name: sessions
+        data-type: INT
+      - name: tcp_c2s_lost_bytes
+        data-type: INT
+      - name: tcp_s2c_lost_bytes
+        data-type: INT
+      - name: tcp_c2s_o3_pkts
+        data-type: INT
+      - name: tcp_s2c_o3_pkts
+        data-type: INT
+      - name: tcp_c2s_rtx_bytes
+        data-type: INT
+      - name: tcp_s2c_rtx_bytes
+        data-type: INT
+      - name: tcp_c2s_rtx_pkts
+        data-type: INT
+      - name: tcp_s2c_rtx_pkts
+        data-type: INT
+      - name: tcp_rtt_ms
+        data-type: INT
+      - name: http_response_latency_ms
+        data-type: INT
+      - name: ssl_handshake_latency_ms
+        data-type: INT
+      - name: dns_response_latency_ms
+        data-type: INT
+
+
+sink:
+  ## Console Debug
+  - name: console-all-indicators
+    type: console
+    based-on: all-indicators
+    format: json
+  - name: console-thresholds
+    type: console
+    based-on: all-thresholds
+    format: json
+  - name: console-all-sequences
+    type: console
+    based-on: all-sequences
+    format: json
+  - name: console-all-unordered-sequences
+    type: console
+    based-on: all-unordered-sequences
+    format: json
+  ## Clickhouse Sink
+  - name: ck-all-indicators
+    based-on: all-indicators
+    type: clickhouse
+    option:
+      host: localhost:9001 # Config For Example
+      table: cyber_narrator_galaxy.match_indicator
+      connection:
+        user: default
+        password: galaxy2019
+  - name: ck-all-thresholds
+    based-on: all-thresholds
+    type: clickhouse
+    option:
+      host: localhost:9001 # Config For Example
+      table: cyber_narrator_galaxy.match_threshold
+      connection:
+        user: default
+        password: galaxy2019
+  - name: ck-all-sequences
+    based-on: all-sequences
+    type: clickhouse
+    option:
+      host: localhost:9001 # Config For Example
+      table: cyber_narrator_galaxy.match_sequence
+      connection:
+        user: default
+        password: galaxy2019
+  - name: ck-all-unordered-sequences
+    based-on: all-unordered-sequences
+    type: clickhouse
+    option:
+      host: localhost:9001 # Config For Example
+      table: cyber_narrator_galaxy.match_unordered_sequence
+      connection:
+        user: default
+        password: galaxy2019
+  ## Kafka Sink
+  - name: kafka-all-indicators
+    type: kafka
+    based-on: all-indicators
+    option:
+      topic: MATCH_INDICATOR
+      properties:
+        bootstrap.servers: localhost:9092 # Config For Example
+      partitioner: client_ip, server_ip, indicator_fields, indicator_values
+    format: json
+  - name: kafka-all-thresholds
+    based-on: all-thresholds
+    type: kafka
+    option:
+      topic: MATCH_THRESHOLD
+      properties:
+        bootstrap.servers: localhost:9092 # Config For Example
+      partitioner: key_fields, key_values
+  - name: kafka-all-sequences
+    based-on: all-sequences
+    type: kafka
+    option:
+      topic: MATCH_SEQUENCE
+      properties:
+        bootstrap.servers: localhost:9092 # Config For Example
+      partitioner: key_fields, key_values
+  - name: kafka-all-unordered-sequences
+    based-on: all-unordered-sequences
+    type: kafka
+    option:
+      topic: MATCH_UNORDERED_SEQUENCE
+      properties:
+        bootstrap.servers: localhost:9092 # Config For Example
+      partitioner: key_fields, key_values
+
+pipeline:
+  - name: alert
+    category: MULTI-RULE
+    based-on: session-records
+    rule:
+      - name: '100001'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tor') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Tor')
+      - name: '100005'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Snowflake') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Snowflake')
+      - name: '100007'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Loki Password Stealer (PWS)') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Loki Password Stealer (PWS)')
+      - name: '100008'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'IcedID') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'IcedID')
+      - name: '100009'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'QakBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'QakBot')
+      - name: '100010'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mirai') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Mirai')
+      - name: '100011'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BazarBackdoor') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BazarBackdoor')
+      - name: '100012'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NjRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'NjRAT')
+      - name: '100013'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CryptBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'CryptBot')
+      - name: '100014'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BitRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BitRAT')
+      - name: '100015'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RedLine Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'RedLine Stealer')
+      - name: '100016'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Nanocore RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Nanocore RAT')
+      - name: '100017'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DCRat') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DCRat')
+      - name: '100018'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Cobalt Strike') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Cobalt Strike')
+      - name: '100019'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'AsyncRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'AsyncRAT')
+      - name: '100020'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ostap') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'ostap')
+      - name: '100021'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vidar') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Vidar')
+      - name: '100022'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Hancitor') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Hancitor')
+      - name: '100023'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SystemBC') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'SystemBC')
+      - name: '100024'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SmokeLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'SmokeLoader')
+      - name: '100025'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Remcos') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Remcos')
+      - name: '100026'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Amadey') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Amadey')
+      - name: '100027'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ficker Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ficker Stealer')
+      - name: '100028'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Get2') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Get2')
+      - name: '100029'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ISFB') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'ISFB')
+      - name: '100030'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Dridex') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Dridex')
+      - name: '100031'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Pony') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Pony')
+      - name: '100032'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Azorult') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Azorult')
+      - name: '100033'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NetWire RC') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'NetWire RC')
+      - name: '100034'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Raccoon') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Raccoon')
+      - name: '100035'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Quasar RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Quasar RAT')
+      - name: '100036'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Numando') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Numando')
+      - name: '100037'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Oski Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Oski Stealer')
+      - name: '100038'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ave Maria') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ave Maria')
+      - name: '100039'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Emotet') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Emotet')
+      - name: '100040'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NetSupportManager RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'NetSupportManager RAT')
+      - name: '100041'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'STRRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'STRRAT')
+      - name: '100042'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Orcus RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Orcus RAT')
+      - name: '100043'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vjw0rm') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Vjw0rm')
+      - name: '100044'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ghost RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ghost RAT')
+      - name: '100045'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LimeRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'LimeRAT')
+      - name: '100046'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Astaroth') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Astaroth')
+      - name: '100047'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Unknown malware') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Unknown malware')
+      - name: '100048'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TrickBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'TrickBot')
+      - name: '100049'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'IcedID Downloader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'IcedID Downloader')
+      - name: '100050'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BetaBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BetaBot')
+      - name: '100051'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Agent Tesla') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Agent Tesla')
+      - name: '100052'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Bashlite') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Bashlite')
+      - name: '100053'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DanaBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DanaBot')
+      - name: '100054'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Snake') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Snake')
+      - name: '100055'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Gozi') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Gozi')
+      - name: '100056'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PoshC2') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PoshC2')
+      - name: '100057'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Houdini') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Houdini')
+      - name: '100058'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackNET RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BlackNET RAT')
+      - name: '100059'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Revenge RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Revenge RAT')
+      - name: '100060'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ServHelper') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'ServHelper')
+      - name: '100061'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Alien') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Alien')
+      - name: '100062'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Zloader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Zloader')
+      - name: '100063'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Crimson RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Crimson RAT')
+      - name: '100064'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Grandoreiro') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Grandoreiro')
+      - name: '100065'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Buer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Buer')
+      - name: '100066'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Qealler') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Qealler')
+      - name: '100067'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CyberGate') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'CyberGate')
+      - name: '100068'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Formbook') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Formbook')
+      - name: '100069'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Hydra') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Hydra')
+      - name: '100070'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Arkei Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Arkei Stealer')
+      - name: '100071'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'AdWind') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'AdWind')
+      - name: '100072'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Dofloo') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Dofloo')
+      - name: '100073'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MrBlack') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'MrBlack')
+      - name: '100074'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Anatsa') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Anatsa')
+      - name: '100075'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TeamBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'TeamBot')
+      - name: '100076'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DiamondFox') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DiamondFox')
+      - name: '100077'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BillGates') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BillGates')
+      - name: '100078'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tsunami') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Tsunami')
+      - name: '100079'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CCleaner Backdoor') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'CCleaner Backdoor')
+      - name: '100080'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kinsing') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Kinsing')
+      - name: '100081'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LokiBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'LokiBot')
+      - name: '100082'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'JSOutProx') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'JSOutProx')
+      - name: '100083'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SharkBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'SharkBot')
+      - name: '100084'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Empire Downloader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Empire Downloader')
+      - name: '100085'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'solarmarker') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'solarmarker')
+      - name: '100086'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FireBird RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'FireBird RAT')
+      - name: '100087'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XpertRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'XpertRAT')
+      - name: '100088'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RMS') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'RMS')
+      - name: '100089'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'GCleaner') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'GCleaner')
+      - name: '100090'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'N-W0rm') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'N-W0rm')
+      - name: '100091'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ousaban') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ousaban')
+      - name: '100092'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'sLoad') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'sLoad')
+      - name: '100093'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SectopRAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'SectopRAT')
+      - name: '100094'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Loda') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Loda')
+      - name: '100095'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, '404 Keylogger') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, '404 Keylogger')
+      - name: '100096'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MooBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'MooBot')
+      - name: '100097'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Parallax RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Parallax RAT')
+      - name: '100098'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mozi') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Mozi')
+      - name: '100099'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XOR DDoS') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'XOR DDoS')
+      - name: '100100'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vulturi') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Vulturi')
+      - name: '100101'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Taurus Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Taurus Stealer')
+      - name: '100102'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Metamorfo') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Metamorfo')
+      - name: '100103'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'GootLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'GootLoader')
+      - name: '100104'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Meterpreter') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Meterpreter')
+      - name: '100105'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BumbleBee') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BumbleBee')
+      - name: '100106'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tofsee') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Tofsee')
+      - name: '100107'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Socelars') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Socelars')
+      - name: '100108'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Roaming Mantis') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Roaming Mantis')
+      - name: '100109'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Squirrelwaffle') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Squirrelwaffle')
+      - name: '100110'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Alfonso Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Alfonso Stealer')
+      - name: '100111'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DarkComet') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DarkComet')
+      - name: '100112'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'STOP') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'STOP')
+      - name: '100113'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CollectorGoomba') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'CollectorGoomba')
+      - name: '100114'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Prometei') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Prometei')
+      - name: '100115'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Cerberus') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Cerberus')
+      - name: '100116'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FastCash') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'FastCash')
+      - name: '100117'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Spectre Rat') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Spectre Rat')
+      - name: '100118'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Unidentified 001') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Unidentified 001')
+      - name: '100119'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FluBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'FluBot')
+      - name: '100120'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackRock') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BlackRock')
+      - name: '100121'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Coinminer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Coinminer')
+      - name: '100122'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kronos') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Kronos')
+      - name: '100123'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Korlia') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Korlia')
+      - name: '100124'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Anubis') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Anubis')
+      - name: '100125'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MirrorBlast') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'MirrorBlast')
+      - name: '100126'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Banload') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Banload')
+      - name: '100127'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FlawedGrace') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'FlawedGrace')
+      - name: '100128'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DoppelDridex') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DoppelDridex')
+      - name: '100129'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mispadu') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Mispadu')
+      - name: '100130'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mekotio') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Mekotio')
+      - name: '100131'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ozone RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ozone RAT')
+      - name: '100132'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'StealthWorker Go') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'StealthWorker Go')
+      - name: '100133'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SilverFish') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'SilverFish')
+      - name: '100134'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NodeJS Ransomware') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'NodeJS Ransomware')
+      - name: '100135'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PerlBot') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PerlBot')
+      - name: '100136'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ryuk') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ryuk')
+      - name: '100137'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'QNAPCrypt') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'QNAPCrypt')
+      - name: '100138'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'XLoader')
+      - name: '100139'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Venom RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Venom RAT')
+      - name: '100140'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackMatter') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BlackMatter')
+      - name: '100141'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Janeleiro') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Janeleiro')
+      - name: '100142'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Chrysaor') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Chrysaor')
+      - name: '100143'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PurpleFox') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PurpleFox')
+      - name: '100144'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DarkSide') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DarkSide')
+      - name: '100145'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mars Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Mars Stealer')
+      - name: '100146'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Matanbuchus') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Matanbuchus')
+      - name: '100147'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FFDroider') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'FFDroider')
+      - name: '100148'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackGuard') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BlackGuard')
+      - name: '100149'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TitanStealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'TitanStealer')
+      - name: '100150'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BianLian') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BianLian')
+      - name: '100151'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Deimos') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Deimos')
+      - name: '100152'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Sliver') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Sliver')
+      - name: '100153'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Aurora Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Aurora Stealer')
+      - name: '100154'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Stealc') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Stealc')
+      - name: '100155'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Gomorrah stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Gomorrah stealer')
+      - name: '100156'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RecordBreaker') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'RecordBreaker')
+      - name: '100157'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Brute Ratel C4') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Brute Ratel C4')
+      - name: '100158'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LaplasClipper') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'LaplasClipper')
+      - name: '100159'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XWorm') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'XWorm')
+      - name: '100160'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PhotoLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PhotoLoader')
+      - name: '100161'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kimsuky') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Kimsuky')
+      - name: '100162'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Rhadamanthys') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Rhadamanthys')
+      - name: '100163'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Nighthawk') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Nighthawk')
+      - name: '100164'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Fabookie') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Fabookie')
+      - name: '100165'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Lumma Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Lumma Stealer')
+      - name: '100166'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kaiji') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Kaiji')
+      - name: '100167'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PrivateLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PrivateLoader')
+      - name: '100168'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ViperSoftX') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'ViperSoftX')
+      - name: '100169'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Phonk') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Phonk')
+      - name: '100170'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PlugX') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PlugX')
+      - name: '100171'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'HyperBro') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'HyperBro')
+      - name: '100172'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Coper') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Coper')
+      - name: '100173'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Specter') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Specter')
+      - name: '100174'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kaiten') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Kaiten')
+      - name: '100175'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Bitter RAT') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Bitter RAT')
+      - name: '100176'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BATLOADER') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'BATLOADER')
+      - name: '100177'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'JSSLoader') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'JSSLoader')
+      - name: '100178'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PureCrypter') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PureCrypter')
+      - name: '100179'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'S.O.V.A.') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'S.O.V.A.')
+      - name: '100180'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ginzo Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'Ginzo Stealer')
+      - name: '100181'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PennyWise Stealer') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'PennyWise Stealer')
+      - name: '100182'
+        type: CONDITION
+        when: ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DOUBLEBACK') || ARRAY_CONTAINS_IGNORE_CASE(domain_tags, 'DOUBLEBACK')
+      ## Threshold
+      - name: '200001'
+        type: AGGREGATE
+        when: decoded_as == 'HTTP' && http_host.isNotNull
+        group-by: http_host
+        aggregate: COUNT(1) as cnt, SUM( IF( http_status_code >= 400 AND http_status_code <= 599, 1, 0 ) ) as error_cnt, MAX(recv_time) as end_time, MIN(recv_time) as start_time
+        having: error_cnt / cnt > 0.1
+        with-in: 5 minute
+        slide-step: 1 minute
+      - name: '200002'
+        type: AGGREGATE
+        when: decoded_as == 'DNS' && dns_qname.isNotNull
+        group-by: dns_qname
+        aggregate: COUNT(1) as cnt, SUM( IF( dns_rcode <> 0, 1, 0 ) ) as error_cnt, MAX(recv_time) as end_time, MIN(recv_time) as start_time
+        having: error_cnt / cnt > 0.1
+        with-in: 5 minute
+        slide-step: 1 minute
+      - name: '200003'
+        type: AGGREGATE
+        when: decoded_as == 'SSH' && server_ip.isNotNull
+        group-by: server_ip
+        aggregate: COUNT(1) as cnt, MAX(recv_time) as end_time, MIN(recv_time) as start_time
+        having: cnt > 10
+        with-in: 1 minute
+        slide-step: 1 minute
+      - name: '200004'
+        type: AGGREGATE
+        when: decoded_as == 'HTTP' && http_host.isNotNull
+        group-by: http_host
+        aggregate: COUNT(1) as cnt, SUM(http_response_latency_ms) as latency_sum, MAX(recv_time) as end_time, MIN(recv_time) as start_time
+        having: latency_sum / cnt > 500
+        with-in: 5 minute
+        slide-step: 1 minute
+      - name: '200005'
+        type: AGGREGATE
+        when: decoded_as == 'DNS' && dns_qname.isNotNull
+        group-by: dns_qname
+        aggregate: COUNT(1) as cnt, SUM(dns_response_latency_ms) as latency_sum, MAX(recv_time) as end_time, MIN(recv_time) as start_time
+        having: latency_sum / cnt > 500
+        with-in: 5 minute
+        slide-step: 1 minute
+      ## Sequence
+      - name: '300001'
+        type: CEP
+        mode: RELAXED
+        group-by: client_ip
+        order-by: recv_timestamp
+        measures:
+          - A.recv_time AS start_time
+          - B.recv_time AS end_time
+          - A.recv_time AS a_recv_time
+          - A.client_ip AS a_client_ip
+          - A.domain AS a_domain
+          ## B
+          - B.recv_time AS b_recv_time
+          - B.client_ip AS b_client_ip
+          - B.server_ip AS b_server_ip
+          - B.app_transition AS b_app_transition
+        pattern: A B
+        skip-strategy: AFTER MATCH SKIP TO LAST B
+        define:
+          - A AS domain IN ('polargrizzly.com', 'tunnelbear.com', 'www.tunnelbear.com', 'tunnebear.s3.amazonaws.com', 'api.polargrizzly.com', 'api.tunnelbear.com')
+          - B AS REGEXP(app_transition, '.*isakmp.*') OR REGEXP(app_transition, '.*wireguard.*') OR REGEXP(app_transition, '.*openvpn.*')
+        with-in: 1 minute
+      ## Unordered Sequence
+      - name: '400001'
+        type: OCCUR-ALL
+        group-by: client_ip
+        when:
+          - domain = 'ipinfo.pango.co'
+          - domain = 'paypal.com' || domain = 'facebook.com' || domain = 'mozilla.org' || domain = 'whatsapp.com' || domain = 'cloudfront.net' || domain = 'get.adobe.com' || domain = 'twitter.co'
+        with-in: 5 minute
+        slide-step: 5 minute
+  ## Indicator
+  - name: '100001'
+    based-on: 'alert.100001'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100001' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Anonymity' AS event_type, 'Tor' AS event_name, 3 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tor').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Tor' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100005'
+    based-on: 'alert.100005'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100005' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Regulatory Risk' AS event_type, 'VPN' AS event_name, 3 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Snowflake').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Snowflake' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100007'
+    based-on: 'alert.100007'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100007' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Loki Password Stealer (PWS)' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Loki Password Stealer (PWS)').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Loki Password Stealer (PWS)' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100008'
+    based-on: 'alert.100008'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100008' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'IcedID' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'IcedID').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'IcedID' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100009'
+    based-on: 'alert.100009'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100009' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'QakBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'QakBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'QakBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100010'
+    based-on: 'alert.100010'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100010' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Mirai' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mirai').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Mirai' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100011'
+    based-on: 'alert.100011'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100011' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BazarBackdoor' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BazarBackdoor').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BazarBackdoor' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100012'
+    based-on: 'alert.100012'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100012' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'NjRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NjRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'NjRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100013'
+    based-on: 'alert.100013'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100013' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'CryptBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CryptBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'CryptBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100014'
+    based-on: 'alert.100014'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100014' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BitRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BitRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BitRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100015'
+    based-on: 'alert.100015'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100015' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'RedLine Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RedLine Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'RedLine Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100016'
+    based-on: 'alert.100016'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100016' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Nanocore RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Nanocore RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Nanocore RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100017'
+    based-on: 'alert.100017'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100017' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DCRat' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DCRat').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DCRat' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100018'
+    based-on: 'alert.100018'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100018' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Cobalt Strike' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Cobalt Strike').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Cobalt Strike' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100019'
+    based-on: 'alert.100019'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100019' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'AsyncRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'AsyncRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'AsyncRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100020'
+    based-on: 'alert.100020'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100020' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'ostap' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ostap').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'ostap' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100021'
+    based-on: 'alert.100021'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100021' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Vidar' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vidar').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Vidar' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100022'
+    based-on: 'alert.100022'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100022' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Hancitor' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Hancitor').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Hancitor' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100023'
+    based-on: 'alert.100023'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100023' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'SystemBC' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SystemBC').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'SystemBC' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100024'
+    based-on: 'alert.100024'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100024' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'SmokeLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SmokeLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'SmokeLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100025'
+    based-on: 'alert.100025'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100025' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Remcos' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Remcos').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Remcos' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100026'
+    based-on: 'alert.100026'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100026' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Amadey' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Amadey').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Amadey' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100027'
+    based-on: 'alert.100027'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100027' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ficker Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ficker Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ficker Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100028'
+    based-on: 'alert.100028'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100028' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Get2' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Get2').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Get2' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100029'
+    based-on: 'alert.100029'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100029' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'ISFB' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ISFB').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'ISFB' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100030'
+    based-on: 'alert.100030'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100030' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Dridex' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Dridex').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Dridex' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100031'
+    based-on: 'alert.100031'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100031' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Pony' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Pony').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Pony' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100032'
+    based-on: 'alert.100032'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100032' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Azorult' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Azorult').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Azorult' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100033'
+    based-on: 'alert.100033'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100033' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'NetWire RC' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NetWire RC').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'NetWire RC' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100034'
+    based-on: 'alert.100034'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100034' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Raccoon' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Raccoon').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Raccoon' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100035'
+    based-on: 'alert.100035'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100035' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Quasar RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Quasar RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Quasar RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100036'
+    based-on: 'alert.100036'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100036' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Numando' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Numando').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Numando' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100037'
+    based-on: 'alert.100037'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100037' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Oski Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Oski Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Oski Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100038'
+    based-on: 'alert.100038'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100038' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ave Maria' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ave Maria').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ave Maria' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100039'
+    based-on: 'alert.100039'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100039' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Emotet' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Emotet').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Emotet' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100040'
+    based-on: 'alert.100040'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100040' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'NetSupportManager RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NetSupportManager RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'NetSupportManager RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100041'
+    based-on: 'alert.100041'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100041' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'STRRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'STRRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'STRRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100042'
+    based-on: 'alert.100042'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100042' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Orcus RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Orcus RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Orcus RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100043'
+    based-on: 'alert.100043'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100043' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Vjw0rm' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vjw0rm').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Vjw0rm' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100044'
+    based-on: 'alert.100044'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100044' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ghost RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ghost RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ghost RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100045'
+    based-on: 'alert.100045'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100045' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'LimeRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LimeRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'LimeRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100046'
+    based-on: 'alert.100046'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100046' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Astaroth' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Astaroth').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Astaroth' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100047'
+    based-on: 'alert.100047'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100047' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Unknown malware' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Unknown malware').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Unknown malware' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100048'
+    based-on: 'alert.100048'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100048' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'TrickBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TrickBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'TrickBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100049'
+    based-on: 'alert.100049'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100049' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'IcedID Downloader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'IcedID Downloader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'IcedID Downloader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100050'
+    based-on: 'alert.100050'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100050' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BetaBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BetaBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BetaBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100051'
+    based-on: 'alert.100051'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100051' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Agent Tesla' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Agent Tesla').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Agent Tesla' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100052'
+    based-on: 'alert.100052'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100052' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Bashlite' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Bashlite').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Bashlite' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100053'
+    based-on: 'alert.100053'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100053' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DanaBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DanaBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DanaBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100054'
+    based-on: 'alert.100054'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100054' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Snake' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Snake').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Snake' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100055'
+    based-on: 'alert.100055'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100055' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Gozi' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Gozi').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Gozi' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100056'
+    based-on: 'alert.100056'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100056' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PoshC2' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PoshC2').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PoshC2' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100057'
+    based-on: 'alert.100057'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100057' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Houdini' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Houdini').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Houdini' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100058'
+    based-on: 'alert.100058'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100058' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BlackNET RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackNET RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BlackNET RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100059'
+    based-on: 'alert.100059'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100059' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Revenge RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Revenge RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Revenge RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100060'
+    based-on: 'alert.100060'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100060' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'ServHelper' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ServHelper').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'ServHelper' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100061'
+    based-on: 'alert.100061'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100061' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Alien' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Alien').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Alien' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100062'
+    based-on: 'alert.100062'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100062' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Zloader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Zloader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Zloader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100063'
+    based-on: 'alert.100063'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100063' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Crimson RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Crimson RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Crimson RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100064'
+    based-on: 'alert.100064'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100064' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Grandoreiro' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Grandoreiro').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Grandoreiro' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100065'
+    based-on: 'alert.100065'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100065' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Buer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Buer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Buer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100066'
+    based-on: 'alert.100066'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100066' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Qealler' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Qealler').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Qealler' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100067'
+    based-on: 'alert.100067'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100067' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'CyberGate' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CyberGate').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'CyberGate' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100068'
+    based-on: 'alert.100068'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100068' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Formbook' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Formbook').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Formbook' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100069'
+    based-on: 'alert.100069'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100069' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Hydra' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Hydra').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Hydra' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100070'
+    based-on: 'alert.100070'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100070' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Arkei Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Arkei Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Arkei Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100071'
+    based-on: 'alert.100071'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100071' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'AdWind' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'AdWind').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'AdWind' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100072'
+    based-on: 'alert.100072'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100072' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Dofloo' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Dofloo').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Dofloo' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100073'
+    based-on: 'alert.100073'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100073' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'MrBlack' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MrBlack').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'MrBlack' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100074'
+    based-on: 'alert.100074'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100074' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Anatsa' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Anatsa').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Anatsa' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100075'
+    based-on: 'alert.100075'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100075' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'TeamBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TeamBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'TeamBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100076'
+    based-on: 'alert.100076'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100076' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DiamondFox' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DiamondFox').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DiamondFox' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100077'
+    based-on: 'alert.100077'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100077' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BillGates' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BillGates').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BillGates' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100078'
+    based-on: 'alert.100078'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100078' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Tsunami' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tsunami').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Tsunami' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100079'
+    based-on: 'alert.100079'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100079' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'CCleaner Backdoor' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CCleaner Backdoor').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'CCleaner Backdoor' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100080'
+    based-on: 'alert.100080'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100080' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Kinsing' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kinsing').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Kinsing' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100081'
+    based-on: 'alert.100081'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100081' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'LokiBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LokiBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'LokiBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100082'
+    based-on: 'alert.100082'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100082' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'JSOutProx' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'JSOutProx').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'JSOutProx' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100083'
+    based-on: 'alert.100083'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100083' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'SharkBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SharkBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'SharkBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100084'
+    based-on: 'alert.100084'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100084' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Empire Downloader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Empire Downloader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Empire Downloader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100085'
+    based-on: 'alert.100085'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100085' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'solarmarker' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'solarmarker').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'solarmarker' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100086'
+    based-on: 'alert.100086'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100086' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'FireBird RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FireBird RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'FireBird RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100087'
+    based-on: 'alert.100087'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100087' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'XpertRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XpertRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'XpertRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100088'
+    based-on: 'alert.100088'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100088' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'RMS' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RMS').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'RMS' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100089'
+    based-on: 'alert.100089'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100089' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'GCleaner' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'GCleaner').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'GCleaner' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100090'
+    based-on: 'alert.100090'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100090' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'N-W0rm' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'N-W0rm').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'N-W0rm' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100091'
+    based-on: 'alert.100091'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100091' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ousaban' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ousaban').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ousaban' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100092'
+    based-on: 'alert.100092'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100092' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'sLoad' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'sLoad').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'sLoad' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100093'
+    based-on: 'alert.100093'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100093' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'SectopRAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SectopRAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'SectopRAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100094'
+    based-on: 'alert.100094'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100094' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Loda' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Loda').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Loda' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100095'
+    based-on: 'alert.100095'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100095' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, '404 Keylogger' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, '404 Keylogger').?('server_ip_tags', 'domain_tags') AS indicator_fields, '404 Keylogger' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100096'
+    based-on: 'alert.100096'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100096' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'MooBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MooBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'MooBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100097'
+    based-on: 'alert.100097'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100097' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Parallax RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Parallax RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Parallax RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100098'
+    based-on: 'alert.100098'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100098' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Mozi' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mozi').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Mozi' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100099'
+    based-on: 'alert.100099'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100099' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'XOR DDoS' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XOR DDoS').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'XOR DDoS' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100100'
+    based-on: 'alert.100100'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100100' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Vulturi' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Vulturi').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Vulturi' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100101'
+    based-on: 'alert.100101'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100101' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Taurus Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Taurus Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Taurus Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100102'
+    based-on: 'alert.100102'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100102' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Metamorfo' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Metamorfo').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Metamorfo' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100103'
+    based-on: 'alert.100103'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100103' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'GootLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'GootLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'GootLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100104'
+    based-on: 'alert.100104'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100104' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Meterpreter' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Meterpreter').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Meterpreter' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100105'
+    based-on: 'alert.100105'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100105' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BumbleBee' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BumbleBee').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BumbleBee' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100106'
+    based-on: 'alert.100106'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100106' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Tofsee' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Tofsee').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Tofsee' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100107'
+    based-on: 'alert.100107'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100107' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Socelars' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Socelars').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Socelars' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100108'
+    based-on: 'alert.100108'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100108' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Roaming Mantis' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Roaming Mantis').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Roaming Mantis' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100109'
+    based-on: 'alert.100109'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100109' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Squirrelwaffle' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Squirrelwaffle').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Squirrelwaffle' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100110'
+    based-on: 'alert.100110'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100110' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Alfonso Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Alfonso Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Alfonso Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100111'
+    based-on: 'alert.100111'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100111' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DarkComet' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DarkComet').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DarkComet' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100112'
+    based-on: 'alert.100112'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100112' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'STOP' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'STOP').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'STOP' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100113'
+    based-on: 'alert.100113'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100113' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'CollectorGoomba' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'CollectorGoomba').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'CollectorGoomba' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100114'
+    based-on: 'alert.100114'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100114' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Prometei' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Prometei').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Prometei' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100115'
+    based-on: 'alert.100115'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100115' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Cerberus' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Cerberus').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Cerberus' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100116'
+    based-on: 'alert.100116'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100116' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'FastCash' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FastCash').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'FastCash' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100117'
+    based-on: 'alert.100117'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100117' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Spectre Rat' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Spectre Rat').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Spectre Rat' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100118'
+    based-on: 'alert.100118'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100118' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Unidentified 001' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Unidentified 001').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Unidentified 001' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100119'
+    based-on: 'alert.100119'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100119' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'FluBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FluBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'FluBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100120'
+    based-on: 'alert.100120'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100120' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BlackRock' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackRock').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BlackRock' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100121'
+    based-on: 'alert.100121'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100121' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Coinminer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Coinminer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Coinminer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100122'
+    based-on: 'alert.100122'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100122' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Kronos' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kronos').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Kronos' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100123'
+    based-on: 'alert.100123'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100123' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Korlia' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Korlia').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Korlia' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100124'
+    based-on: 'alert.100124'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100124' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Anubis' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Anubis').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Anubis' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100125'
+    based-on: 'alert.100125'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100125' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'MirrorBlast' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'MirrorBlast').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'MirrorBlast' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100126'
+    based-on: 'alert.100126'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100126' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Banload' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Banload').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Banload' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100127'
+    based-on: 'alert.100127'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100127' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'FlawedGrace' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FlawedGrace').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'FlawedGrace' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100128'
+    based-on: 'alert.100128'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100128' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DoppelDridex' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DoppelDridex').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DoppelDridex' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100129'
+    based-on: 'alert.100129'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100129' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Mispadu' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mispadu').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Mispadu' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100130'
+    based-on: 'alert.100130'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100130' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Mekotio' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mekotio').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Mekotio' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100131'
+    based-on: 'alert.100131'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100131' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ozone RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ozone RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ozone RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100132'
+    based-on: 'alert.100132'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100132' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'StealthWorker Go' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'StealthWorker Go').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'StealthWorker Go' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100133'
+    based-on: 'alert.100133'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100133' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'SilverFish' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'SilverFish').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'SilverFish' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100134'
+    based-on: 'alert.100134'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100134' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'NodeJS Ransomware' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'NodeJS Ransomware').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'NodeJS Ransomware' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100135'
+    based-on: 'alert.100135'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100135' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PerlBot' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PerlBot').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PerlBot' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100136'
+    based-on: 'alert.100136'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100136' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ryuk' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ryuk').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ryuk' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100137'
+    based-on: 'alert.100137'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100137' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'QNAPCrypt' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'QNAPCrypt').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'QNAPCrypt' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100138'
+    based-on: 'alert.100138'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100138' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'XLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'XLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100139'
+    based-on: 'alert.100139'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100139' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Venom RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Venom RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Venom RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100140'
+    based-on: 'alert.100140'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100140' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BlackMatter' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackMatter').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BlackMatter' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100141'
+    based-on: 'alert.100141'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100141' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Janeleiro' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Janeleiro').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Janeleiro' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100142'
+    based-on: 'alert.100142'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100142' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Chrysaor' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Chrysaor').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Chrysaor' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100143'
+    based-on: 'alert.100143'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100143' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PurpleFox' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PurpleFox').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PurpleFox' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100144'
+    based-on: 'alert.100144'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100144' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DarkSide' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DarkSide').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DarkSide' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100145'
+    based-on: 'alert.100145'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100145' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Mars Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Mars Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Mars Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100146'
+    based-on: 'alert.100146'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100146' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Matanbuchus' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Matanbuchus').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Matanbuchus' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100147'
+    based-on: 'alert.100147'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100147' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'FFDroider' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'FFDroider').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'FFDroider' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100148'
+    based-on: 'alert.100148'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100148' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BlackGuard' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BlackGuard').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BlackGuard' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100149'
+    based-on: 'alert.100149'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100149' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'TitanStealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'TitanStealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'TitanStealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100150'
+    based-on: 'alert.100150'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100150' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BianLian' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BianLian').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BianLian' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100151'
+    based-on: 'alert.100151'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100151' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Deimos' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Deimos').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Deimos' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100152'
+    based-on: 'alert.100152'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100152' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Sliver' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Sliver').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Sliver' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100153'
+    based-on: 'alert.100153'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100153' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Aurora Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Aurora Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Aurora Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100154'
+    based-on: 'alert.100154'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100154' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Stealc' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Stealc').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Stealc' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100155'
+    based-on: 'alert.100155'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100155' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Gomorrah stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Gomorrah stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Gomorrah stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100156'
+    based-on: 'alert.100156'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100156' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'RecordBreaker' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'RecordBreaker').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'RecordBreaker' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100157'
+    based-on: 'alert.100157'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100157' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Brute Ratel C4' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Brute Ratel C4').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Brute Ratel C4' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100158'
+    based-on: 'alert.100158'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100158' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'LaplasClipper' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'LaplasClipper').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'LaplasClipper' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100159'
+    based-on: 'alert.100159'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100159' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'XWorm' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'XWorm').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'XWorm' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100160'
+    based-on: 'alert.100160'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100160' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PhotoLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PhotoLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PhotoLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100161'
+    based-on: 'alert.100161'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100161' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Kimsuky' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kimsuky').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Kimsuky' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100162'
+    based-on: 'alert.100162'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100162' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Rhadamanthys' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Rhadamanthys').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Rhadamanthys' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100163'
+    based-on: 'alert.100163'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100163' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Nighthawk' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Nighthawk').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Nighthawk' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100164'
+    based-on: 'alert.100164'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100164' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Fabookie' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Fabookie').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Fabookie' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100165'
+    based-on: 'alert.100165'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100165' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Lumma Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Lumma Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Lumma Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100166'
+    based-on: 'alert.100166'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100166' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Kaiji' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kaiji').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Kaiji' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100167'
+    based-on: 'alert.100167'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100167' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PrivateLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PrivateLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PrivateLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100168'
+    based-on: 'alert.100168'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100168' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'ViperSoftX' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'ViperSoftX').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'ViperSoftX' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100169'
+    based-on: 'alert.100169'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100169' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Phonk' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Phonk').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Phonk' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100170'
+    based-on: 'alert.100170'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100170' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PlugX' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PlugX').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PlugX' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100171'
+    based-on: 'alert.100171'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100171' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'HyperBro' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'HyperBro').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'HyperBro' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100172'
+    based-on: 'alert.100172'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100172' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Coper' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Coper').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Coper' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100173'
+    based-on: 'alert.100173'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100173' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Specter' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Specter').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Specter' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100174'
+    based-on: 'alert.100174'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100174' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Kaiten' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Kaiten').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Kaiten' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100175'
+    based-on: 'alert.100175'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100175' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Bitter RAT' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Bitter RAT').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Bitter RAT' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100176'
+    based-on: 'alert.100176'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100176' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'BATLOADER' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'BATLOADER').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'BATLOADER' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100177'
+    based-on: 'alert.100177'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100177' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'JSSLoader' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'JSSLoader').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'JSSLoader' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100178'
+    based-on: 'alert.100178'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100178' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PureCrypter' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PureCrypter').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PureCrypter' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100179'
+    based-on: 'alert.100179'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100179' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'S.O.V.A.' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'S.O.V.A.').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'S.O.V.A.' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100180'
+    based-on: 'alert.100180'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100180' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'Ginzo Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'Ginzo Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'Ginzo Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100181'
+    based-on: 'alert.100181'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100181' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'PennyWise Stealer' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'PennyWise Stealer').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'PennyWise Stealer' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  - name: '100182'
+    based-on: 'alert.100182'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '100182' AS rule_id, '1' AS rule_version, 'indicator_match' AS rule_type, 1 AS is_builtin,
+      'Command and Control' AS event_type, 'DOUBLEBACK' AS event_name, 5 AS severity, 
+      ARRAY_CONTAINS_IGNORE_CASE(server_ip_tags, 'DOUBLEBACK').?('server_ip_tags', 'domain_tags') AS indicator_fields, 'DOUBLEBACK' AS indicator_values, 
+      1 AS match_num, 10 AS reset, client_ip, client_country_region, client_super_admin_area, client_admin_area, client_longitude, 
+      client_latitude, server_ip, server_country_region, server_super_admin_area, server_admin_area, server_longitude, 
+      server_latitude, domain, app, recv_time AS match_time
+  ## Threshold
+  - name: '200001'
+    based-on: 'alert.200001'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '200001' AS rule_id, '1' AS rule_version, 'threshold' AS rule_type, 1 AS is_builtin,
+      'Performance Events.HTTP Error' AS event_type, 'High HTTP Error Response Ratio' AS event_name, 'http_host' AS key_fields, http_host AS key_values, 
+      ( (error_cnt / cnt) >= 0.5 ).?( 0.5, ( (error_cnt / cnt) >= 0.2 ).?( 0.2, 0.1 ) ) AS threshold_value, 
+      ( (error_cnt / cnt) >= 0.5 ).?( 4, ( (error_cnt / cnt) >= 0.2 ).?( 3, 2 ) ) AS severity, 
+      CAST( (error_cnt / cnt), DOUBLE)  AS metric_value, 2 AS unit, 20 AS reset, start_time, end_time
+  - name: '200002'
+    based-on: 'alert.200002'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '200002' AS rule_id, '1' AS rule_version, 'threshold' AS rule_type, 1 AS is_builtin,
+      'Performance Events.DNS Error' AS event_type, 'High DNS Error RCode Ratio' AS event_name, 'dns_qname' AS key_fields, dns_qname AS key_values, 
+      ( (error_cnt / cnt) >= 0.5 ).?( 0.5, ( (error_cnt / cnt) >= 0.2 ).?( 0.2, 0.1 ) ) AS threshold_value, 
+      ( (error_cnt / cnt) >= 0.5 ).?( 4, ( (error_cnt / cnt) >= 0.2 ).?( 3, 2 ) ) AS severity, 
+      CAST( (error_cnt / cnt), DOUBLE) AS metric_value, 2 AS unit, 20 AS reset, start_time, end_time
+  - name: '200003'
+    based-on: 'alert.200003'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '200003' AS rule_id, '1' AS rule_version, 'threshold' AS rule_type, 1 AS is_builtin,
+      'Security Events.Exploration' AS event_type, 'SSH Brute Force' AS event_name, 'server_ip' AS key_fields, server_ip AS key_values, 
+      ( cnt >= 50 ).?( 50.0, ( cnt >= 20 ).?( 20.0, 10.0 ) ) AS threshold_value, 
+      ( cnt >= 50 ).?( 4, ( cnt >= 20 ).?( 3, 2 ) ) AS severity, 
+      CAST(cnt, DOUBLE) AS metric_value, 1 AS unit, 10 AS reset, start_time, end_time
+  - name: '200004'
+    based-on: 'alert.200004'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '200004' AS rule_id, '1' AS rule_version, 'threshold' AS rule_type, 1 AS is_builtin,
+      'Performance Events.HTTP Error' AS event_type, 'High HTTP Response Latency' AS event_name, 'http_host' AS key_fields, http_host AS key_values, 
+      ( (latency_sum / cnt) >= 1500 ).?( 1500.0, ( (latency_sum / cnt) >= 1000 ).?( 1000.0, 500.0 ) ) AS threshold_value, 
+      ( (latency_sum / cnt) >= 1500 ).?( 4, ( (latency_sum / cnt) >= 1000 ).?( 3, 2 ) ) AS severity, 
+      CAST( (latency_sum / cnt), DOUBLE) AS metric_value, 3 AS unit, 20 AS reset, start_time, end_time
+  - name: '200005'
+    based-on: 'alert.200005'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '200005' AS rule_id, '1' AS rule_version, 'threshold' AS rule_type, 1 AS is_builtin,
+      'Performance Events.DNS Error' AS event_type, 'High DNS Response Latency' AS event_name, 'dns_qname' AS key_fields, dns_qname AS key_values, 
+      ( (latency_sum / cnt) >= 1500 ).?( 1500.0, ( (latency_sum / cnt) >= 1000 ).?( 1000.0, 500.0 ) ) AS threshold_value, 
+      ( (latency_sum / cnt) >= 1500 ).?( 4, ( (latency_sum / cnt) >= 1000 ).?( 3, 2 ) ) AS severity, 
+      CAST( (latency_sum / cnt), DOUBLE) AS metric_value, 3 AS unit, 20 AS reset, start_time, end_time
+  ## Sequence
+  - name: '300001'
+    based-on: 'alert.300001'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '300001' AS rule_id, '1' AS rule_version, 'cep' AS rule_type, 1 AS is_builtin,
+      'Regulatory Risk' AS event_type, 'TunnelBear VPN Connection' AS event_name, 3 AS severity,
+      'client_ip' AS key_fields, client_ip AS key_values, start_time, end_time,
+      '[' + JSON_OBJECT('stage_id', 'A', 'recv_time', a_recv_time, 'client_ip', a_client_ip, 'domain', a_domain ) + ', ' +
+      JSON_OBJECT('stage_id', 'B', 'recv_time', b_recv_time,
+         'client_ip', b_client_ip, 'server_ip', b_server_ip, 'app_transition', b_app_transition ) + ']'
+      AS event_info
+
+  ## Unordered Sequence
+  - name: '400001'
+    based-on: 'alert.400001'
+    category: MAP
+    select: >
+      SNOWFLAKE_ID() AS match_id, '400001' AS rule_id, '1' AS rule_version, 'occur_all' AS rule_type, 1 AS is_builtin,
+      'Regulatory Risk' AS event_type, 'Hotspot Shield VPN Connection' AS event_name, 3 AS severity, 
+      'client_ip' AS key_fields, __0.get('client_ip') AS key_values, 
+      '[' + JSON_OBJECT('stage_id', 'A', 'recv_time', __0.get('recv_time'), 
+           'client_ip', __0.get('client_ip'), 'domain', __0.get('domain') ) + ', ' +
+        JSON_OBJECT('stage_id', 'B', 'recv_time', __1.get('recv_time'), 
+           'client_ip', __1.get('client_ip'), 'server_ip', __1.get('server_ip'), 
+      'domain', __1.get('domain') ) + ']' AS event_info, 
+      (__0.get('recv_time') < __1.get('recv_time')).?(__0.get('recv_time'), __1.get('recv_time')) AS start_time, 
+      (__0.get('recv_time') > __1.get('recv_time')).?(__0.get('recv_time'), __1.get('recv_time')) AS end_time
+
+  ##### Union #####
+  - name: 'all-indicators'
+    category: UNION
+    based-on:
+      - 100001
+      - 100005
+      - 100007
+      - 100008
+      - 100009
+      - 100010
+      - 100011
+      - 100012
+      - 100013
+      - 100014
+      - 100015
+      - 100016
+      - 100017
+      - 100018
+      - 100019
+      - 100020
+      - 100021
+      - 100022
+      - 100023
+      - 100024
+      - 100025
+      - 100026
+      - 100027
+      - 100028
+      - 100029
+      - 100030
+      - 100031
+      - 100032
+      - 100033
+      - 100034
+      - 100035
+      - 100036
+      - 100037
+      - 100038
+      - 100039
+      - 100040
+      - 100041
+      - 100042
+      - 100043
+      - 100044
+      - 100045
+      - 100046
+      - 100047
+      - 100048
+      - 100049
+      - 100050
+      - 100051
+      - 100052
+      - 100053
+      - 100054
+      - 100055
+      - 100056
+      - 100057
+      - 100058
+      - 100059
+      - 100060
+      - 100061
+      - 100062
+      - 100063
+      - 100064
+      - 100065
+      - 100066
+      - 100067
+      - 100068
+      - 100069
+      - 100070
+      - 100071
+      - 100072
+      - 100073
+      - 100074
+      - 100075
+      - 100076
+      - 100077
+      - 100078
+      - 100079
+      - 100080
+      - 100081
+      - 100082
+      - 100083
+      - 100084
+      - 100085
+      - 100086
+      - 100087
+      - 100088
+      - 100089
+      - 100090
+      - 100091
+      - 100092
+      - 100093
+      - 100094
+      - 100095
+      - 100096
+      - 100097
+      - 100098
+      - 100099
+      - 100100
+      - 100101
+      - 100102
+      - 100103
+      - 100104
+      - 100105
+      - 100106
+      - 100107
+      - 100108
+      - 100109
+      - 100110
+      - 100111
+      - 100112
+      - 100113
+      - 100114
+      - 100115
+      - 100116
+      - 100117
+      - 100118
+      - 100119
+      - 100120
+      - 100121
+      - 100122
+      - 100123
+      - 100124
+      - 100125
+      - 100126
+      - 100127
+      - 100128
+      - 100129
+      - 100130
+      - 100131
+      - 100132
+      - 100133
+      - 100134
+      - 100135
+      - 100136
+      - 100137
+      - 100138
+      - 100139
+      - 100140
+      - 100141
+      - 100142
+      - 100143
+      - 100144
+      - 100145
+      - 100146
+      - 100147
+      - 100148
+      - 100149
+      - 100150
+      - 100151
+      - 100152
+      - 100153
+      - 100154
+      - 100155
+      - 100156
+      - 100157
+      - 100158
+      - 100159
+      - 100160
+      - 100161
+      - 100162
+      - 100163
+      - 100164
+      - 100165
+      - 100166
+      - 100167
+      - 100168
+      - 100169
+      - 100170
+      - 100171
+      - 100172
+      - 100173
+      - 100174
+      - 100175
+      - 100176
+      - 100177
+      - 100178
+      - 100179
+      - 100180
+      - 100181
+      - 100182
+  - name: 'all-thresholds'
+    category: UNION
+    based-on:
+      - 200001
+      - 200002
+      - 200003
+      - 200004
+      - 200005
+  - name: 'all-sequences'
+    category: UNION
+    based-on:
+      - 300001
+  - name: 'all-unordered-sequences'
+    category: UNION
+    based-on:
+      - 400001
