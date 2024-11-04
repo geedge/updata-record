@@ -6,7 +6,7 @@ sources:
     watermark_lag: 1
     properties: # [object] Source Properties
       topic: SUBSCRIBER-LOCATION-MAPPING
-      kafka.bootstrap.servers: {{ tsg_olap_kafka_servers }}
+      kafka.bootstrap.servers: {{ sd_record_kafka_servers }}
       kafka.session.timeout.ms: 60000
       kafka.max.poll.records: 3000
       kafka.max.partition.fetch.bytes: 31457280
