@@ -104,6 +104,7 @@ ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT 
 ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rule_uuid_list Array(String) after sc_rule_list;
 
+
 ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 
@@ -117,7 +118,33 @@ ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF 
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS tunnel_uuid_list Array(String) after tunnel_id_list;
 
 
-;
+-- TSG-23436 Clickhouse补充新增字段sc_rsp_raw_uuid_list,sc_rsp_decrypted_uuid_list
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_raw_uuid_list Array(String) after sc_rsp_raw;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS sc_rsp_decrypted_uuid_list Array(String) after sc_rsp_decrypted;
+
 
 -- TSG-22714 Clickhouse增加公共字段mobile_identify
 ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS mobile_identify String after apn;
@@ -177,7 +204,9 @@ TO tsg_galaxy_v3.security_event_local
     sc_rule_list Array(Int64),
     sc_rule_uuid_list Array(String),
     sc_rsp_raw Array(Int64),
+    sc_rsp_raw_uuid_list Array(String),
     sc_rsp_decrypted Array(Int64),
+    sc_rsp_decrypted_uuid_list Array(String),
     proxy_action String,
     proxy_pinning_status Nullable(Int32),
     proxy_intercept_status Nullable(Int32),
@@ -433,7 +462,9 @@ SELECT
     sc_rule_list,
     sc_rule_uuid_list,
     sc_rsp_raw,
+    sc_rsp_raw_uuid_list,
     sc_rsp_decrypted,
+    sc_rsp_decrypted_uuid_list,
     proxy_action,
     proxy_pinning_status,
     proxy_intercept_status,
@@ -694,7 +725,9 @@ TO tsg_galaxy_v3.monitor_event_local
     sc_rule_list Array(Int64),
     sc_rule_uuid_list Array(String),
     sc_rsp_raw Array(Int64),
+    sc_rsp_raw_uuid_list Array(String),
     sc_rsp_decrypted Array(Int64),
+    sc_rsp_decrypted_uuid_list Array(String),
     proxy_action String,
     proxy_pinning_status Nullable(Int32),
     proxy_intercept_status Nullable(Int32),
@@ -950,7 +983,9 @@ SELECT
     sc_rule_list,
     sc_rule_uuid_list,
     sc_rsp_raw,
+    sc_rsp_raw_uuid_list,
     sc_rsp_decrypted,
+    sc_rsp_decrypted_uuid_list,
     proxy_action,
     proxy_pinning_status,
     proxy_intercept_status,
@@ -1166,6 +1201,7 @@ SELECT
 FROM tsg_galaxy_v3.session_record_local
 WHERE empty(monitor_rule_uuid_list) = 0
 ;
+
 -- TSG-22703 clickhouse库表dos_event新增字段rule_uuid，source_country,source_ip 删除字段profile_id,修改*_rate字段类型
 
 ALTER table tsg_galaxy_v3.dos_event_local on cluster ck_cluster drop column IF EXISTS profile_id;
