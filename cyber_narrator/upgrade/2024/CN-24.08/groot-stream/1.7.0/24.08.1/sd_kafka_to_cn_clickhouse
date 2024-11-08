@@ -168,7 +168,7 @@ processing_pipelines:
         output_fields: [ subscriber_tags ]
 
   time_processor:
-    type: com.geedgenetworks.core.processor.projection.ProjectionProcessorImpl
+    type: projection
     remove_fields:
     output_fields:
     functions:
