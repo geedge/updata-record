@@ -186,12 +186,12 @@ processing_pipelines:
       - function: EVAL
         output_fields: [ client_zone ]
         parameters:
-          value_expression: "(flags & 8) == 8 ? 'internal' : 'external'"
+          value_expression: "flags & 8 == 8 ? 'internal' : 'external'"
 
       - function: EVAL
         output_fields: [ server_zone ]
         parameters:
-          value_expression: "(flags & 16) == 16 ? 'internal' : 'external'"
+          value_expression: "flags & 16 == 16 ? 'internal' : 'external'"
 
       - function: CN_IP_ZONE_LOOKUP
         lookup_fields: [ client_ip ]
@@ -210,22 +210,22 @@ processing_pipelines:
       - function: EVAL
         output_fields: [ sent_bytes ]
         parameters:
-          value_expression: "is_def(sent_bytes) ? sent_bytes : 0"
+          value_expression: "sent_bytes == null ? 0 : sent_bytes"
 
       - function: EVAL
         output_fields: [ sent_pkts ]
         parameters:
-          value_expression: "is_def(sent_pkts) ? sent_pkts : 0"
+          value_expression: "sent_pkts == null ? 0 : sent_pkts"
 
       - function: EVAL
         output_fields: [ received_bytes ]
         parameters:
-          value_expression: "is_def(received_bytes) ? received_bytes : 0"
+          value_expression: "received_bytes == null ? 0 : received_bytes"
 
       - function: EVAL
         output_fields: [ received_pkts ]
         parameters:
-          value_expression: "is_def(received_pkts) ? received_pkts : 0"
+          value_expression: "received_pkts == null ? 0 : received_pkts"
 
       - function: EVAL
         output_fields: [ traffic_inbound_byte ]
