@@ -29,6 +29,49 @@ ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT 
 ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS phone_number_hmac String after phone_number;
 ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS phone_number_hmac String after phone_number;
 
+-- TSG-23741ClickHouse相关表增加基础字段log_uuid, session_uuid
+-- 增加两个字段的表log_uuid, session_uuid
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+
+ALTER table tsg_galaxy_v3.session_record_local on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+ALTER table tsg_galaxy_v3.session_record on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+
+ALTER table tsg_galaxy_v3.security_event_local on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+ALTER table tsg_galaxy_v3.security_event on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+
+ALTER table tsg_galaxy_v3.monitor_event_local on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+ALTER table tsg_galaxy_v3.monitor_event on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+
+ALTER table tsg_galaxy_v3.proxy_event_local on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+ALTER table tsg_galaxy_v3.proxy_event on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+
+ALTER table tsg_galaxy_v3.voip_record_local on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+ALTER table tsg_galaxy_v3.voip_record on cluster ck_cluster add column IF NOT EXISTS session_uuid String after session_id;
+
+-- 增加一个字段的表log_uuid
+ALTER table tsg_galaxy_v3.datapath_telemetry_record_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.datapath_telemetry_record on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+ALTER table tsg_galaxy_v3.traffic_sketch_metric_local on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+ALTER table tsg_galaxy_v3.traffic_sketch_metric on cluster ck_cluster add column IF NOT EXISTS log_uuid String after log_id;
+
+
+
+
 
 -- tsg_galaxy_v3.security_event_materialized_view
 CREATE MATERIALIZED VIEW IF NOT EXISTS tsg_galaxy_v3.security_event_materialized_view on cluster ck_cluster 
@@ -36,8 +79,10 @@ TO tsg_galaxy_v3.security_event_local
 (
     recv_time Int64,
     log_id UInt64,
+    log_uuid String,
     decoded_as String,
     session_id UInt64,
+    session_uuid String,
     start_timestamp_ms DateTime64(3),
     end_timestamp_ms DateTime64(3),
     duration_ms Int32,
@@ -296,8 +341,10 @@ AS
 SELECT
     recv_time,
     log_id,
+    log_uuid,
     decoded_as,
     session_id,
+    session_uuid,
     start_timestamp_ms,
     end_timestamp_ms,
     duration_ms,
@@ -561,8 +608,10 @@ TO tsg_galaxy_v3.monitor_event_local
 (
     recv_time Int64,
     log_id UInt64,
+    log_uuid String,
     decoded_as String,
     session_id UInt64,
+    session_uuid String,
     start_timestamp_ms DateTime64(3),
     end_timestamp_ms DateTime64(3),
     duration_ms Int32,
@@ -821,8 +870,10 @@ AS
 SELECT
     recv_time,
     log_id,
+    log_uuid,
     decoded_as,
     session_id,
+    session_uuid,
     start_timestamp_ms,
     end_timestamp_ms,
     duration_ms,

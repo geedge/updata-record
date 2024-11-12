@@ -95,8 +95,10 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,assessment_event_local,rand());
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record_local on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -359,8 +361,10 @@ ORDER BY (vsys_id, security_action,proxy_action,decoded_as,data_center, device_g
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.session_record on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -621,8 +625,10 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,session_record_local,rand());
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event_local on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -884,8 +890,10 @@ ORDER BY (vsys_id, security_action,proxy_action,decoded_as,data_center, device_g
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.security_event on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -1146,8 +1154,10 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,security_event_local,rand());
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.monitor_event_local on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -1409,8 +1419,10 @@ ORDER BY (vsys_id, security_action,proxy_action,decoded_as,data_center, device_g
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.monitor_event on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -1864,8 +1876,10 @@ alter table tsg_galaxy_v3.transaction_record_local on cluster ck_cluster add IND
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record_local on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -1937,8 +1951,10 @@ ORDER BY (vsys_id,decoded_as,data_center, device_group,recv_time);
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.voip_record on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -2009,8 +2025,10 @@ ENGINE =Distributed(ck_cluster,tsg_galaxy_v3,voip_record_local,rand());
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event_local on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -2189,8 +2207,10 @@ ORDER BY (vsys_id,proxy_action,decoded_as,data_center, device_group,recv_time);
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.proxy_event on cluster ck_cluster (
 recv_time Int64,
 log_id UInt64,
+log_uuid String,
 decoded_as String,
 session_id UInt64,
+session_uuid String,
 start_timestamp_ms DateTime64(3),
 end_timestamp_ms DateTime64(3),
 duration_ms Int32,
@@ -2370,8 +2390,10 @@ TO tsg_galaxy_v3.security_event_local
 (
     recv_time Int64,
     log_id UInt64,
+    log_uuid String,
     decoded_as String,
     session_id UInt64,
+    session_uuid String,
     start_timestamp_ms DateTime64(3),
     end_timestamp_ms DateTime64(3),
     duration_ms Int32,
@@ -2630,8 +2652,10 @@ AS
 SELECT
     recv_time,
     log_id,
+    log_uuid,
     decoded_as,
     session_id,
+    session_uuid,
     start_timestamp_ms,
     end_timestamp_ms,
     duration_ms,
@@ -2895,8 +2919,10 @@ TO tsg_galaxy_v3.monitor_event_local
 (
     recv_time Int64,
     log_id UInt64,
+    log_uuid String,
     decoded_as String,
     session_id UInt64,
+    session_uuid String,
     start_timestamp_ms DateTime64(3),
     end_timestamp_ms DateTime64(3),
     duration_ms Int32,
@@ -3155,8 +3181,10 @@ AS
 SELECT
     recv_time,
     log_id,
+    log_uuid,
     decoded_as,
     session_id,
+    session_uuid,
     start_timestamp_ms,
     end_timestamp_ms,
     duration_ms,
@@ -3417,6 +3445,7 @@ WHERE notEmpty(monitor_rule_uuid_list)
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.datapath_telemetry_record_local on cluster ck_cluster (
     log_id UInt64,
+    log_uuid String,
     recv_time Int64,
     vsys_id Int32,
     timestamp_us UInt64,
@@ -3439,6 +3468,7 @@ ORDER BY (vsys_id,job_id,recv_time,timestamp_us);
 
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.datapath_telemetry_record on cluster ck_cluster (
     log_id UInt64,
+    log_uuid String,
     recv_time Int64,
     vsys_id Int32,
     timestamp_us UInt64,
@@ -3463,6 +3493,7 @@ ENGINE = Distributed('ck_cluster',
 CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.traffic_sketch_metric_local on cluster ck_cluster
 (
     log_id UInt64,
+    log_uuid String,
     recv_time Int64,
     vsys_id Int64,
     device_id String,
@@ -3514,6 +3545,7 @@ ORDER BY (vsys_id,
  CREATE TABLE IF NOT EXISTS tsg_galaxy_v3.traffic_sketch_metric on cluster ck_cluster
 (
     log_id UInt64,
+    log_uuid String,
     recv_time Int64,
     vsys_id Int64,
     device_id String,
